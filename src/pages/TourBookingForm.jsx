@@ -76,7 +76,7 @@ const TourBookingForm = ({
     };
 
     try {
-      const res = await fetch("http://localhost:3000/tours", {
+      const res = await fetch("https://ass-server-1.onrender.com/tours", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(submissionData),

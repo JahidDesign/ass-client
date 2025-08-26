@@ -8,6 +8,8 @@ import FlightSeatBooking from '../pages/airticketsADD';
 import TourBookingForm from '../pages/TourBookingForm';
 import ManageMyPackages from '../pages/ManageMyPackages';
 import MyBookings from '../pages/MyBookings';
+import MyToursBookings from '../pages/ToursBooking';
+import TourDetails from '../pages/TourDetails';
 import PackageDetails from '../pages/PackageDetails';
 import AboutUs from '../pages/AboutUs';
 import ContactSection from '../pages/contact';
@@ -27,7 +29,7 @@ const AppRoutes = () => {
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
       <Route path="/404" element={<NotFound />} />
-
+      <Route path="/tours/:id" element={<TourDetails />} />
       {/* Protected Routes */}
       <Route
         path="/profile"
@@ -90,6 +92,14 @@ const AppRoutes = () => {
         element={
           <PrivateRoute>
             <MyBookings />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/my-toursbookings"
+        element={
+          <PrivateRoute>
+            <MyToursBookings />
           </PrivateRoute>
         }
       />
