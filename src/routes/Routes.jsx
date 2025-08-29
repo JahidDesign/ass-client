@@ -10,6 +10,7 @@ import ManageMyPackages from '../pages/ManageMyPackages';
 import MyBookings from '../pages/MyBookings';
 import MyToursBookings from '../pages/ToursBooking';
 import TourDetails from '../pages/TourDetails';
+import HotelDetails from '../pages/HotelDetails';
 import PackageDetails from '../pages/PackageDetails';
 import AboutUs from '../pages/AboutUs';
 import ContactSection from '../pages/contact';
@@ -30,6 +31,7 @@ const AppRoutes = () => {
       <Route path="/register" element={<Register />} />
       <Route path="/404" element={<NotFound />} />
       <Route path="/tours/:id" element={<TourDetails />} />
+      <Route path="/hotels/:id" element={<HotelDetails />} />
       {/* Protected Routes */}
       <Route
         path="/profile"
