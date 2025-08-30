@@ -1,8 +1,10 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Swal from "sweetalert2";
+import { ThemeContext } from "../context/ThemeContext"; 
 
 const MyBooked = () => {
   const [booked, setBooked] = useState(null);
+  const { theme } = useContext(ThemeContext); 
 
   useEffect(() => {
     const saved = localStorage.getItem("myBookedTour");
@@ -30,13 +32,33 @@ const MyBooked = () => {
   };
 
   if (!booked) {
-    return <div className="text-center py-10">No tour booked yet.</div>;
+    return (
+      <div
+        className={`text-center py-10 ${
+          theme === "dark" ? "text-gray-300" : "text-gray-700"
+        }`}
+      >
+        No tour booked yet.
+      </div>
+    );
   }
 
   return (
     <div className="max-w-5xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-yellow-700 mb-6">My Booked Tour</h2>
-      <div className="bg-white text-black rounded-lg shadow p-6 border flex flex-col md:flex-row gap-6">
+      <h2
+        className={`text-3xl font-bold mb-6 ${
+          theme === "dark" ? "text-yellow-400" : "text-yellow-700"
+        }`}
+      >
+        My Booked Tour
+      </h2>
+      <div
+        className={`rounded-lg shadow p-6 border flex flex-col md:flex-row gap-6 transition ${
+          theme === "dark"
+            ? "bg-gray-900 text-gray-100 border-gray-700"
+            : "bg-white text-black border-gray-200"
+        }`}
+      >
         {/* Left: Image */}
         <img
           src={booked.photo}
@@ -49,11 +71,19 @@ const MyBooked = () => {
           <h3 className="text-2xl font-semibold mb-2 capitalize">
             {booked.selectedPackage} Package
           </h3>
-          <p><strong>Pickup:</strong> {booked.pickupLocation}</p>
-          <p><strong>Travel:</strong> {booked.travelDate} → {booked.returnDate}</p>
-          <p><strong>Price:</strong> ${booked.totalPrice}</p>
+          <p>
+            <strong>Pickup:</strong> {booked.pickupLocation}
+          </p>
+          <p>
+            <strong>Travel:</strong> {booked.travelDate} → {booked.returnDate}
+          </p>
+          <p>
+            <strong>Price:</strong> ${booked.totalPrice}
+          </p>
           <p className="whitespace-pre-line mt-2">
-            <strong>Requests:</strong><br />{booked.specialRequests}
+            <strong>Requests:</strong>
+            <br />
+            {booked.specialRequests}
           </p>
 
           {/* Map */}
@@ -77,7 +107,7 @@ const MyBooked = () => {
               />
               <div>
                 <p className="font-semibold">{booked.bookedBy.name}</p>
-                <p className="text-sm text-gray-600">{booked.bookedBy.email}</p>
+                <p className="text-sm opacity-80">{booked.bookedBy.email}</p>
               </div>
             </div>
           )}

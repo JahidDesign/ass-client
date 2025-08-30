@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { FaStar } from "react-icons/fa";
 import Swal from "sweetalert2";
-import HeroSection from "./FromBanner"; // ✅ make sure path is correct
+import HeroSection from "./FromBanner"; 
+import { ThemeContext } from "../context/ThemeContext";
 
 const defaultForm = {
   name: "",
@@ -15,6 +16,9 @@ const defaultForm = {
 };
 
 const TeamForm = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   const [formData, setFormData] = useState(defaultForm);
   const [loading, setLoading] = useState(false);
 
@@ -79,8 +83,14 @@ const TeamForm = () => {
     }
   };
 
+  const inputClasses = `w-full px-4 py-2 border rounded-md transition ${
+    isDark
+      ? "bg-gray-700 border-gray-600 placeholder-gray-300 text-gray-100 focus:border-green-400 focus:ring-green-400"
+      : "bg-white border-gray-300 placeholder-gray-500 text-gray-800 focus:border-blue-500 focus:ring-blue-500"
+  }`;
+
   return (
-    <div className="min-h-screen bg-white text-black">
+    <div className={`${isDark ? "bg-gray-900 text-gray-100" : "bg-white text-black"} min-h-screen`}>
       <Helmet>
         <title>Add Team Member</title>
         <meta name="description" content="Submit a new team member profile." />
@@ -89,7 +99,7 @@ const TeamForm = () => {
       <HeroSection />
 
       <section className="max-w-3xl mx-auto p-6">
-        <h2 className="text-3xl font-bold text-blue-700 text-center mb-8">
+        <h2 className={`text-3xl font-bold text-center mb-8 ${isDark ? "text-green-400" : "text-blue-700"}`}>
           Add Team Member Info
         </h2>
 
@@ -101,6 +111,7 @@ const TeamForm = () => {
             onChange={handleChange}
             placeholder="e.g. Sarah Johnson"
             required
+            inputClasses={inputClasses}
           />
           <InputField
             name="title"
@@ -109,6 +120,7 @@ const TeamForm = () => {
             onChange={handleChange}
             placeholder="e.g. Senior Developer"
             required
+            inputClasses={inputClasses}
           />
           <InputField
             name="experience"
@@ -119,6 +131,7 @@ const TeamForm = () => {
             placeholder="e.g. 5"
             min="0"
             required
+            inputClasses={inputClasses}
           />
 
           {/* Star Rating */}
@@ -130,7 +143,7 @@ const TeamForm = () => {
                   key={star}
                   onClick={() => handleStarClick(star)}
                   className={`text-xl cursor-pointer ${
-                    formData.starRating >= star ? "text-yellow-400" : "text-gray-300"
+                    formData.starRating >= star ? "text-yellow-400" : isDark ? "text-gray-600" : "text-gray-300"
                   } transition`}
                 />
               ))}
@@ -148,7 +161,7 @@ const TeamForm = () => {
               value={formData.position}
               onChange={handleChange}
               required
-              className="w-full border border-gray-300 rounded-lg px-4 py-2 text-black bg-white"
+              className={`${inputClasses} bg-white ${isDark ? "bg-gray-700 text-gray-100" : ""}`}
             >
               <option value="">Select a role</option>
               <option value="Web Developer">Web Developer</option>
@@ -169,7 +182,7 @@ const TeamForm = () => {
               value={formData.description}
               onChange={handleChange}
               placeholder="Brief background or team role..."
-              className="w-full px-4 py-2 border rounded-md text-black"
+              className={inputClasses}
               required
             />
           </div>
@@ -188,7 +201,7 @@ const TeamForm = () => {
                 name="photoUrl"
                 value={formData.photoUrl}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border rounded-md text-black"
+                className={inputClasses}
                 placeholder="https://example.com/photo.jpg"
                 required
               />
@@ -199,7 +212,9 @@ const TeamForm = () => {
             <button
               type="submit"
               disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white px-8 py-3 rounded-lg disabled:opacity-50"
+              className={`px-8 py-3 rounded-lg font-semibold transition ${
+                isDark ? "bg-green-600 hover:bg-green-700 text-white disabled:opacity-50" : "bg-blue-600 hover:bg-blue-700 text-white disabled:opacity-50"
+              }`}
             >
               {loading ? "Submitting..." : "Submit"}
             </button>
@@ -210,16 +225,7 @@ const TeamForm = () => {
   );
 };
 
-const InputField = ({
-  name,
-  label,
-  value,
-  onChange,
-  placeholder = "",
-  type = "text",
-  min,
-  required,
-}) => (
+const InputField = ({ name, label, value, onChange, placeholder, type = "text", min, required, inputClasses }) => (
   <div>
     <label htmlFor={name} className="block text-sm font-medium mb-1">
       {label}
@@ -233,7 +239,7 @@ const InputField = ({
       placeholder={placeholder}
       min={min}
       required={required}
-      className="w-full px-4 py-2 border rounded-md text-black"
+      className={inputClasses}
     />
   </div>
 );

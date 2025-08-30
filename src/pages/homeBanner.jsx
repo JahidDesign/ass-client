@@ -1,17 +1,16 @@
-import React from "react";
-import {
-  FaPlaneDeparture,
-  FaPlaneArrival,
-  FaUser,
-  FaCalendarAlt,
-} from "react-icons/fa";
-
-const inputClass =
-  "w-full border border-gray-300 rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500";
+// src/pages/homeBanner.jsx
+import React, { useContext } from "react";
+import { FaPlaneDeparture, FaPlaneArrival, FaUser, FaCalendarAlt } from "react-icons/fa";
+import { ThemeContext } from "../context/ThemeContext";
 
 const TravelHeroBanner = () => {
+  const { theme } = useContext(ThemeContext);
+
+  const inputClass = `w-full border rounded-md px-4 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500
+    ${theme === "dark" ? "border-gray-700 bg-gray-800 text-white" : "border-gray-300 bg-white text-black"}`;
+
   return (
-    <div className="bg-white text-black">
+    <div className={`${theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
       {/* Hero Background */}
       <section
         className="relative h-[65vh] bg-cover bg-center flex items-center justify-center"
@@ -20,11 +19,8 @@ const TravelHeroBanner = () => {
             "url('https://i.ibb.co/KjPpS8pH/madison-olling-6wmx-DOa-AO4-unsplash.jpg')",
         }}
       >
-        {/* Overlay */}
         <div className="absolute inset-0  bg-opacity-50"></div>
-
-        {/* Heading */}
-        <div className="relative z-10 text-white text-center px-4">
+        <div className="relative z-10 text-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Where to <span className="text-yellow-400">Fly?</span>
           </h1>
@@ -34,7 +30,7 @@ const TravelHeroBanner = () => {
 
       {/* Search Card */}
       <div className="relative z-20 max-w-6xl mx-auto px-6 sm:px-8 -mt-28">
-        <div className="bg-white shadow-xl rounded-3xl p-6 sm:p-10">
+        <div className={`${theme === "dark" ? "bg-gray-800 shadow-xl" : "bg-white shadow-xl"} rounded-3xl p-6 sm:p-10`}>
           {/* Trip Types */}
           <div className="flex justify-center flex-wrap gap-4 mb-6">
             {["One Way", "Round Trip", "Multi City"].map((type) => (
@@ -43,7 +39,9 @@ const TravelHeroBanner = () => {
                 className={`px-6 py-2 rounded-full text-sm font-semibold transition ${
                   type === "Round Trip"
                     ? "bg-blue-600 text-white shadow"
-                    : "bg-gray-100 hover:bg-gray-200"
+                    : theme === "dark"
+                    ? "bg-gray-700 hover:bg-gray-600 text-white"
+                    : "bg-gray-100 hover:bg-gray-200 text-black"
                 }`}
               >
                 {type}
@@ -55,64 +53,46 @@ const TravelHeroBanner = () => {
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-6 gap-5 mb-6">
             {/* From */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">From</label>
+              <label htmlFor="from" className="text-xs font-semibold mb-1 block">From</label>
               <div className="relative">
                 <FaPlaneDeparture className="absolute top-3 left-3 text-gray-400" />
-                <input
-                  type="text"
-                  readOnly
-                  value="DAC - Dhaka"
-                  className={`${inputClass} pl-10`}
-                />
+                <input id="from" type="text" readOnly value="DAC - Dhaka" className={`pl-10 ${inputClass}`} />
               </div>
             </div>
 
             {/* To */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">To</label>
+              <label htmlFor="to" className="text-xs font-semibold mb-1 block">To</label>
               <div className="relative">
                 <FaPlaneArrival className="absolute top-3 left-3 text-gray-400" />
-                <input
-                  type="text"
-                  readOnly
-                  value="CXB - Cox's Bazar"
-                  className={`${inputClass} pl-10`}
-                />
+                <input id="to" type="text" readOnly value="CXB - Cox's Bazar" className={`pl-10 ${inputClass}`} />
               </div>
             </div>
 
             {/* Departure */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">Departure</label>
+              <label htmlFor="departure" className="text-xs font-semibold mb-1 block">Departure</label>
               <div className="relative">
                 <FaCalendarAlt className="absolute top-3 left-3 text-gray-400" />
-                <input
-                  type="date"
-                  defaultValue="2025-06-07"
-                  className={`${inputClass} pl-10`}
-                />
+                <input id="departure" type="date" defaultValue="2025-06-07" className={`pl-10 ${inputClass}`} />
               </div>
             </div>
 
             {/* Return */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">Return</label>
+              <label htmlFor="return" className="text-xs font-semibold mb-1 block">Return</label>
               <div className="relative">
                 <FaCalendarAlt className="absolute top-3 left-3 text-gray-400" />
-                <input
-                  type="date"
-                  defaultValue="2025-06-09"
-                  className={`${inputClass} pl-10`}
-                />
+                <input id="return" type="date" defaultValue="2025-06-09" className={`pl-10 ${inputClass}`} />
               </div>
             </div>
 
             {/* Travellers */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">Traveller</label>
+              <label htmlFor="travellers" className="text-xs font-semibold mb-1 block">Travellers</label>
               <div className="relative">
                 <FaUser className="absolute top-3 left-3 text-gray-400" />
-                <select className={`${inputClass} pl-10`}>
+                <select id="travellers" className={`pl-10 ${inputClass}`}>
                   <option>1 Traveller</option>
                   <option>2 Travellers</option>
                   <option>3 Travellers</option>
@@ -122,8 +102,8 @@ const TravelHeroBanner = () => {
 
             {/* Class */}
             <div>
-              <label className="text-xs font-semibold mb-1 block">Class</label>
-              <select className={inputClass}>
+              <label htmlFor="class" className="text-xs font-semibold mb-1 block">Class</label>
+              <select id="class" className={inputClass}>
                 <option>Economy</option>
                 <option>Business</option>
                 <option>First Class</option>
@@ -133,15 +113,9 @@ const TravelHeroBanner = () => {
 
           {/* Fare Options + Button */}
           <div className="flex flex-col sm:flex-row justify-between items-center gap-4">
-            {/* Radio Options */}
             <div className="flex gap-6 text-sm font-medium">
               <label className="inline-flex items-center">
-                <input
-                  type="radio"
-                  name="fare"
-                  defaultChecked
-                  className="mr-2"
-                />
+                <input type="radio" name="fare" defaultChecked className="mr-2" />
                 Regular Fare
               </label>
               <label className="inline-flex items-center">
@@ -150,7 +124,6 @@ const TravelHeroBanner = () => {
               </label>
             </div>
 
-            {/* Search Button */}
             <button className="bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white px-8 py-3 rounded-full text-sm font-semibold shadow-lg transition-all">
               🔍 Search Flights
             </button>

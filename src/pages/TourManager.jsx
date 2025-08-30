@@ -1,5 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import Swal from "sweetalert2";
+import { ThemeContext } from "../context/ThemeContext";
 
 const initialTourForm = {
   title: "",
@@ -15,6 +16,9 @@ const initialTourForm = {
 };
 
 const TourManager = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   const [tours, setTours] = useState([]);
   const [formData, setFormData] = useState(initialTourForm);
   const [loading, setLoading] = useState(false);
@@ -114,15 +118,25 @@ const TourManager = () => {
     }
   };
 
+  // Theme-based classes
+  const bgClass = isDark ? "bg-gray-900 text-gray-200" : "bg-white text-black";
+  const inputClass = isDark
+    ? "border-gray-600 bg-gray-800 text-gray-200 p-2 rounded"
+    : "border-gray-300 bg-white text-black p-2 rounded";
+  const buttonClass = isDark
+    ? "bg-yellow-500 hover:bg-yellow-600 text-black"
+    : "bg-yellow-600 hover:bg-yellow-700 text-white";
+  const cardShadow = isDark ? "shadow-lg shadow-black/40" : "shadow-lg shadow-gray-300";
+
   return (
-    <div className="bg-white text-black min-h-screen">
+    <div className={`${bgClass} min-h-screen`}>
       <div className="max-w-6xl mx-auto p-6">
         <h1 className="text-4xl font-bold mb-8 text-center">Tour Manager</h1>
 
         {/* Form Section */}
         <form
           onSubmit={handleSubmit}
-          className="bg-white p-6 rounded-lg shadow-md mb-12"
+          className={`${bgClass} p-6 rounded-lg ${cardShadow} mb-12`}
         >
           <h2 className="text-2xl font-semibold mb-4">
             {editingId ? "Edit Tour" : "New Tour"}
@@ -150,7 +164,7 @@ const TourManager = () => {
                   type={type}
                   value={formData[id]}
                   onChange={handleChange}
-                  className="border p-2 rounded"
+                  className={inputClass}
                   required
                 />
               </div>
@@ -184,16 +198,10 @@ const TourManager = () => {
               type="submit"
               disabled={loading}
               className={`px-6 py-2 rounded text-white font-semibold transition ${
-                loading
-                  ? "bg-yellow-400 cursor-not-allowed"
-                  : "bg-yellow-600 hover:bg-yellow-700"
+                loading ? "bg-yellow-400 cursor-not-allowed" : buttonClass
               }`}
             >
-              {loading
-                ? "Submitting..."
-                : editingId
-                ? "Update Tour"
-                : "Create Tour"}
+              {loading ? "Submitting..." : editingId ? "Update Tour" : "Create Tour"}
             </button>
           </div>
         </form>
@@ -208,27 +216,25 @@ const TourManager = () => {
               {tours.map((tour) => (
                 <li
                   key={tour._id}
-                  className="border rounded p-4 shadow flex flex-col md:flex-row md:items-center md:justify-between"
+                  className={`${bgClass} border rounded p-4 ${cardShadow} flex flex-col md:flex-row md:items-center md:justify-between`}
                 >
                   <div>
                     <h3 className="text-lg font-bold">{tour.title}</h3>
                     <p>
-                      <span className="font-semibold">Highlights:</span>{" "}
-                      {tour.highlight}
+                      <span className="font-semibold">Highlights:</span> {tour.highlight}
                     </p>
                     <p>
                       <span className="font-semibold">Price:</span> ${tour.price}
                     </p>
                     <p>
-                      <span className="font-semibold">Duration:</span>{" "}
-                      {tour.duration}
+                      <span className="font-semibold">Duration:</span> {tour.duration}
                     </p>
                   </div>
 
                   <div className="flex space-x-3 mt-4 md:mt-0">
                     <button
                       onClick={() => handleEdit(tour)}
-                      className="bg-yellow-500 hover:bg-yellow-600 text-white px-4 py-2 rounded"
+                      className={`px-4 py-2 rounded ${buttonClass}`}
                     >
                       Edit
                     </button>

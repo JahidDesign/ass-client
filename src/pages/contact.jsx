@@ -1,12 +1,14 @@
-import React, { useRef, useState } from 'react';
-import emailjs from '@emailjs/browser';
-import HeroSection from './contactBanner';
-import OurTeam from './contactTeam';
-import Swal from 'sweetalert2';
+import React, { useRef, useState, useContext } from "react";
+import emailjs from "@emailjs/browser";
+import HeroSection from "./contactBanner";
+import OurTeam from "./contactTeam";
+import Swal from "sweetalert2";
+import { ThemeContext } from "../context/ThemeContext";
 
 const ContactSection = () => {
   const formRef = useRef();
   const [sending, setSending] = useState(false);
+  const { theme } = useContext(ThemeContext);
 
   const sendEmail = (e) => {
     e.preventDefault();
@@ -14,31 +16,30 @@ const ContactSection = () => {
 
     emailjs
       .sendForm(
-        'your_service_id',     
-        'your_template_id',    
+        "your_service_id",
+        "your_template_id",
         formRef.current,
-        'your_public_key'     
+        "your_public_key"
       )
       .then(
         () => {
           setSending(false);
-          Swal.fire('Success!', 'Your message has been sent.', 'success');
+          Swal.fire("Success!", "Your message has been sent.", "success");
           formRef.current.reset();
         },
         (error) => {
           setSending(false);
-          Swal.fire('Error!', 'Failed to send message.', 'error');
+          Swal.fire("Error!", "Failed to send message.", "error");
           console.error(error);
         }
       );
   };
 
   return (
-    <div className="text-black">
+    <div className={theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"}>
       <HeroSection />
       <OurTeam />
 
-      {/* Contact Section */}
       <section className="mb-32">
         {/* Google Map */}
         <div className="relative h-[300px] overflow-hidden bg-cover bg-[50%] bg-no-repeat">
@@ -50,93 +51,43 @@ const ContactSection = () => {
             allowFullScreen=""
             loading="lazy"
             title="Google Map"
-          ></iframe>
+          />
         </div>
 
-        {/* Contact Form Card */}
+        {/* Contact Form */}
         <div className="container px-6 md:px-12">
-          <div className="block rounded-lg bg-white/80 px-6 py-12 shadow-lg md:py-16 md:px-12 -mt-[100px] backdrop-blur-lg border border-gray-300">
+          <div
+            className={`block rounded-lg px-6 py-12 shadow-lg md:py-16 md:px-12 -mt-[100px] backdrop-blur-lg border ${
+              theme === "dark" ? "bg-gray-800/80 border-gray-600" : "bg-white/80 border-gray-300"
+            }`}
+          >
             <div className="flex flex-wrap">
               {/* Form */}
               <div className="mb-12 w-full md:px-3 lg:mb-0 lg:w-5/12 lg:px-6">
                 <form ref={formRef} onSubmit={sendEmail}>
-                  <div className="relative mb-6">
-                    <input
-                      type="text"
-                      name="from_name"
-                      id="name"
-                      required
-                      className="peer w-full rounded border-2 bg-transparent py-2 px-3 leading-6 outline-none transition-all"
-                    />
-                    <label htmlFor="name" className="absolute top-0 left-3 text-neutral-700 transition-all peer-focus:-translate-y-4 peer-focus:scale-75">
-                      Name
-                    </label>
-                  </div>
-                  <div className="relative mb-6">
-                    <input
-                      type="email"
-                      name="from_email"
-                      id="email"
-                      required
-                      className="peer w-full rounded border-2 bg-transparent py-2 px-3 leading-6 outline-none transition-all"
-                    />
-                    <label htmlFor="email" className="absolute top-0 left-3 text-neutral-700 transition-all peer-focus:-translate-y-4 peer-focus:scale-75">
-                      Email address
-                    </label>
-                  </div>
-                  <div className="relative mb-6">
-                    <textarea
-                      name="message"
-                      id="message"
-                      rows="3"
-                      required
-                      className="peer w-full rounded border-2 bg-transparent py-2 px-3 leading-6 outline-none transition-all"
-                    ></textarea>
-                    <label htmlFor="message" className="absolute top-0 left-3 text-neutral-700 transition-all peer-focus:-translate-y-4 peer-focus:scale-75">
-                      Message
-                    </label>
-                  </div>
+                  <InputField id="name" name="from_name" label="Name" theme={theme} />
+                  <InputField id="email" name="from_email" label="Email address" type="email" theme={theme} />
+                  <TextAreaField id="message" name="message" label="Message" theme={theme} rows={4} />
+
                   <div className="mb-6 flex items-center">
                     <input type="checkbox" id="copy" className="mr-2" defaultChecked />
-                    <label htmlFor="copy" className="text-sm text-black">
+                    <label htmlFor="copy" className="text-sm">
                       Send me a copy of this message
                     </label>
                   </div>
+
                   <button
                     type="submit"
                     disabled={sending}
                     className="w-full rounded bg-sky-500 text-white px-6 py-2 text-sm font-medium uppercase hover:bg-sky-600 transition"
                   >
-                    {sending ? 'Sending...' : 'Send Message'}
+                    {sending ? "Sending..." : "Send Message"}
                   </button>
                 </form>
               </div>
 
               {/* Contact Info */}
-              <div className="w-full lg:w-7/12">
-                <div className="flex flex-wrap">
-                  <div className="mb-12 w-full md:w-6/12 lg:w-full xl:w-6/12 px-3">
-                    <div className="flex items-start">
-                      <div className="rounded-md bg-sky-200 p-4 text-blue-600">📞</div>
-                      <div className="ml-6">
-                        <p className="mb-2 font-bold">Technical support</p>
-                        <p className="text-sm text-neutral-700">sylhettravel@gmail.com</p>
-                        <p className="text-sm text-neutral-700">01328-511999</p>
-                      </div>
-                    </div>
-                  </div>
-                  <div className="mb-12 w-full md:w-6/12 lg:w-full xl:w-6/12 px-3">
-                    <div className="flex items-start">
-                      <div className="rounded-md bg-sky-200 p-4 text-blue-600">📨</div>
-                      <div className="ml-6">
-                        <p className="mb-2 font-bold">General inquiry</p>
-                        <p className="text-sm text-neutral-700">info@sylhettouristguide.com</p>
-                        <p className="text-sm text-neutral-700">+88 01714-936886</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              </div>
+              <ContactInfo theme={theme} />
             </div>
           </div>
         </div>
@@ -144,5 +95,85 @@ const ContactSection = () => {
     </div>
   );
 };
+
+// Input Component
+const InputField = ({ id, name, label, type = "text", theme }) => (
+  <div className="relative mb-6">
+    <input
+      type={type}
+      name={name}
+      id={id}
+      required
+      className={`peer w-full rounded border-2 bg-transparent py-2 px-3 leading-6 outline-none transition ${
+        theme === "dark" ? "border-gray-600 text-white" : "border-gray-300 text-black"
+      }`}
+    />
+    <label
+      htmlFor={id}
+      className={`absolute top-0 left-3 transition-all peer-focus:-translate-y-4 peer-focus:scale-75 ${
+        theme === "dark" ? "text-gray-300" : "text-gray-700"
+      }`}
+    >
+      {label}
+    </label>
+  </div>
+);
+
+const TextAreaField = ({ id, name, label, rows, theme }) => (
+  <div className="relative mb-6">
+    <textarea
+      name={name}
+      id={id}
+      rows={rows}
+      required
+      className={`peer w-full rounded border-2 bg-transparent py-2 px-3 leading-6 outline-none transition ${
+        theme === "dark" ? "border-gray-600 text-white" : "border-gray-300 text-black"
+      }`}
+    />
+    <label
+      htmlFor={id}
+      className={`absolute top-0 left-3 transition-all peer-focus:-translate-y-4 peer-focus:scale-75 ${
+        theme === "dark" ? "text-gray-300" : "text-gray-700"
+      }`}
+    >
+      {label}
+    </label>
+  </div>
+);
+
+const ContactInfo = ({ theme }) => (
+  <div className="w-full lg:w-7/12">
+    <div className="flex flex-wrap">
+      <InfoCard
+        icon="📞"
+        title="Technical support"
+        lines={["sylhettravel@gmail.com", "01328-511999"]}
+        theme={theme}
+      />
+      <InfoCard
+        icon="📨"
+        title="General inquiry"
+        lines={["info@sylhettouristguide.com", "+88 01714-936886"]}
+        theme={theme}
+      />
+    </div>
+  </div>
+);
+
+const InfoCard = ({ icon, title, lines, theme }) => (
+  <div className="mb-12 w-full md:w-6/12 lg:w-full xl:w-6/12 px-3">
+    <div className="flex items-start">
+      <div className={`rounded-md p-4 ${theme === "dark" ? "bg-sky-700 text-white" : "bg-sky-200 text-blue-600"}`}>{icon}</div>
+      <div className="ml-6">
+        <p className="mb-2 font-bold">{title}</p>
+        {lines.map((line, i) => (
+          <p key={i} className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-neutral-700"}`}>
+            {line}
+          </p>
+        ))}
+      </div>
+    </div>
+  </div>
+);
 
 export default ContactSection;

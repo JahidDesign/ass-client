@@ -1,11 +1,12 @@
 import React, { useEffect, useState, useContext } from "react";
 import Swal from "sweetalert2";
 import { AuthContext } from "../context/AuthContext";
-
+import { ThemeContext } from "../context/ThemeContext"; 
 const ADMIN_EMAILS = ["jhadam904@gmail.com"];
 
 const MyFlightBookings = () => {
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext); 
   const isAdmin = ADMIN_EMAILS.includes(user?.email);
   const [bookings, setBookings] = useState([]);
   const [isMobile, setIsMobile] = useState(window.innerWidth < 768);
@@ -57,15 +58,17 @@ const MyFlightBookings = () => {
   };
 
   if (!bookings.length) {
-    return <div className="text-center py-10 text-gray-600">No bookings found.</div>;
+    return <div className={`text-center py-10 ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+      No bookings found.
+    </div>;
   }
 
   return (
-    <div className="p-4">
+    <div className={`p-4 ${theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-black"}`}>
       {isMobile ? (
         <div className="space-y-6">
           {bookings.map((b) => (
-            <div key={b.ticketNumber} className="bg-white p-4 shadow rounded-xl relative">
+            <div key={b.ticketNumber} className={`p-4 shadow rounded-xl relative ${theme === "dark" ? "bg-gray-800" : "bg-white"}`}>
               {isAdmin && (
                 <button
                   onClick={() => handleDelete(b._id)}
@@ -84,7 +87,7 @@ const MyFlightBookings = () => {
                 )}
                 <div>
                   <h3 className="font-bold text-lg text-blue-700">{b.passengerName}</h3>
-                  <p className="text-sm text-gray-600">Ticket: {b.ticketNumber}</p>
+                  <p className="text-sm text-gray-500">{b.ticketNumber}</p>
                 </div>
               </div>
               <p className="text-sm">Flight: {b.departure} → {b.arrival}</p>
@@ -100,9 +103,9 @@ const MyFlightBookings = () => {
         </div>
       ) : (
         <div className="overflow-x-auto">
-          <table className="min-w-full border">
-            <thead className="bg-blue-50">
-              <tr className="text-left text-sm text-blue-800">
+          <table className={`min-w-full border ${theme === "dark" ? "bg-gray-800 text-gray-100" : "bg-white text-black"}`}>
+            <thead className={`${theme === "dark" ? "bg-gray-700 text-gray-100" : "bg-blue-50 text-blue-800"}`}>
+              <tr className="text-left text-sm">
                 <th className="p-3 border">Photo</th>
                 <th className="p-3 border">Name</th>
                 <th className="p-3 border">Ticket</th>
@@ -126,9 +129,7 @@ const MyFlightBookings = () => {
                         alt="Customer"
                         className="w-12 h-12 object-cover rounded-full"
                       />
-                    ) : (
-                      "N/A"
-                    )}
+                    ) : "N/A"}
                   </td>
                   <td className="p-2 border">{b.passengerName}</td>
                   <td className="p-2 border">{b.ticketNumber}</td>
@@ -160,7 +161,5 @@ const MyFlightBookings = () => {
     </div>
   );
 };
-
-
 
 export default MyFlightBookings;

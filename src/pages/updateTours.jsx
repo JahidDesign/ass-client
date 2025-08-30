@@ -1,7 +1,11 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import Swal from "sweetalert2";
+import { ThemeContext } from "../context/ThemeContext";
 
 const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   const [formData, setFormData] = useState({
     selectedPackage: "",
     travelDate: "",
@@ -106,9 +110,12 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
 
   if (!isOpen) return null;
 
+  const modalBg = isDark ? "bg-gray-800 text-gray-100" : "bg-white text-black";
+  const inputBg = isDark ? "bg-gray-700 text-gray-100 border-gray-600" : "bg-white text-black border-gray-300";
+
   return (
     <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-      <div className="bg-white p-6 rounded-lg w-full max-w-md">
+      <div className={`p-6 rounded-lg w-full max-w-md ${modalBg}`}>
         <h2 className="text-xl font-bold mb-4 text-center">Edit Tour Booking</h2>
         <form onSubmit={handleSubmit} className="space-y-3">
           <input
@@ -117,7 +124,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             value={formData.selectedPackage}
             onChange={handleChange}
             placeholder="Package Type"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
             required
           />
           <input
@@ -125,7 +132,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             name="travelDate"
             value={formData.travelDate}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
             required
           />
           <input
@@ -133,7 +140,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             name="returnDate"
             value={formData.returnDate}
             onChange={handleChange}
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
             required
           />
           <input
@@ -142,7 +149,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             value={formData.pickupLocation}
             onChange={handleChange}
             placeholder="Pickup Location"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
             required
           />
           <input
@@ -151,7 +158,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             value={formData.totalPrice}
             onChange={handleChange}
             placeholder="Total Price"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
             required
           />
           <input
@@ -160,7 +167,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             value={formData.photo}
             onChange={handleChange}
             placeholder="Photo URL"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
           />
           <input
             type="url"
@@ -168,14 +175,14 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
             value={formData.mapUrl}
             onChange={handleChange}
             placeholder="Map URL"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
           />
           <textarea
             name="specialRequests"
             value={formData.specialRequests}
             onChange={handleChange}
             placeholder="Special Requests"
-            className="w-full border p-2 rounded"
+            className={`w-full border p-2 rounded ${inputBg}`}
           />
 
           {/* Features Checkboxes */}

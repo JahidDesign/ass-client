@@ -1,4 +1,5 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const domesticImages = [
   { src: "https://images.unsplash.com/photo-1530035415911-95194de4ebcc?q=80&w=2670&auto=format&fit=crop", link: "/domestic/1" },
@@ -18,17 +19,25 @@ const internationalImages = [
 
 const AnimatedAirlineGallery = () => {
   const [section, setSection] = useState("domestic");
+  const { theme } = useContext(ThemeContext);
   const currentImages = section === "domestic" ? domesticImages : internationalImages;
 
+  const bgClass = theme === "dark" ? "bg-gray-900" : "bg-zinc-50";
+  const textClass = theme === "dark" ? "text-white" : "text-gray-800";
+  const cardBg = theme === "dark" ? "bg-gray-800" : "bg-white";
+  const cardText = theme === "dark" ? "text-gray-300" : "text-gray-700";
+
   return (
-    <section className="bg-zinc-50 min-h-screen py-16 px-4 flex items-center justify-center">
+    <section className={`${bgClass} min-h-screen py-16 px-4 flex items-center justify-center`}>
       <div className="max-w-7xl w-full space-y-12">
         {/* Header */}
         <div className="text-center">
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-2 font-serif">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-2 font-serif ${textClass}`}>
             {section === "domestic" ? "Domestic Flights" : "International Flights"}
           </h2>
-          <p className="text-gray-600">Explore top destinations and exclusive airline offers</p>
+          <p className={theme === "dark" ? "text-gray-400" : "text-gray-600"}>
+            Explore top destinations and exclusive airline offers
+          </p>
         </div>
 
         {/* Toggle Buttons */}
@@ -37,9 +46,9 @@ const AnimatedAirlineGallery = () => {
             <button
               key={type}
               onClick={() => setSection(type)}
-              className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 shadow 
-                ${section === type 
-                  ? "bg-orange-500 text-white shadow-lg ring-2 ring-orange-300" 
+              className={`px-5 py-2.5 rounded-full font-semibold text-sm transition-all duration-300 shadow
+                ${section === type
+                  ? "bg-orange-500 text-white shadow-lg ring-2 ring-orange-300"
                   : "bg-gray-200 text-gray-800 hover:bg-orange-400 hover:text-white"}`}
             >
               {type.charAt(0).toUpperCase() + type.slice(1)}
@@ -53,7 +62,7 @@ const AnimatedAirlineGallery = () => {
             <a
               href={link}
               key={idx}
-              className="group bg-white rounded-xl shadow-md hover:shadow-xl overflow-hidden transform transition duration-300 hover:-translate-y-2"
+              className={`group ${cardBg} rounded-xl shadow-md hover:shadow-xl overflow-hidden transform transition duration-300 hover:-translate-y-2`}
             >
               <div className="relative w-full h-40">
                 <img
@@ -63,7 +72,7 @@ const AnimatedAirlineGallery = () => {
                 />
               </div>
               <div className="p-3 text-center">
-                <p className="text-sm font-medium text-gray-700">
+                <p className={`text-sm font-medium ${cardText}`}>
                   {section === "domestic" ? `Domestic Trip ${idx + 1}` : `International Trip ${idx + 1}`}
                 </p>
                 <span className="text-xs text-gray-400">Click to explore</span>

@@ -25,7 +25,7 @@ const featureIcons = {
   restaurant: <FaUtensils className="text-green-500" />,
 };
 
-export default function MyBookings() {
+export default function ToursBookings() {
   const { user } = useContext(AuthContext);
   const [bookings, setBookings] = useState([]);
   const [loading, setLoading] = useState(true);

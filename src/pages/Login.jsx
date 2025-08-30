@@ -1,5 +1,5 @@
 // src/pages/Login.jsx
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import {
   signInWithEmailAndPassword,
   GoogleAuthProvider,
@@ -11,12 +11,14 @@ import { toast, ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FiEye, FiEyeOff } from "react-icons/fi";
 import { FcGoogle } from "react-icons/fc";
+import { ThemeContext } from "../context/ThemeContext"; 
 
 const Login = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const navigate = useNavigate();
+  const { theme } = useContext(ThemeContext); 
 
   // -----------------------------
   // Login to backend (email/password)
@@ -71,15 +73,13 @@ const Login = () => {
     if (!password) return toast.error("Password is required");
 
     try {
-      // Firebase authentication
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
 
-      // Backend login (email/password)
       await loginWithEmailBackend(email, password);
 
       toast.success("Logged in successfully!");
-      navigate("/"); // redirect to home
+      navigate("/");
     } catch (err) {
       if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
         toast.error("Invalid email or password");
@@ -98,20 +98,35 @@ const Login = () => {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      // Backend login (Firebase)
       await loginWithFirebaseBackend(user);
 
       toast.success("Logged in with Google!");
-      navigate("/"); // redirect to home
+      navigate("/");
     } catch (err) {
       toast.error(err.message);
     }
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-50 p-4">
-      <div className="bg-white shadow-2xl rounded-3xl w-full max-w-lg p-10 relative">
-        <h2 className="text-3xl font-bold text-center text-gray-800 mb-8">Login</h2>
+    <div
+      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${
+        theme === "dark"
+          ? "bg-gray-900 text-white"
+          : "bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-50 text-gray-900"
+      }`}
+    >
+      <div
+        className={`shadow-2xl rounded-3xl w-full max-w-lg p-10 relative transition-colors duration-300 ${
+          theme === "dark" ? "bg-gray-800" : "bg-white"
+        }`}
+      >
+        <h2
+          className={`text-3xl font-bold text-center mb-8 ${
+            theme === "dark" ? "text-yellow-400" : "text-gray-800"
+          }`}
+        >
+          Login
+        </h2>
 
         <form onSubmit={handleEmailLogin} className="space-y-5">
           <input
@@ -119,7 +134,11 @@ const Login = () => {
             placeholder="Email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
-            className="peer w-full px-4 py-3 border rounded-xl focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition"
+            className={`peer w-full px-4 py-3 border rounded-xl outline-none transition ${
+              theme === "dark"
+                ? "bg-gray-700 border-gray-600 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                : "bg-white border-gray-300 text-black focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+            }`}
             required
           />
 
@@ -129,20 +148,38 @@ const Login = () => {
               placeholder="Password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
-              className="peer w-full px-4 py-3 pr-12 border rounded-xl focus:border-purple-500 focus:ring-1 focus:ring-purple-500 outline-none transition"
+              className={`peer w-full px-4 py-3 pr-12 border rounded-xl outline-none transition ${
+                theme === "dark"
+                  ? "bg-gray-700 border-gray-600 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
+                  : "bg-white border-gray-300 text-black focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
+              }`}
               required
             />
             <span
               onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-3 right-4 cursor-pointer text-gray-600 hover:text-gray-900 transition"
+              className="absolute top-3 right-4 cursor-pointer transition"
             >
-              {showPassword ? <FiEyeOff size={20} /> : <FiEye size={20} />}
+              {showPassword ? (
+                <FiEyeOff
+                  size={20}
+                  className={theme === "dark" ? "text-gray-300" : "text-gray-600"}
+                />
+              ) : (
+                <FiEye
+                  size={20}
+                  className={theme === "dark" ? "text-gray-300" : "text-gray-600"}
+                />
+              )}
             </span>
           </div>
 
           <button
             type="submit"
-            className="w-full bg-gradient-to-r from-purple-500 to-pink-500 text-white py-3 rounded-xl font-semibold shadow-lg hover:shadow-purple-400 transition"
+            className={`w-full py-3 rounded-xl font-semibold shadow-lg transition ${
+              theme === "dark"
+                ? "bg-yellow-500 hover:bg-yellow-600 text-black"
+                : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-purple-400"
+            }`}
           >
             Login
           </button>
@@ -150,15 +187,28 @@ const Login = () => {
           <button
             onClick={handleGoogleLogin}
             type="button"
-            className="w-full flex items-center justify-center gap-2 bg-white border border-gray-300 py-3 rounded-xl font-semibold shadow hover:shadow-gray-300 transition"
+            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold shadow transition ${
+              theme === "dark"
+                ? "bg-gray-700 border border-gray-600 text-white hover:bg-gray-600"
+                : "bg-white border border-gray-300 text-black hover:shadow-gray-300"
+            }`}
           >
             <FcGoogle size={24} /> Login with Google
           </button>
         </form>
 
-        <p className="text-center text-gray-500 mt-6">
+        <p
+          className={`text-center mt-6 ${
+            theme === "dark" ? "text-gray-400" : "text-gray-500"
+          }`}
+        >
           Don't have an account?{" "}
-          <Link to="/register" className="text-purple-600 font-medium hover:underline">
+          <Link
+            to="/register"
+            className={`font-medium hover:underline ${
+              theme === "dark" ? "text-yellow-400" : "text-purple-600"
+            }`}
+          >
             Register
           </Link>
         </p>

@@ -125,7 +125,7 @@ const FlightSeatBooking = () => {
               { id: "airlineName", label: "Airline", type: "text", placeholder: "Qatar Airways..." },
             ].map(({ id, label, type, icon, placeholder }) => (
               <div key={id}>
-                <label htmlFor={id} className="block text-sm font-medium mb-1 flex gap-1 items-center">
+                <label htmlFor={id} className="block text-sm font-medium mb-1 gap-1 items-center">
                   {icon} {label}
                 </label>
                 <input

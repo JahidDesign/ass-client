@@ -1,37 +1,43 @@
-import React from 'react';
-import { Routes, Route } from 'react-router-dom';
+// src/routes/AppRoutes.jsx
+import React from "react";
+import { Routes, Route } from "react-router-dom";
 
-import Home from '../pages/Home';
-import AllPackages from '../pages/AllPackages';
-import AddPackage from '../pages/AddPackage';
-import FlightSeatBooking from '../pages/airticketsADD';
-import TourBookingForm from '../pages/TourBookingForm';
-import ManageMyPackages from '../pages/ManageMyPackages';
-import MyBookings from '../pages/MyBookings';
-import MyToursBookings from '../pages/ToursBooking';
-import TourDetails from '../pages/TourDetails';
-import HotelDetails from '../pages/HotelDetails';
-import PackageDetails from '../pages/PackageDetails';
-import AboutUs from '../pages/AboutUs';
-import ContactSection from '../pages/contact';
-import Login from '../pages/Login';
-import Register from '../pages/Register';
-import NotFound from '../pages/NotFound';
-import PrivateRoute from './PrivateRoute';
-import Profile from '../pages/Profile';
-import TeamForm from '../pages/TeamForm';
+// Pages
+import Home from "../pages/Home";
+import AllPackages from "../pages/AllPackages";
+import AddPackage from "../pages/AddPackage";
+import FlightSeatBooking from "../pages/airticketsADD";
+import TourBookingForm from "../pages/TourBookingForm";
+import ManageMyPackages from "../pages/ManageMyPackages";
+import MyBookings from "../pages/MyBookings";
+import MyAllBookings from "../pages/MyAllBookings";
+import TourDetails from "../pages/TourDetails";
+import HotelDetails from "../pages/HotelDetails";
+import PackageDetails from "../pages/PackageDetails";
+import AboutUs from "../pages/AboutUs";
+import ContactSection from "../pages/contact";
+import Login from "../pages/Login";
+import Register from "../pages/Register";
+import NotFound from "../pages/NotFound";
+import Profile from "../pages/Profile";
+import TeamForm from "../pages/TeamForm";
+
+// Route protection
+import PrivateRoute from "../components/PrivateRoute";
 
 const AppRoutes = () => {
   return (
     <Routes>
+      {/* Public Routes */}
       <Route path="/" element={<Home />} />
       <Route path="/about" element={<AboutUs />} />
       <Route path="/contact" element={<ContactSection />} />
       <Route path="/login" element={<Login />} />
       <Route path="/register" element={<Register />} />
-      <Route path="/404" element={<NotFound />} />
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/hotels/:id" element={<HotelDetails />} />
+      <Route path="*" element={<NotFound />} />
+
       {/* Protected Routes */}
       <Route
         path="/profile"
@@ -46,6 +52,14 @@ const AppRoutes = () => {
         element={
           <PrivateRoute>
             <AllPackages />
+          </PrivateRoute>
+        }
+      />
+      <Route
+        path="/add-package"
+        element={
+          <PrivateRoute>
+            <AddPackage />
           </PrivateRoute>
         }
       />
@@ -66,22 +80,6 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/add-package"
-        element={
-          <PrivateRoute>
-            <AddPackage />
-          </PrivateRoute>
-        }
-      />
-      <Route
-        path="/add-team"
-        element={
-          <PrivateRoute>
-            <TeamForm />
-          </PrivateRoute>
-        }
-      />
-      <Route
         path="/manage-my-packages"
         element={
           <PrivateRoute>
@@ -98,10 +96,10 @@ const AppRoutes = () => {
         }
       />
       <Route
-        path="/my-toursbookings"
+        path="/myallbookings"
         element={
           <PrivateRoute>
-            <MyToursBookings />
+            <MyAllBookings />
           </PrivateRoute>
         }
       />
@@ -113,9 +111,14 @@ const AppRoutes = () => {
           </PrivateRoute>
         }
       />
-
-      {/* Fallback for undefined routes */}
-      <Route path="*" element={<NotFound />} />
+      <Route
+        path="/add-team"
+        element={
+          <PrivateRoute>
+            <TeamForm />
+          </PrivateRoute>
+        }
+      />
     </Routes>
   );
 };

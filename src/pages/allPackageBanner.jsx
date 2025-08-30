@@ -1,21 +1,32 @@
-import React from "react";
+import React, { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const HeroSection = () => {
+  const { theme } = useContext(ThemeContext);
+
+  // Dynamic styles based on theme
+  const overlayStyle =
+    theme === "dark"
+      ? "absolute inset-0  bg-opacity-60"
+      : "absolute inset-0  bg-opacity-40";
+
+  const textColor = theme === "dark" ? "text-white" : "text-gray-900";
+
   return (
-    <div className="bg-white text-black">
+    <div className={theme === "dark" ? "bg-gray-900" : "bg-white"}>
       {/* Hero Banner Section */}
       <section
-        className="relative h-[70vh] bg-cover bg-center flex items-center justify-center"
+        className="relative h-[70vh] bg-cover bg-top flex items-center justify-center"
         style={{
           backgroundImage:
-            "url('https://i.ibb.co/YGzLzxY/What-are-some-hidden-gems-off-the-beaten-path-in-Sylhet.jpg')",
+            "url('https://i.ibb.co.com/TqTt0Gcs/jakob-owens-Dh-S2f0-QO7z4-unsplash.jpg')",
         }}
       >
-        {/* Dark overlay */}
-        <div className="absolute inset-0  bg-opacity-60"></div>
+        {/* Dark/light overlay */}
+        <div className={overlayStyle}></div>
 
         {/* Text Content */}
-        <div className="relative z-10 text-white text-center px-4">
+        <div className={`relative z-10 text-center px-4 ${textColor}`}>
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
             Explore Our <span className="text-yellow-400">Tour Packages</span>
           </h1>

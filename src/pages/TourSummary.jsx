@@ -1,10 +1,13 @@
 import React, { useEffect, useState, useContext } from "react";
 import Swal from "sweetalert2";
-import { AuthContext } from "../context/AuthContext"; // Assuming you're using Firebase Auth
+import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
 
 const MyBookingOur = () => {
   const [bookings, setBookings] = useState([]);
-  const { user } = useContext(AuthContext); // Get the logged-in user
+  const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
 
   useEffect(() => {
     const stored = JSON.parse(localStorage.getItem("bookedTours")) || [];
@@ -48,56 +51,62 @@ const MyBookingOur = () => {
     });
   };
 
+  const cardBg = isDark ? "bg-gray-800 text-gray-100" : "bg-white text-black";
+  const cardBorder = isDark ? "border-gray-700" : "border-gray-200";
+  const buttonBg = "bg-red-600 hover:bg-red-700 text-white";
+
   return (
-    <div className="max-w-6xl mx-auto px-4 py-12">
-      <h2 className="text-3xl font-bold text-yellow-700 mb-8 text-center">My Booked Tours</h2>
+    <div className={`max-w-6xl mx-auto px-4 py-12 ${isDark ? "bg-gray-900" : "bg-gray-50"}`}>
+      <h2 className="text-3xl font-bold text-yellow-700 mb-8 text-center">
+        My Booked Tours
+      </h2>
 
       {!user?.email ? (
-        <p className="text-center text-gray-500">
+        <p className="text-center text-gray-400">
           Please log in to see your bookings.
         </p>
       ) : bookings.length === 0 ? (
-        <p className="text-center text-gray-500">You have no bookings yet.</p>
+        <p className="text-center text-gray-400">You have no bookings yet.</p>
       ) : (
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           {bookings.map((tour, index) => (
             <div
               key={index}
-              className="bg-white rounded-lg shadow-md hover:shadow-lg border p-5 flex flex-col"
+              className={`${cardBg} rounded-lg shadow-md hover:shadow-lg ${cardBorder} p-5 flex flex-col`}
             >
               <img
                 src={tour.photo}
                 alt="Tour"
                 className="w-full h-48 object-cover rounded-md mb-4"
               />
-              <h3 className="text-xl font-bold text-gray-800 mb-1 capitalize">
+              <h3 className="text-xl font-bold mb-1 capitalize">
                 {tour.selectedPackage} Package
               </h3>
-              <p className="text-sm text-gray-600 mb-1">
+              <p className="text-sm mb-1">
                 <strong>Pickup:</strong> {tour.pickupLocation}
               </p>
-              <p className="text-sm text-gray-600 mb-1">
+              <p className="text-sm mb-1">
                 <strong>Travel:</strong> {tour.travelDate} → {tour.returnDate}
               </p>
               <p className="text-yellow-600 font-bold text-lg mb-2">
                 ${tour.totalPrice}
               </p>
-              <p className="text-gray-700 text-sm mb-3 whitespace-pre-line">
+              <p className="text-sm mb-3 whitespace-pre-line">
                 <strong>Special:</strong> {tour.specialRequests}
               </p>
 
               {/* User Info */}
-              <div className="flex items-center gap-3 mt-auto pt-3 border-t mb-3">
+              <div className="flex items-center gap-3 mt-auto pt-3 border-t mb-3 border-gray-400">
                 <img
                   src={tour.bookedBy?.photoURL || tour.userPhoto || ""}
                   alt="User"
                   className="w-10 h-10 rounded-full object-cover"
                 />
                 <div>
-                  <p className="text-sm font-medium text-gray-800">
+                  <p className="text-sm font-medium">
                     {tour.bookedBy?.name || tour.userName || "Guest"}
                   </p>
-                  <p className="text-sm text-gray-500">
+                  <p className="text-sm text-gray-400">
                     {tour.bookedBy?.email || tour.userEmail || "Not Provided"}
                   </p>
                 </div>
@@ -106,7 +115,7 @@ const MyBookingOur = () => {
               {/* Delete Button */}
               <button
                 onClick={() => handleDelete(index)}
-                className="mt-2 py-2 px-4 bg-red-600 text-white rounded hover:bg-red-700 transition"
+                className={`mt-2 py-2 px-4 rounded transition ${buttonBg}`}
               >
                 Delete Booking
               </button>

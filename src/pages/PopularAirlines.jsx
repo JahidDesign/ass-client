@@ -1,8 +1,9 @@
-import React from "react";
+import React, { useContext } from "react";
 import { Swiper, SwiperSlide } from "swiper/react";
 import { Autoplay, Navigation } from "swiper/modules";
 import "swiper/css";
 import "swiper/css/navigation";
+import { ThemeContext } from "../context/ThemeContext";
 
 const airlines = [
   { name: "Biman Bangladesh Airlines", logo: "https://i.ibb.co/23JHbHGg/biman.png" },
@@ -27,13 +28,16 @@ const airlines = [
 ];
 
 const PopularAirlines = () => {
+  const { theme } = useContext(ThemeContext);
+  const isDark = theme === "dark";
+
   return (
-    <section className="w-full bg-[#F5F5F5] py-12">
+    <section className={`w-full py-12 ${isDark ? "bg-gray-900" : "bg-[#F5F5F5]"}`}>
       <div className="max-w-7xl mx-auto px-4">
-        <h2 className="text-2xl md:text-3xl font-bold text-center text-black mb-2">
+        <h2 className={`text-2xl md:text-3xl font-bold text-center mb-2 ${isDark ? "text-white" : "text-black"}`}>
           Most Popular Airlines
         </h2>
-        <p className="text-center text-gray-700 mb-10 text-sm md:text-base">
+        <p className={`text-center mb-10 text-sm md:text-base ${isDark ? "text-gray-300" : "text-gray-700"}`}>
           Discover top airlines on ShareTrip and instantly search and book any flight ticket with ease.
         </p>
       </div>
@@ -49,20 +53,28 @@ const PopularAirlines = () => {
             1024: { slidesPerView: 6 },
             1280: { slidesPerView: 7 },
           }}
-          loop={true}
+          loop
           autoplay={{ delay: 2500, disableOnInteraction: false }}
           navigation
           modules={[Autoplay, Navigation]}
         >
           {airlines.map((airline, index) => (
             <SwiperSlide key={index}>
-              <div className="bg-white shadow hover:shadow-lg rounded-xl p-5 flex flex-col items-center transition-all duration-300 ease-in-out hover:scale-105 h-44 justify-center">
+              <div
+                className={`p-5 flex flex-col items-center transition-all duration-300 ease-in-out hover:scale-105 rounded-xl ${
+                  isDark
+                    ? "bg-gray-800 shadow-md hover:shadow-xl"
+                    : "bg-white shadow hover:shadow-lg"
+                } h-44 justify-center`}
+              >
                 <img
                   src={airline.logo}
                   alt={airline.name}
                   className="h-16 object-contain mb-3"
                 />
-                <p className="text-sm text-center font-medium text-black">{airline.name}</p>
+                <p className={`text-sm text-center font-medium ${isDark ? "text-gray-200" : "text-black"}`}>
+                  {airline.name}
+                </p>
               </div>
             </SwiperSlide>
           ))}

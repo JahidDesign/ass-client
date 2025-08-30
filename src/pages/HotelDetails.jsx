@@ -4,6 +4,7 @@ import { useParams, useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import withReactContent from "sweetalert2-react-content";
 import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";  // 👈 Added
 import { motion } from "framer-motion";
 
 const MySwal = withReactContent(Swal);
@@ -12,6 +13,7 @@ export default function HotelDetails() {
   const { id } = useParams(); // expects Mongo _id as route param
   const navigate = useNavigate();
   const { user } = useContext(AuthContext);
+  const { theme } = useContext(ThemeContext); // 👈 Get theme (light/dark)
 
   const [hotel, setHotel] = useState(null);
   const [loading, setLoading] = useState(true);
@@ -35,7 +37,7 @@ export default function HotelDetails() {
     // If already an embeddable URL
     if (/\/embed\?/i.test(raw)) return { type: "iframe", src: raw };
 
-    // If it's a standard Google Maps share link (maps.app.goo.gl or google.com/maps)
+    // If it's a standard Google Maps share link
     if (/maps\.app\.goo\.gl|google\.com\/maps/i.test(raw)) {
       const q = encodeURIComponent(`${h.hotelName || "Hotel"} ${h.hotelLocation || ""}`.trim());
       return { type: "iframe", src: `https://www.google.com/maps?q=${q}&output=embed` };
@@ -72,7 +74,7 @@ export default function HotelDetails() {
     };
   }, [id]);
 
-  // ---------- check if already booked by this user ----------
+  // ---------- check if already booked ----------
   useEffect(() => {
     let cancelled = false;
     const run = async () => {
@@ -156,16 +158,16 @@ export default function HotelDetails() {
     }
   };
 
-  // ---------- UI states ----------
+  // ---------- UI ----------
   if (loading) {
     return (
       <div className="max-w-4xl mx-auto p-6">
         <div className="animate-pulse space-y-4">
-          <div className="h-64 bg-gray-200 rounded-lg" />
-          <div className="h-8 bg-gray-200 rounded w-2/3" />
-          <div className="h-4 bg-gray-200 rounded w-1/3" />
-          <div className="h-4 bg-gray-200 rounded w-full" />
-          <div className="h-4 bg-gray-200 rounded w-5/6" />
+          <div className="h-64 bg-gray-200 dark:bg-gray-700 rounded-lg" />
+          <div className="h-8 bg-gray-200 dark:bg-gray-700 rounded w-2/3" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-1/3" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-full" />
+          <div className="h-4 bg-gray-200 dark:bg-gray-700 rounded w-5/6" />
         </div>
       </div>
     );
@@ -175,7 +177,12 @@ export default function HotelDetails() {
     return (
       <div className="p-6 text-center">
         <p className="text-lg font-semibold">Hotel not found.</p>
-        <button onClick={() => navigate(-1)} className="mt-3 px-4 py-2 rounded bg-gray-100 hover:bg-gray-200">Go back</button>
+        <button
+          onClick={() => navigate(-1)}
+          className="mt-3 px-4 py-2 rounded bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600"
+        >
+          Go back
+        </button>
       </div>
     );
   }
@@ -184,7 +191,9 @@ export default function HotelDetails() {
 
   return (
     <motion.div
-      className="max-w-4xl mx-auto p-6"
+      className={`max-w-4xl mx-auto p-6 ${
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+      }`}
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.5 }}
@@ -200,7 +209,7 @@ export default function HotelDetails() {
       <div className="mt-5 flex flex-col md:flex-row md:items-center md:justify-between gap-3">
         <div>
           <h1 className="text-3xl md:text-4xl font-bold">{hotel.hotelName}</h1>
-          <p className="text-gray-600 mt-1">{hotel.hotelLocation}</p>
+          <p className="text-gray-600 dark:text-gray-300 mt-1">{hotel.hotelLocation}</p>
           <div className="flex items-center gap-2 mt-1">
             <span className="text-yellow-500 text-lg" aria-label="star rating">{stars}</span>
             <span className="text-sm text-gray-500">({hotel.starRating})</span>
@@ -208,34 +217,27 @@ export default function HotelDetails() {
         </div>
         <div className="text-right">
           <div className="text-xl md:text-2xl font-semibold">
-            {hotel.hotelPrice}<span className="text-gray-500 text-base"> / night</span>
+            {hotel.hotelPrice}
+            <span className="text-gray-500 text-base"> / night</span>
           </div>
         </div>
       </div>
 
       {/* Features */}
       <div className="mt-4 flex flex-wrap gap-2">
-        {hotel.features?.wifi && (
-          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">📶 Wi‑Fi</span>
-        )}
-        {hotel.features?.restaurant && (
-          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🍽️ Restaurant</span>
-        )}
-        {hotel.features?.parking && (
-          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🅿️ Parking</span>
-        )}
-        {hotel.features?.conference && (
-          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🏢 Conference</span>
-        )}
-        {hotel.features?.banquet && (
-          <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🎉 Banquet</span>
-        )}
+        {hotel.features?.wifi && <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">📶 Wi-Fi</span>}
+        {hotel.features?.restaurant && <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🍽️ Restaurant</span>}
+        {hotel.features?.parking && <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🅿️ Parking</span>}
+        {hotel.features?.conference && <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🏢 Conference</span>}
+        {hotel.features?.banquet && <span className="px-3 py-1 rounded-full bg-green-100 text-green-700 text-sm">🎉 Banquet</span>}
       </div>
 
       {/* Description */}
-      <p className="mt-4 text-gray-700 whitespace-pre-line">{hotel.description || "No description available."}</p>
+      <p className="mt-4 text-gray-700 dark:text-gray-300 whitespace-pre-line">
+        {hotel.description || "No description available."}
+      </p>
 
-      {/* Map / image from googleMap field */}
+      {/* Map */}
       {mapEmbed && (
         <div className="mt-5">
           {mapEmbed.type === "iframe" ? (
@@ -274,7 +276,7 @@ export default function HotelDetails() {
           whileHover={{ scale: 1.03 }}
           whileTap={{ scale: 0.97 }}
           onClick={() => navigate(-1)}
-          className="py-3 px-5 rounded-xl bg-gray-100 hover:bg-gray-200 text-gray-700"
+          className="py-3 px-5 rounded-xl bg-gray-100 dark:bg-gray-700 hover:bg-gray-200 dark:hover:bg-gray-600 text-gray-700 dark:text-gray-200"
         >
           Back
         </motion.button>

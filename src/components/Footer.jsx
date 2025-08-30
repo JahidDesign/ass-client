@@ -1,20 +1,28 @@
-import { NavLink } from 'react-router-dom';
+// src/components/Footer.jsx
+import { useContext } from "react";
+import { NavLink } from "react-router-dom";
+import { ThemeContext } from "../context/ThemeContext";
 import {
   FaFacebookF,
   FaTwitter,
   FaInstagram,
   FaLinkedinIn,
-} from 'react-icons/fa';
+} from "react-icons/fa";
 
 const Footer = () => {
+  const { theme } = useContext(ThemeContext);
+
   const handleSubscribe = (e) => {
     e.preventDefault();
-    // You can add API integration here (e.g., Mailchimp or Firebase)
     alert("Subscribed!");
   };
 
+  const bgColor = theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-white text-gray-800";
+  const borderColor = theme === "dark" ? "border-gray-700" : "border-gray-300";
+  const inputBg = theme === "dark" ? "bg-gray-800 text-gray-200 border-gray-600 placeholder-gray-400" : "bg-white text-gray-800 border-gray-300 placeholder-gray-500";
+
   return (
-    <footer className="bg-white text-gray-800 border-t">
+    <footer className={`${bgColor} border-t ${borderColor}`}>
       <div className="max-w-7xl mx-auto px-6 py-12 grid gap-10 sm:grid-cols-2 md:grid-cols-4">
         {/* Brand */}
         <div>
@@ -26,7 +34,7 @@ const Footer = () => {
             />
             <span className="text-xl font-bold">TravelCo</span>
           </div>
-          <p className="text-sm text-gray-600 leading-relaxed">
+          <p className="text-sm leading-relaxed">
             Discover unforgettable journeys and experiences with TravelCo — your global travel companion.
           </p>
         </div>
@@ -56,13 +64,13 @@ const Footer = () => {
         {/* Newsletter */}
         <div>
           <h4 className="font-semibold text-lg mb-4">Subscribe</h4>
-          <p className="text-sm text-gray-600 mb-3">Get updates on deals, tips & more.</p>
+          <p className="text-sm mb-3">Get updates on deals, tips & more.</p>
           <form onSubmit={handleSubscribe} className="flex flex-col sm:flex-row gap-3">
             <input
               type="email"
               required
               placeholder="Your email"
-              className="px-4 py-2 text-sm border border-gray-300 rounded w-full sm:flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500"
+              className={`px-4 py-2 text-sm rounded w-full sm:flex-1 focus:outline-none focus:ring-2 focus:ring-blue-500 ${inputBg}`}
             />
             <button
               type="submit"
@@ -75,7 +83,7 @@ const Footer = () => {
       </div>
 
       {/* Bottom Footer */}
-      <div className="border-t pt-6 pb-4 text-sm text-center text-gray-500">
+      <div className={`border-t ${borderColor} pt-6 pb-4 text-sm text-center`}>
         <div className="mb-3 flex justify-center gap-4 text-lg">
           <a href="#" aria-label="Facebook" className="hover:text-blue-600"><FaFacebookF /></a>
           <a href="#" aria-label="Twitter" className="hover:text-blue-400"><FaTwitter /></a>

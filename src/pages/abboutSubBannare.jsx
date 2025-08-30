@@ -1,8 +1,16 @@
-import React from "react";
+// src/components/TravelAbout.jsx
+import React, { useContext } from "react";
+import { ThemeContext } from "../context/ThemeContext";
 
 const TravelAbout = () => {
+  const { theme } = useContext(ThemeContext);
+
+  const bgColor = theme === "dark" ? "bg-gray-900" : "bg-white";
+  const textColor = theme === "dark" ? "text-gray-200" : "text-gray-700";
+  const headingColor = theme === "dark" ? "text-blue-400" : "text-blue-800";
+
   return (
-    <section className="bg-white py-16 px-4 md:px-10">
+    <section className={`${bgColor} py-16 px-4 md:px-10`}>
       <div className="max-w-7xl mx-auto grid md:grid-cols-2 gap-12 items-center">
         
         {/* Left: Image */}
@@ -16,14 +24,14 @@ const TravelAbout = () => {
 
         {/* Right: Text Content */}
         <div>
-          <h2 className="text-3xl md:text-4xl font-bold text-blue-800 mb-4">
+          <h2 className={`text-3xl md:text-4xl font-bold mb-4 ${headingColor}`}>
             Discover the World with Us
           </h2>
-          <p className="text-gray-700 text-lg mb-6 leading-relaxed">
+          <p className={`text-lg mb-6 leading-relaxed ${textColor}`}>
             At <strong>GlobeTrek Travel</strong>, we believe that travel is more than a destination—it's a journey of discovery. 
             Whether you're planning a family vacation, honeymoon, solo adventure, or business trip, we are here to make your travel seamless and unforgettable.
           </p>
-          <ul className="list-disc list-inside text-gray-700 space-y-2">
+          <ul className={`list-disc list-inside space-y-2 ${textColor}`}>
             <li>Curated flight & hotel packages for every budget</li>
             <li>Expert advice and 24/7 customer support</li>
             <li>Special discounts on early bookings</li>
