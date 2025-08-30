@@ -21,7 +21,7 @@ import Register from "../pages/Register";
 import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
 import TeamForm from "../pages/TeamForm";
-
+ import AllDataViewer from "./pages/AllDataViewer";
 // Route protection
 import PrivateRoute from "../components/PrivateRoute";
 
@@ -37,6 +37,7 @@ const AppRoutes = () => {
       <Route path="/tours/:id" element={<TourDetails />} />
       <Route path="/hotels/:id" element={<HotelDetails />} />
       <Route path="*" element={<NotFound />} />
+       <Route path="/all-data" element={<AllDataViewer />} />
 
       {/* Protected Routes */}
       <Route

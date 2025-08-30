@@ -1,30 +1,46 @@
-import React, { createContext, useEffect, useState } from "react";
+import React, { createContext, useState, useEffect } from "react";
 
 export const ThemeContext = createContext();
 
 export const ThemeProvider = ({ children, user }) => {
-  // Initialize theme from localStorage or default to light
-  const [theme, setTheme] = useState(() => {
-    return localStorage.getItem("theme") || "light";
-  });
+  
+  const getInitialTheme = () => {
+    if (typeof window !== "undefined") {
+      const saved = localStorage.getItem("theme");
+      if (saved) return saved;
 
-  // Update theme when logged-in user changes
+      if (user?.theme) return user.theme; // user saved preference
+
+      const prefersDark = window.matchMedia("(prefers-color-scheme: dark)").matches;
+      return prefersDark ? "dark" : "light";
+    }
+    return "light";
+  };
+
+  const [theme, setTheme] = useState(getInitialTheme);
+  const [userToggled, setUserToggled] = useState(false);
+
+  
   useEffect(() => {
-    if (!user) return;
-    const userTheme = user.theme || "light"; // optional: read from user object
-    if (userTheme !== theme) setTheme(userTheme);
-  }, [user]);
+    if (user?.theme && !userToggled) {
+      setTheme(user.theme);
+    }
+  }, [user, userToggled]);
 
-  // Apply theme to <html> and save to localStorage
+ 
   useEffect(() => {
     const root = document.documentElement;
     if (theme === "dark") root.classList.add("dark");
     else root.classList.remove("dark");
-    localStorage.setItem("theme", theme);
-  }, [theme]);
 
-  // Toggle function
-  const toggleTheme = () => setTheme(prev => (prev === "light" ? "dark" : "light"));
+    if (userToggled) localStorage.setItem("theme", theme);
+  }, [theme, userToggled]);
+
+  
+  const toggleTheme = () => {
+    setTheme(prev => (prev === "light" ? "dark" : "light"));
+    setUserToggled(true); // mark as user preference
+  };
 
   return (
     <ThemeContext.Provider value={{ theme, toggleTheme }}>
