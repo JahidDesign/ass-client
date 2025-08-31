@@ -167,7 +167,7 @@ const AllTours = () => {
                     View Details
                   </button>
 
-                  <button
+                  {/* <button
                     onClick={() => openBookingModal(tour)}
                     disabled={isBooked}
                     className={`flex-1 py-2 px-4 rounded transition ${
@@ -177,7 +177,7 @@ const AllTours = () => {
                     }`}
                   >
                     {isBooked ? "Booked" : "Book Now"}
-                  </button>
+                  </button> */}
                 </div>
               </div>
             );

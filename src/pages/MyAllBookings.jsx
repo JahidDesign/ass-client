@@ -52,7 +52,7 @@ const MyAllBookings = () => {
         theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
       } min-h-screen py-10 px-6`}
     >
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 mb-12">
+      <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 mb-12 mt-10">
         My Bookings
       </h1>
 

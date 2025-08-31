@@ -1,7 +1,7 @@
 // src/pages/ToursList.jsx
 import React, { useEffect, useState, useContext } from "react";
 import { Link } from "react-router-dom";
-import { motion } from "framer-motion";
+import { motion, AnimatePresence } from "framer-motion";
 import Swal from "sweetalert2";
 import {
   AiOutlineClose,
@@ -58,6 +58,13 @@ const ToursList = () => {
     }
     setShowModal(true);
   };
+
+  // -----------------
+  // Skeleton Loader
+  // -----------------
+  const SkeletonCard = () => (
+    <div className="animate-pulse rounded-2xl shadow-md border overflow-hidden bg-gray-200 dark:bg-gray-700 h-80"></div>
+  );
 
   // -----------------
   // Tour Card
@@ -180,121 +187,136 @@ const ToursList = () => {
     };
 
     return (
-      <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 overflow-auto">
-        <div className="bg-white dark:bg-gray-800 rounded-2xl shadow-lg w-full max-w-2xl p-6 relative">
-          <button
-            onClick={onClose}
-            className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl"
+      <AnimatePresence>
+        <motion.div
+          className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50"
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+        >
+          <motion.div
+            initial={{ scale: 0.8, y: 40 }}
+            animate={{ scale: 1, y: 0 }}
+            exit={{ scale: 0.8, y: 40 }}
+            transition={{ duration: 0.3 }}
+            className={`rounded-2xl shadow-lg w-full max-w-2xl p-6 relative ${
+              theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"
+            }`}
           >
-            <AiOutlineClose />
-          </button>
-
-          <h2 className="text-2xl font-bold mb-4 text-center text-yellow-600 dark:text-yellow-400">
-            Add New Tour
-          </h2>
-
-          <form onSubmit={handleSubmit} className="grid gap-4">
-            <input
-              id="title"
-              value={formData.title}
-              onChange={handleChange}
-              placeholder="Tour Title"
-              className="border p-2 rounded-lg"
-              required
-            />
-            <select
-              id="selectedPackage"
-              value={formData.selectedPackage}
-              onChange={handleChange}
-              className="border p-2 rounded-lg"
-            >
-              <option value="single">Single</option>
-              <option value="couple">Couple</option>
-              <option value="family">Family</option>
-              <option value="friends">Friends</option>
-            </select>
-            <input
-              id="pickupLocation"
-              value={formData.pickupLocation}
-              onChange={handleChange}
-              placeholder="Pickup Location"
-              className="border p-2 rounded-lg"
-              required
-            />
-            <div className="grid grid-cols-2 gap-4">
-              <input
-                id="travelDate"
-                type="date"
-                value={formData.travelDate}
-                onChange={handleChange}
-                className="border p-2 rounded-lg"
-                required
-              />
-              <input
-                id="returnDate"
-                type="date"
-                value={formData.returnDate}
-                onChange={handleChange}
-                className="border p-2 rounded-lg"
-              />
-            </div>
-            <div className="flex gap-4 flex-wrap">
-              {["hotel", "car", "boat", "restaurant"].map((service) => (
-                <label key={service} className="flex items-center gap-2 capitalize">
-                  <input
-                    type="checkbox"
-                    id={service}
-                    checked={formData.features[service]}
-                    onChange={handleChange}
-                  />
-                  {service}
-                </label>
-              ))}
-            </div>
-            <textarea
-              id="specialRequests"
-              value={formData.specialRequests}
-              onChange={handleChange}
-              placeholder="Special Requests"
-              className="border p-2 rounded-lg"
-            />
-            <div className="flex gap-2">
-              <input
-                id="totalPrice"
-                type="number"
-                value={formData.totalPrice}
-                onChange={handleChange}
-                placeholder="Total Price"
-                className="border p-2 rounded-lg flex-1"
-                required
-              />
-              <input
-                id="photo"
-                type="url"
-                value={formData.photo}
-                onChange={handleChange}
-                placeholder="Photo URL"
-                className="border p-2 rounded-lg flex-1"
-              />
-            </div>
-            <input
-              id="mapUrl"
-              type="url"
-              value={formData.mapUrl}
-              onChange={handleChange}
-              placeholder="Google Map URL"
-              className="border p-2 rounded-lg"
-            />
             <button
-              type="submit"
-              disabled={loading}
-              className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2"
+              onClick={onClose}
+              className="absolute top-3 right-3 text-gray-500 hover:text-red-500 text-2xl"
             >
-              {loading ? "Submitting..." : <><AiOutlinePlus /> Add Tour</>}
+              <AiOutlineClose />
             </button>
-          </form>
-        </div>
-      </div>
+
+            <h2 className="text-2xl font-bold mb-4 text-center text-yellow-600 dark:text-yellow-400">
+              Add New Tour
+            </h2>
+
+            <form onSubmit={handleSubmit} className="grid gap-4">
+              <input
+                id="title"
+                value={formData.title}
+                onChange={handleChange}
+                placeholder="Tour Title"
+                className="border p-2 rounded-lg"
+                required
+              />
+              <select
+                id="selectedPackage"
+                value={formData.selectedPackage}
+                onChange={handleChange}
+                className="border p-2 rounded-lg"
+              >
+                <option value="single">Single</option>
+                <option value="couple">Couple</option>
+                <option value="family">Family</option>
+                <option value="friends">Friends</option>
+              </select>
+              <input
+                id="pickupLocation"
+                value={formData.pickupLocation}
+                onChange={handleChange}
+                placeholder="Pickup Location"
+                className="border p-2 rounded-lg"
+                required
+              />
+              <div className="grid grid-cols-2 gap-4">
+                <input
+                  id="travelDate"
+                  type="date"
+                  value={formData.travelDate}
+                  onChange={handleChange}
+                  className="border p-2 rounded-lg"
+                  required
+                />
+                <input
+                  id="returnDate"
+                  type="date"
+                  value={formData.returnDate}
+                  onChange={handleChange}
+                  className="border p-2 rounded-lg"
+                />
+              </div>
+              <div className="flex gap-4 flex-wrap">
+                {["hotel", "car", "boat", "restaurant"].map((service) => (
+                  <label key={service} className="flex items-center gap-2 capitalize">
+                    <input
+                      type="checkbox"
+                      id={service}
+                      checked={formData.features[service]}
+                      onChange={handleChange}
+                    />
+                    {service}
+                  </label>
+                ))}
+              </div>
+              <textarea
+                id="specialRequests"
+                value={formData.specialRequests}
+                onChange={handleChange}
+                placeholder="Special Requests"
+                className="border p-2 rounded-lg"
+              />
+              <div className="flex gap-2">
+                <input
+                  id="totalPrice"
+                  type="number"
+                  value={formData.totalPrice}
+                  onChange={handleChange}
+                  placeholder="Total Price"
+                  className="border p-2 rounded-lg flex-1"
+                  required
+                />
+                <input
+                  id="photo"
+                  type="url"
+                  value={formData.photo}
+                  onChange={handleChange}
+                  placeholder="Photo URL"
+                  className="border p-2 rounded-lg flex-1"
+                />
+              </div>
+              <input
+                id="mapUrl"
+                type="url"
+                value={formData.mapUrl}
+                onChange={handleChange}
+                placeholder="Google Map URL"
+                className="border p-2 rounded-lg"
+              />
+              <button
+                type="submit"
+                disabled={loading}
+                className="bg-blue-600 hover:bg-blue-700 text-white py-2 rounded-lg font-semibold flex items-center justify-center gap-2 transition"
+              >
+                {loading ? "Submitting..." : <><AiOutlinePlus /> Add Tour</>}
+              </button>
+            </form>
+          </motion.div>
+        </motion.div>
+      </AnimatePresence>
     );
   };
 
@@ -303,20 +325,17 @@ const ToursList = () => {
   // -----------------
   if (loading)
     return (
-      <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-300 text-lg">
-        Loading tours...
+      <div className="max-w-7xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+        {[...Array(6)].map((_, i) => (
+          <SkeletonCard key={i} />
+        ))}
       </div>
     );
+
   if (error)
     return (
       <div className="flex justify-center items-center h-screen text-red-500 dark:text-red-400 font-medium">
         {error}
-      </div>
-    );
-  if (tours.length === 0)
-    return (
-      <div className="flex justify-center items-center h-screen text-gray-500 dark:text-gray-300 text-lg">
-        No tours available.
       </div>
     );
 
@@ -349,27 +368,29 @@ const ToursList = () => {
           <button
             disabled={currentPage === 1}
             onClick={() => setCurrentPage(currentPage - 1)}
-            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50 flex items-center gap-1"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50 flex items-center gap-1 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
             <AiOutlineLeft /> Prev
           </button>
           {[...Array(totalPages)].map((_, index) => (
-            <button
+            <motion.button
               key={index}
               onClick={() => setCurrentPage(index + 1)}
-              className={`px-4 py-2 rounded-lg ${
+              whileHover={{ scale: 1.1 }}
+              whileTap={{ scale: 0.95 }}
+              className={`px-4 py-2 rounded-lg font-semibold transition ${
                 currentPage === index + 1
                   ? "bg-blue-600 text-white dark:bg-blue-500"
-                  : "bg-gray-200 dark:bg-gray-700"
+                  : "bg-gray-200 dark:bg-gray-700 hover:bg-gray-300 dark:hover:bg-gray-600"
               }`}
             >
               {index + 1}
-            </button>
+            </motion.button>
           ))}
           <button
             disabled={currentPage === totalPages}
             onClick={() => setCurrentPage(currentPage + 1)}
-            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50 flex items-center gap-1"
+            className="px-4 py-2 rounded-lg bg-gray-200 dark:bg-gray-700 disabled:opacity-50 flex items-center gap-1 hover:bg-gray-300 dark:hover:bg-gray-600 transition"
           >
             Next <AiOutlineRight />
           </button>
