@@ -442,26 +442,43 @@ const Navbar = () => {
                   All Packages
                 </button>
 
+               <div className="relative" ref={packageRef}>
+            <button
+              onClick={() => {
+                if (!user) return handleProtectedClick("/login");
+                setPackageDropdownOpen(!packageDropdownOpen);
+              }}
+              className="flex items-center gap-1 hover:text-blue-600 transition-colors"
+            >
+              Add Package <FaChevronDown size={12} />
+            </button>
+            
+            {packageDropdownOpen && user && (
+              <div className={`absolute top-full mt-2 w-48 rounded-lg shadow-lg border ${
+                theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+              }`}>
                 <button
                   onClick={() => handleProtectedClick("/add-package")}
-                  className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Add Hotel
                 </button>
-
                 <button
                   onClick={() => handleProtectedClick("/TourBooking")}
-                  className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Add Tour
                 </button>
-
                 <button
                   onClick={() => handleProtectedClick("/add-air-packages")}
-                  className="w-full text-left px-3 py-3 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
+                  className="w-full text-left px-4 py-2 hover:bg-gray-100 dark:hover:bg-gray-700"
                 >
                   Add Flight
                 </button>
+              </div>
+            )}
+          </div>
+
 
                 <button
                   onClick={() => handleProtectedClick("/manage-my-packages")}
@@ -559,12 +576,9 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
-             <div
-  className={`p-4 border-t ${
-    theme === "dark" ? "border-gray-700" : "border-gray-200 h-6"
-  }`}
->
-</div>
+             <div className={`p-4 border-t ${theme === "dark" ? "border-gray-700" : "border-gray-200 h-6"}`}>
+               
+              </div>
           </div>
         </>
       )}

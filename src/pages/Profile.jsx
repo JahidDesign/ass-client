@@ -6,7 +6,9 @@ import Swal from "sweetalert2";
 import { motion } from "framer-motion";
 import ClipLoader from "react-spinners/ClipLoader";
 import axios from "axios";
-
+import { auth } from "../firebase";
+import { useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
 import { 
   FaFacebook, 
   FaLinkedin, 
@@ -33,6 +35,8 @@ export default function Profile() {
   const { user, logout } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
   const isDark = theme === "dark";
+  const navigate = useNavigate();
+  const { setUser } = useContext(AuthContext);
 
   const [profileData, setProfileData] = useState({});
   const [hotelBookings, setHotelBookings] = useState([]);
@@ -130,7 +134,7 @@ export default function Profile() {
   // -----------------------------
   // Save profile (create or update)
   // -----------------------------
-const handleSaveProfile = async () => {
+ const handleSaveProfile = async () => {
     setSaving(true);
 
     const payload = {
@@ -143,22 +147,26 @@ const handleSaveProfile = async () => {
       facebook: form.facebook || profileData.facebook || "",
       linkedin: form.linkedin || profileData.linkedin || "",
       twitter: form.twitter || profileData.twitter || "",
-      email: profileData.email || "",
+      email: user?.email || profileData.email || "", // auto-filled
     };
 
     try {
-      const res = await axios.post("https://ass-server-sy-travles.onrender.com/visitors", payload);
+      const res = await axios.post(
+        "https://ass-server-sy-travles.onrender.com/visitors",
+        JSON.stringify(payload),
+        { headers: { "Content-Type": "application/json" } }
+      );
 
-      if (res.status === 201 || res.status === 200) {
+      if (res.status === 200 || res.status === 201) {
         Swal.fire("Success", "Profile updated successfully!", "success");
         setModalOpen(false);
-        setProfileData(payload); // update local state
+        setProfileData(payload);
       } else {
         Swal.fire("Error", "Failed to update profile", "error");
       }
     } catch (err) {
-      console.error(err);
-      Swal.fire("Error", "Something went wrong!", "error");
+      console.error(err.response?.data || err.message);
+      Swal.fire("Error", err.response?.data?.message || "Something went wrong!", "error");
     } finally {
       setSaving(false);
     }
@@ -250,6 +258,22 @@ const handleSaveProfile = async () => {
   };
 
   // -----------------------------
+  // Logout
+  // -----------------------------
+  
+
+ const handleLogout = async () => {
+    try {
+      await signOut(auth);   
+      setUser(null);         
+      navigate("/login");    
+      console.log("Logged out successfully");
+    } catch (err) {
+      console.error("Logout failed:", err);
+    }
+  };
+
+  // -----------------------------
   // Loading / Not logged in
   // -----------------------------
   if (!user) {
@@ -334,11 +358,11 @@ const handleSaveProfile = async () => {
         transition={{ duration: 0.8 }}
       >
         <img 
-          src={profileData.coverImage || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"} 
+          src={profileData.coverImage || form.coverImage || "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=2070&q=80"} 
           alt="Cover" 
           className="w-full h-full object-cover" 
         />
-        <div className="absolute inset-0 bg-black bg-opacity-30" />
+        <div className="absolute inset-0  bg-opacity-30" />
       </motion.div>
 
       {/* Profile Card */}
@@ -443,7 +467,7 @@ const handleSaveProfile = async () => {
               <FaEdit /> Edit Profile
             </button>
             <button 
-              onClick={logout} 
+              onClick={handleLogout} 
               className="flex items-center gap-2 px-6 py-3 rounded-xl font-medium bg-red-500 text-white hover:bg-red-600 transition-all hover:scale-105"
             >
               <FaSignOutAlt /> Logout
@@ -805,219 +829,224 @@ const handleSaveProfile = async () => {
       {/* Edit Profile Modal */}
       {modalOpen && (
         <div className="fixed inset-0 bg-black/60 flex justify-center items-center z-50 p-4">
-          <motion.div
-            className={`p-8 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative ${
-              isDark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
-            }`}
-            initial={{ opacity: 0, scale: 0.9 }}
-            animate={{ opacity: 1, scale: 1 }}
-            transition={{ duration: 0.3 }}
+      <motion.div
+        className={`p-8 rounded-2xl w-full max-w-2xl max-h-[90vh] overflow-y-auto relative ${
+          isDark ? "bg-gray-800 text-white" : "bg-white text-gray-900"
+        }`}
+        initial={{ opacity: 0, scale: 0.9 }}
+        animate={{ opacity: 1, scale: 1 }}
+        transition={{ duration: 0.3 }}
+      >
+        {/* Header */}
+        <div className="flex justify-between items-center mb-6">
+          <h2 className="text-2xl font-bold">Edit Profile</h2>
+          <button
+            onClick={() => setModalOpen(false)}
+            className={`p-2 rounded-full ${isDark ? "hover:bg-gray-700" : "hover:bg-gray-100"} transition-colors`}
           >
-            <div className="flex justify-between items-center mb-6">
-              <h2 className="text-2xl font-bold">Edit Profile</h2>
-              <button
-                onClick={() => setModalOpen(false)}
-                className={`p-2 rounded-full ${
-                  isDark ? "hover:bg-gray-700" : "hover:bg-gray-100"
-                } transition-colors`}
-              >
-                ✕
-              </button>
-            </div>
-
-            <div className="grid md:grid-cols-2 gap-6">
-              {/* Basic Information */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold mb-3">Basic Information</h3>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Display Name</label>
-                  <input
-                    type="text"
-                    name="displayName"
-                    placeholder="Your display name"
-                    defaultValue={profileData.displayName || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Bio</label>
-                  <textarea
-                    name="bio"
-                    placeholder="Tell us about yourself..."
-                    defaultValue={profileData.bio || ""}
-                    onChange={handleInput}
-                    rows={3}
-                    className={`w-full p-3 rounded-lg border resize-none ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Phone Number</label>
-                  <input
-                    type="tel"
-                    name="contact"
-                    placeholder="+1 234 567 8900"
-                    defaultValue={profileData.contact || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Location</label>
-                  <input
-                    type="text"
-                    name="location"
-                    placeholder="City, Country"
-                    defaultValue={profileData.location || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-              </div>
-
-              {/* Images and Social */}
-              <div className="space-y-4">
-                <h3 className="text-lg font-semibold mb-3">Images & Social</h3>
-                
-                <div>
-                  <label className="block text-sm font-medium mb-2">Profile Picture URL</label>
-                  <input
-                    type="url"
-                    name="photoURL"
-                    placeholder="https://example.com/your-photo.jpg"
-                    defaultValue={profileData.photoURL || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Cover Image URL</label>
-                  <input
-                    type="url"
-                    name="coverImage"
-                    placeholder="https://example.com/cover-image.jpg"
-                    defaultValue={profileData.coverImage || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Facebook URL</label>
-                  <input
-                    type="url"
-                    name="facebook"
-                    placeholder="https://facebook.com/yourprofile"
-                    defaultValue={profileData.facebook || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">LinkedIn URL</label>
-                  <input
-                    type="url"
-                    name="linkedin"
-                    placeholder="https://linkedin.com/in/yourprofile"
-                    defaultValue={profileData.linkedin || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-
-                <div>
-                  <label className="block text-sm font-medium mb-2">Twitter URL</label>
-                  <input
-                    type="url"
-                    name="twitter"
-                    placeholder="https://twitter.com/yourhandle"
-                    defaultValue={profileData.twitter || ""}
-                    onChange={handleInput}
-                    className={`w-full p-3 rounded-lg border ${
-                      isDark 
-                        ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500" 
-                        : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
-                    } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
-                  />
-                </div>
-              </div>
-            </div>
-
-            {/* Modal Actions */}
-            <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-300">
-              <button 
-                onClick={() => setModalOpen(false)}
-                className={`px-6 py-3 rounded-lg font-medium transition-colors ${
-                  isDark 
-                    ? "bg-gray-600 hover:bg-gray-700 text-white" 
-                    : "bg-gray-200 hover:bg-gray-300 text-gray-900"
-                }`}
-              >
-                Cancel
-              </button>
-              <button 
-                onClick={handleSaveProfile} 
-                disabled={saving}
-                className={`px-6 py-3 rounded-lg font-medium transition-all ${
-                  saving 
-                    ? "opacity-50 cursor-not-allowed" 
-                    : "hover:scale-105"
-                } ${
-                  isDark 
-                    ? "bg-green-600 hover:bg-green-700 text-white" 
-                    : "bg-green-500 hover:bg-green-600 text-white"
-                }`}
-              >
-                {saving ? (
-                  <div className="flex items-center gap-2">
-                    <ClipLoader size={16} color="white" />
-                    Saving...
-                  </div>
-                ) : (
-                  "Save Changes"
-                )}
-              </button>
-            </div>
-          </motion.div>
+            ✕
+          </button>
         </div>
+
+        <div className="grid md:grid-cols-2 gap-6">
+          {/* Basic Information */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-3">Basic Information</h3>
+
+            {/* Email (read-only) */}
+            <div>
+              <label className="block text-sm font-medium mb-2">Email</label>
+              <input
+                type="email"
+                name="email"
+                value={user?.email || profileData.email || ""}
+                readOnly
+                className={`w-full p-3 rounded-lg border bg-gray-100 text-gray-700 cursor-not-allowed ${
+                  isDark ? "bg-gray-700 text-white border-gray-600" : "bg-white border-gray-300"
+                }`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Display Name</label>
+              <input
+                type="text"
+                name="displayName"
+                placeholder="Your display name"
+                defaultValue={profileData.displayName || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Bio</label>
+              <textarea
+                name="bio"
+                placeholder="Tell us about yourself..."
+                defaultValue={profileData.bio || ""}
+                onChange={handleInput}
+                rows={3}
+                className={`w-full p-3 rounded-lg border resize-none ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Phone Number</label>
+              <input
+                type="tel"
+                name="contact"
+                placeholder="+1 234 567 8900"
+                defaultValue={profileData.contact || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Location</label>
+              <input
+                type="text"
+                name="location"
+                placeholder="City, Country"
+                defaultValue={profileData.location || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+          </div>
+
+          {/* Images & Social */}
+          <div className="space-y-4">
+            <h3 className="text-lg font-semibold mb-3">Images & Social</h3>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Profile Picture URL</label>
+              <input
+                type="url"
+                name="photoURL"
+                placeholder="https://example.com/your-photo.jpg"
+                defaultValue={profileData.photoURL || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Cover Image URL</label>
+              <input
+                type="url"
+                name="coverImage"
+                placeholder="https://example.com/cover-image.jpg"
+                defaultValue={profileData.coverImage || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Facebook URL</label>
+              <input
+                type="url"
+                name="facebook"
+                placeholder="https://facebook.com/yourprofile"
+                defaultValue={profileData.facebook || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">LinkedIn URL</label>
+              <input
+                type="url"
+                name="linkedin"
+                placeholder="https://linkedin.com/in/yourprofile"
+                defaultValue={profileData.linkedin || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium mb-2">Twitter URL</label>
+              <input
+                type="url"
+                name="twitter"
+                placeholder="https://twitter.com/yourhandle"
+                defaultValue={profileData.twitter || ""}
+                onChange={handleInput}
+                className={`w-full p-3 rounded-lg border ${
+                  isDark
+                    ? "bg-gray-700 text-white border-gray-600 focus:border-yellow-500"
+                    : "bg-white text-gray-900 border-gray-300 focus:border-blue-500"
+                } focus:outline-none focus:ring-2 focus:ring-opacity-50`}
+              />
+            </div>
+          </div>
+        </div>
+
+        {/* Modal Actions */}
+        <div className="flex justify-end gap-4 mt-8 pt-6 border-t border-gray-300">
+          <button
+            onClick={() => setModalOpen(false)}
+            className={`px-6 py-3 rounded-lg font-medium transition-colors ${
+              isDark ? "bg-gray-600 hover:bg-gray-700 text-white" : "bg-gray-200 hover:bg-gray-300 text-gray-900"
+            }`}
+          >
+            Cancel
+          </button>
+          <button
+            onClick={handleSaveProfile}
+            disabled={saving}
+            className={`px-6 py-3 rounded-lg font-medium transition-all ${
+              saving ? "opacity-50 cursor-not-allowed" : "hover:scale-105"
+            } ${isDark ? "bg-green-600 hover:bg-green-700 text-white" : "bg-green-500 hover:bg-green-600 text-white"}`}
+          >
+            {saving ? (
+              <div className="flex items-center gap-2">
+                <ClipLoader size={16} color="white" />
+                Saving...
+              </div>
+            ) : (
+              "Save Changes"
+            )}
+          </button>
+        </div>
+      </motion.div>
+    </div>
       )}
     </div>
   );
