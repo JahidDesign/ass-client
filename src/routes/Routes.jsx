@@ -5,240 +5,73 @@ import { AnimatePresence, motion } from "framer-motion";
 
 // Pages
 import Home from "../pages/Home";
-import AllPackages from "../pages/AllPackages";
-import AddPackage from "../pages/AddPackage";
-import FlightSeatBooking from "../pages/airticketsADD";
-import TourBookingForm from "../pages/TourBookingForm";
-import ManageMyPackages from "../pages/ManageMyPackages";
-import MyBookings from "../pages/MyBookings";
-import MyAllBookings from "../pages/MyAllBookings";
-import TourDetails from "../pages/TourDetails";
-import HotelDetails from "../pages/HotelDetails";
-import PackageDetails from "../pages/PackageDetails";
 import AboutUs from "../pages/AboutUs";
 import ContactSection from "../pages/contact";
 import Login from "../pages/Login";
 import Register from "../pages/Register";
-import NotFound from "../pages/NotFound";
 import Profile from "../pages/Profile";
+import AllPackages from "../pages/AllPackages";
+import AddPackage from "../pages/AddPackage";
+import TourBookingForm from "../pages/TourBookingForm";
+import FlightSeatBooking from "../pages/airticketsADD";
+import ManageMyPackages from "../pages/ManageMyPackages";
+import MyBookings from "../pages/MyBookings";
+import MyAllBookings from "../pages/MyAllBookings";
+import PackageDetails from "../pages/PackageDetails";
 import TeamForm from "../pages/TeamForm";
 import CustomersPage from "../pages/subpages/CustomersPage";
 import HotelsPage from "../pages/subpages/HotelsPage";
 import ToursPage from "../pages/subpages/ToursPage";
 import FlightsPage from "../pages/subpages/FlightsPage";
+import NotFound from "../pages/NotFound";
 
 // Route protection
 import PrivateRoute from "../components/PrivateRoute";
 
-const AppRoutes = () => {
+// Motion configs
+const pageVariants = { initial: { opacity: 0, y: 20 }, in: { opacity: 1, y: 0 }, out: { opacity: 0, y: -20 } };
+const pageTransition = { type: "tween", ease: "easeInOut", duration: 0.4 };
+
+const MotionWrapper = ({ children }) => (
+  <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
+    {children}
+  </motion.div>
+);
+
+export default function AppRoutes() {
   const location = useLocation();
-
-  // Page animation variants
-  const pageVariants = {
-    initial: { opacity: 0, y: 20 },
-    in: { opacity: 1, y: 0 },
-    out: { opacity: 0, y: -20 },
-  };
-
-  const pageTransition = {
-    type: "tween",
-    ease: "easeInOut",
-    duration: 0.4,
-  };
 
   return (
     <AnimatePresence mode="wait">
       <Routes location={location} key={location.pathname}>
         {/* Public Routes */}
-        <Route
-          path="/"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <Home />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/about"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <AboutUs />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/contact"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <ContactSection />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/login"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <Login />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/register"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <Register />
-            </motion.div>
-          }
-        />
+        <Route path="/" element={<MotionWrapper><Home /></MotionWrapper>} />
+        <Route path="/about" element={<MotionWrapper><AboutUs /></MotionWrapper>} />
+        <Route path="/contact" element={<MotionWrapper><ContactSection /></MotionWrapper>} />
+        <Route path="/login" element={<MotionWrapper><Login /></MotionWrapper>} />
+        <Route path="/register" element={<MotionWrapper><Register /></MotionWrapper>} />
 
         {/* Dynamic ID-based Pages */}
-        <Route
-          path="/customers/:id"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <CustomersPage />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/hotels/:id"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <HotelsPage />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/tours/:id"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <ToursPage />
-            </motion.div>
-          }
-        />
-        <Route
-          path="/flights/:id"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <FlightsPage />
-            </motion.div>
-          }
-        />
+        <Route path="/customers/:id" element={<MotionWrapper><CustomersPage /></MotionWrapper>} />
+        <Route path="/hotels/:id" element={<MotionWrapper><HotelsPage /></MotionWrapper>} />
+        <Route path="/tours/:id" element={<MotionWrapper><ToursPage /></MotionWrapper>} />
+        <Route path="/flights/:id" element={<MotionWrapper><FlightsPage /></MotionWrapper>} />
 
         {/* Protected Routes */}
-        <Route
-          path="/profile"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <Profile />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/all-packages"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <AllPackages />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/add-package"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <AddPackage />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/TourBooking"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <TourBookingForm />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/add-air-packages"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <FlightSeatBooking />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/manage-my-packages"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <ManageMyPackages />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/my-bookings"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <MyBookings />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/myallbookings"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <MyAllBookings />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/package/:id"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <PackageDetails />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
-        <Route
-          path="/add-team"
-          element={
-            <PrivateRoute>
-              <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-                <TeamForm />
-              </motion.div>
-            </PrivateRoute>
-          }
-        />
+        <Route path="/profile" element={<PrivateRoute><MotionWrapper><Profile /></MotionWrapper></PrivateRoute>} />
+        <Route path="/all-packages" element={<PrivateRoute><MotionWrapper><AllPackages /></MotionWrapper></PrivateRoute>} />
+        <Route path="/add-package" element={<PrivateRoute><MotionWrapper><AddPackage /></MotionWrapper></PrivateRoute>} />
+        <Route path="/TourBooking" element={<PrivateRoute><MotionWrapper><TourBookingForm /></MotionWrapper></PrivateRoute>} />
+        <Route path="/add-air-packages" element={<PrivateRoute><MotionWrapper><FlightSeatBooking /></MotionWrapper></PrivateRoute>} />
+        <Route path="/manage-my-packages" element={<PrivateRoute><MotionWrapper><ManageMyPackages /></MotionWrapper></PrivateRoute>} />
+        <Route path="/my-bookings" element={<PrivateRoute><MotionWrapper><MyBookings /></MotionWrapper></PrivateRoute>} />
+        <Route path="/myallbookings" element={<PrivateRoute><MotionWrapper><MyAllBookings /></MotionWrapper></PrivateRoute>} />
+        <Route path="/package/:id" element={<PrivateRoute><MotionWrapper><PackageDetails /></MotionWrapper></PrivateRoute>} />
+        <Route path="/add-team" element={<PrivateRoute><MotionWrapper><TeamForm /></MotionWrapper></PrivateRoute>} />
 
         {/* Catch All */}
-        <Route
-          path="*"
-          element={
-            <motion.div initial="initial" animate="in" exit="out" variants={pageVariants} transition={pageTransition}>
-              <NotFound />
-            </motion.div>
-          }
-        />
+        <Route path="*" element={<MotionWrapper><NotFound /></MotionWrapper>} />
       </Routes>
     </AnimatePresence>
   );
-};
-
-export default AppRoutes;
+}
