@@ -20,7 +20,7 @@ const MyHotelsBookings = () => {
       return;
     }
 
-    fetch(`https://ass-server-1.onrender.com/hotelbook?email=${user.email}`)
+    fetch(`https://ass-server-sy-travles.onrender.com/hotelbook?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         setBookings(data || []);
@@ -41,7 +41,7 @@ const MyHotelsBookings = () => {
       confirmButtonText: "Yes, delete it",
     }).then((result) => {
       if (result.isConfirmed) {
-        fetch(`https://ass-server-1.onrender.com/hotelbook/${bookingId}`, {
+        fetch(`https://ass-server-sy-travles.onrender.com/hotelbook/${bookingId}`, {
           method: "DELETE",
         })
           .then((res) => {

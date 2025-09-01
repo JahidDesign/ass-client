@@ -1,3 +1,4 @@
+// src/pages/Register.jsx
 import React, { useState, useContext } from "react";
 import {
   createUserWithEmailAndPassword,
@@ -23,33 +24,61 @@ const Register = () => {
   const [phone, setPhone] = useState("");
   const [password, setPassword] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+
   const navigate = useNavigate();
 
+  // -------- Password Validation --------
   const validatePassword = (pass) =>
     pass.length >= 6 && /[A-Z]/.test(pass) && /[a-z]/.test(pass);
 
+  // -------- Send user to backend (email signup) --------
   const sendUserToBackend = async (user, password = null) => {
-    const token = await user.getIdToken();
-    const res = await fetch("https://ass-server-1.onrender.com/customers", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
-      },
-      body: JSON.stringify({
-        firebaseUid: user.uid,
-        fullName: user.displayName,
-        email: user.email,
-        photo: user.photoURL || "",
-        phone,
-        password,
-      }),
-    });
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Backend error");
-    return data;
+    try {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/customers", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: user.uid,
+          name: user.displayName,
+          email: user.email,
+          password,
+          photo: user.photoURL || "",
+          phone,
+        }),
+      });
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Backend error");
+      return data;
+    } catch (err) {
+      throw new Error(err.message);
+    }
   };
 
+  // -------- Send Google user to backend --------
+  const sendGoogleUserToBackend = async (user) => {
+    try {
+      const res = await fetch(
+        "https://ass-server-sy-travles.onrender.com/customers/google-login",
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({
+            uid: user.uid,
+            name: user.displayName,
+            email: user.email,
+            photo: user.photoURL || "",
+          }),
+        }
+      );
+      const data = await res.json();
+      if (!res.ok) throw new Error(data.error || "Backend error");
+      return data;
+    } catch (err) {
+      throw new Error(err.message);
+    }
+  };
+
+  // -------- Email/Password Registration --------
   const handleRegister = async (e) => {
     e.preventDefault();
     if (!fullName.trim()) return toast.error("Full Name is required");
@@ -60,25 +89,36 @@ const Register = () => {
       );
 
     try {
+      // Firebase signup
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
       const user = userCredential.user;
+
       await updateProfile(user, { displayName: fullName, photoURL });
+
+      // Save in backend
       await sendUserToBackend(user, password);
+
       toast.success("Account created successfully!");
       navigate("/");
     } catch (err) {
-      if (err.code === "auth/email-already-in-use") toast.error("This email is already registered");
-      else if (err.code === "auth/invalid-email") toast.error("Invalid email address");
+      if (err.code === "auth/email-already-in-use")
+        toast.error("This email is already registered");
+      else if (err.code === "auth/invalid-email")
+        toast.error("Invalid email address");
       else toast.error(err.message);
     }
   };
 
+  // -------- Google Signup --------
   const handleGoogleSignUp = async () => {
     const provider = new GoogleAuthProvider();
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
-      await sendUserToBackend(user);
+
+      // backend signup
+      await sendGoogleUserToBackend(user);
+
       toast.success("Signed up with Google!");
       navigate("/");
     } catch (err) {
@@ -89,7 +129,9 @@ const Register = () => {
   return (
     <div
       className={`min-h-screen flex items-center justify-center p-4 ${
-        isDark ? "bg-gray-900 text-gray-100" : "bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-50"
+        isDark
+          ? "bg-gray-900 text-gray-100"
+          : "bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-50"
       }`}
     >
       <div
@@ -97,11 +139,10 @@ const Register = () => {
           isDark ? "bg-gray-800 shadow-gray-700" : "bg-white shadow-2xl"
         }`}
       >
-        <h2 className="text-3xl font-bold text-center mb-8">
-          Create Account
-        </h2>
+        <h2 className="text-3xl font-bold text-center mb-8">Create Account</h2>
 
         <form onSubmit={handleRegister} className="space-y-5">
+          {/* Full Name */}
           <input
             type="text"
             placeholder="Full Name"
@@ -115,6 +156,7 @@ const Register = () => {
             required
           />
 
+          {/* Photo URL */}
           <input
             type="url"
             placeholder="Photo URL (optional)"
@@ -127,6 +169,7 @@ const Register = () => {
             }`}
           />
 
+          {/* Email */}
           <input
             type="email"
             placeholder="Email"
@@ -140,6 +183,7 @@ const Register = () => {
             required
           />
 
+          {/* Phone */}
           <input
             type="text"
             placeholder="Phone"
@@ -152,6 +196,7 @@ const Register = () => {
             }`}
           />
 
+          {/* Password */}
           <div className="relative">
             <input
               type={showPassword ? "text" : "password"}
@@ -173,6 +218,7 @@ const Register = () => {
             </span>
           </div>
 
+          {/* Register Button */}
           <button
             type="submit"
             className={`w-full py-3 rounded-xl font-semibold shadow-lg transition ${
@@ -184,6 +230,7 @@ const Register = () => {
             Register
           </button>
 
+          {/* Google Sign Up */}
           <button
             type="button"
             onClick={handleGoogleSignUp}

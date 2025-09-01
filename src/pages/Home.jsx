@@ -1,6 +1,4 @@
-// src/pages/Home.jsx
-import React, { useEffect, useContext } from "react";
-import Swal from "sweetalert2";
+import React, { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { ThemeContext } from "../context/ThemeContext";
 
@@ -9,46 +7,14 @@ import TravelHeroBanner from "./homeBanner";
 import Carousel from "./FlightSearchCard";
 import PopularAirlines from "./PopularAirlines";
 import AnimatedAirlineGallery from "./AnimatedAirlineGallery";
-import ExclusiveOffer from "./offerSection";
+import AboutMe from "./AboutMe";
 import HotelsCards from "./hotelsCards";
+import Testimonials from "./Testimonials";
 import ToursList from "./ToursList";
+import WelcomePopup from "../components/WelcomePopup"; // Import the new popup
 
 const Home = () => {
   const { theme } = useContext(ThemeContext);
-
-  useEffect(() => {
-    const showWelcomePopup = async () => {
-      try {
-        // Get IP for unique visit tracking
-        const res = await fetch("https://ipapi.co/json");
-        const data = await res.json();
-        const ip = data.ip || "unknown";
-
-        const lastVisitKey = `lastVisit_${ip}`;
-        const lastVisit = localStorage.getItem(lastVisitKey);
-        const now = Date.now();
-        const oneHour = 60 * 60 * 1000; // 1 hour
-
-        // Show popup if first visit or more than 1 hour since last
-        if (!lastVisit || now - parseInt(lastVisit, 10) >= oneHour) {
-          Swal.fire({
-            title: "Welcome!",
-            text: "We're glad to have you back 🧳✨",
-            icon: "info",
-            confirmButtonText: "Let’s Explore!",
-            timer: 7000,
-            timerProgressBar: true,
-          });
-
-          localStorage.setItem(lastVisitKey, now.toString());
-        }
-      } catch (error) {
-        console.error("Failed to fetch IP or show welcome popup:", error);
-      }
-    };
-
-    showWelcomePopup();
-  }, []);
 
   return (
     <div
@@ -56,7 +22,7 @@ const Home = () => {
         theme === "dark"
           ? "bg-gray-900 text-white"
           : "bg-gray-50 text-gray-900"
-      }`}
+      } min-h-screen transition-colors duration-500`}
     >
       {/* SEO & Metadata */}
       <Helmet>
@@ -71,47 +37,53 @@ const Home = () => {
           sizes="32x32"
           href="https://i.ibb.co/kVSHzqyf/Blue-and-Red-Travel-Tours-Agency-Logo.png"
         />
-
-        {/* Open Graph Meta (Facebook, LinkedIn, etc.) */}
-        <meta property="og:title" content="Home | Travel Tours Agency" />
-        <meta
-          property="og:description"
-          content="Discover amazing travel packages and start your journey today."
-        />
-        <meta
-          property="og:image"
-          content="https://i.ibb.co/kVSHzqyf/Blue-and-Red-Travel-Tours-Agency-Logo.png"
-        />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content="https://yourdomain.com/" />
-
-        {/* Twitter Card Meta */}
-        <meta name="twitter:card" content="summary_large_image" />
-        <meta name="twitter:title" content="Travel Tours Agency" />
-        <meta name="twitter:description" content="Plan your next adventure with us!" />
-        <meta
-          name="twitter:image"
-          content="https://i.ibb.co/kVSHzqyf/Blue-and-Red-Travel-Tours-Agency-Logo.png"
-        />
       </Helmet>
 
-      {/* Sections */}
+      {/* Modern Welcome Popup */}
+      <WelcomePopup />
+
+      {/* Main Sections */}
       <TravelHeroBanner />
 
-      <section className="my-10">
-        <ToursList />
-      </section>
+        <section
+      className={`my-10 px-5 md:px-10 py-8 rounded-xl shadow-lg transition-colors duration-300 ${
+        theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100"
+      }`}
+    >
+      <div className="text-center mb-8">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2">
+          Popular Tours in Sylhet – Most Loved by Our Travelers
+        </h2>
+        <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
+          Explore Top-Rated Sylhet Tour Packages Featuring Ratargul, Jaflong, Lalakhal, Srimangal & More – Perfect for Nature Lovers, Families & Couples
+        </p>
+      </div>
+
+      <ToursList />
+    </section>
 
       <section className="my-10">
         <Carousel />
       </section>
 
-      <section className="my-10">
-        <HotelsCards />
-      </section>
+       <section
+      className={`my-10 px-5 md:px-10 py-8 rounded-xl shadow-lg transition-colors duration-300 ${
+        theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100"
+      }`}
+    >
+      <div className="text-center mb-8">
+        <h2 className="text-3xl md:text-4xl font-bold mb-2">
+          Comfortable & Affordable Hotel Rooms in Sylhet
+        </h2>
+        <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
+          Book Clean, Secure & Budget-Friendly Rooms with Easy Access to Sylhet’s Top Tourist Spots – Perfect for Families, Solo Travelers & Groups
+        </p>
+      </div>
 
+      <HotelsCards />
+    </section>
       <section className="my-10">
-        <ExclusiveOffer />
+        <AboutMe />
       </section>
 
       <section className="my-10">
@@ -120,6 +92,10 @@ const Home = () => {
 
       <section className="my-10">
         <AnimatedAirlineGallery />
+      </section>
+      
+       <section className="my-10">
+        <Testimonials />
       </section>
     </div>
   );

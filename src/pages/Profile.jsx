@@ -62,19 +62,19 @@ export default function Profile() {
         setLoading(true);
         
         // Fetch all profiles
-        const profileRes = await fetch("https://ass-server-1.onrender.com/visitors");
+        const profileRes = await fetch("https://ass-server-sy-travles.onrender.com/visitors");
         const profileArr = await profileRes.json();
         const existingProfile = profileArr.find((p) => p.email === user.email);
         if (existingProfile) setProfileData(existingProfile);
 
         // Fetch hotel bookings
-        const hotelRes = await fetch("https://ass-server-1.onrender.com/hotelbook");
+        const hotelRes = await fetch("https://ass-server-sy-travles.onrender.com/hotelbook");
         const hotelData = await hotelRes.json();
         const userHotelBookings = hotelData.filter((b) => b.userEmail === user.email);
         setHotelBookings(userHotelBookings);
 
         // Fetch tour bookings
-        const tourRes = await fetch("https://ass-server-1.onrender.com/bookings");
+        const tourRes = await fetch("https://ass-server-sy-travles.onrender.com/bookings");
         const tourData = await tourRes.json();
         const userTourBookings = tourData.filter((b) => b.userEmail === user.email);
         setTourBookings(userTourBookings);
@@ -147,7 +147,7 @@ const handleSaveProfile = async () => {
     };
 
     try {
-      const res = await axios.post("https://ass-server-1.onrender.com/visitors", payload);
+      const res = await axios.post("https://ass-server-sy-travles.onrender.com/visitors", payload);
 
       if (res.status === 201 || res.status === 200) {
         Swal.fire("Success", "Profile updated successfully!", "success");
@@ -169,8 +169,8 @@ const handleSaveProfile = async () => {
   const handleDeleteBooking = async (id, type) => {
     const url =
       type === "hotel"
-        ? `https://ass-server-1.onrender.com/hotelbook/${id}`
-        : `https://ass-server-1.onrender.com/bookings/${id}`;
+        ? `https://ass-server-sy-travles.onrender.com/hotelbook/${id}`
+        : `https://ass-server-sy-travles.onrender.com/bookings/${id}`;
 
     const confirm = await Swal.fire({
       title: "Are you sure?",

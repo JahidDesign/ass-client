@@ -11,22 +11,22 @@ const SearchDemo = () => {
 
   // Fetch all data
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/customers")
+    fetch("https://ass-server-sy-travles.onrender.com/customers")
       .then((res) => res.json())
       .then(setCustomers)
       .catch(console.error);
 
-    fetch("https://ass-server-1.onrender.com/hotels")
+    fetch("https://ass-server-sy-travles.onrender.com/hotels")
       .then((res) => res.json())
       .then(setHotels)
       .catch(console.error);
 
-    fetch("https://ass-server-1.onrender.com/tours")
+    fetch("https://ass-server-sy-travles.onrender.com/tours")
       .then((res) => res.json())
       .then(setTours)
       .catch(console.error);
 
-    fetch("https://ass-server-1.onrender.com/flights")
+    fetch("https://ass-server-sy-travles.onrender.com/flights")
       .then((res) => res.json())
       .then(setFlights)
       .catch(console.error);

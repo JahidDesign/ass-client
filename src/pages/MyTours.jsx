@@ -35,7 +35,7 @@ const MyTours = () => {
     if (!user?.email) return;
     const fetchTours = async () => {
       try {
-        const res = await fetch("https://ass-server-1.onrender.com/tours");
+        const res = await fetch("https://ass-server-sy-travles.onrender.com/tours");
         const data = await res.json();
         const userTours = data.filter((tour) => tour.userEmail === user.email);
         setTours(userTours);
@@ -66,7 +66,7 @@ const MyTours = () => {
     };
 
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/tours", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/tours", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newTour),

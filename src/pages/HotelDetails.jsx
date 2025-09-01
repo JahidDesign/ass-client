@@ -57,7 +57,7 @@ export default function HotelDetails() {
     const run = async () => {
       setLoading(true);
       try {
-        const res = await fetch(`https://ass-server-1.onrender.com/hotels/${id}`);
+        const res = await fetch(`https://ass-server-sy-travles.onrender.com/hotels/${id}`);
         if (!res.ok) throw new Error(`Failed to load hotel ${id}`);
         const data = await res.json();
         if (!cancelled) setHotel(data);
@@ -83,7 +83,7 @@ export default function HotelDetails() {
         return;
       }
       try {
-        const res = await fetch("https://ass-server-1.onrender.com/hotelbook");
+        const res = await fetch("https://ass-server-sy-travles.onrender.com/hotelbook");
         if (!res.ok) throw new Error("Failed to load bookings");
         const bookings = await res.json();
         const already = bookings?.some(
@@ -133,7 +133,7 @@ export default function HotelDetails() {
     };
 
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/hotelbook", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/hotelbook", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),

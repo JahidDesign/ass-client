@@ -80,7 +80,7 @@ export default function TourDetails() {
   useEffect(() => {
     let cancelled = false;
     setLoading(true);
-    fetch(`https://ass-server-1.onrender.com/tours/${id}`)
+    fetch(`https://ass-server-sy-travles.onrender.com/tours/${id}`)
       .then((res) => res.json())
       .then((data) => !cancelled && setTour(data))
       .catch((err) => console.error(err))
@@ -91,7 +91,7 @@ export default function TourDetails() {
   // Check existing booking
   useEffect(() => {
     if (!user) return;
-    fetch(`https://ass-server-1.onrender.com/bookings?email=${user.email}`)
+    fetch(`https://ass-server-sy-travles.onrender.com/bookings?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         const booked = data.some((b) => String(b.tourId) === String(id) && b.userEmail === user.email);
@@ -138,7 +138,7 @@ export default function TourDetails() {
     };
 
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/bookings", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/bookings", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(bookingData),

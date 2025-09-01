@@ -26,7 +26,7 @@ const ToursList = () => {
   const fetchTours = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/tours");
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/tours");
       if (!res.ok) throw new Error("Failed to fetch tours");
       const data = await res.json();
       setTours(data);
@@ -165,7 +165,7 @@ const ToursList = () => {
       };
 
       try {
-        const res = await fetch("https://ass-server-1.onrender.com/tours", {
+        const res = await fetch("https://ass-server-sy-travles.onrender.com/tours", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(submissionData),

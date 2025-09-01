@@ -28,7 +28,7 @@ const ManageHotelPackages = () => {
   const fetchHotels = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/hotels");
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/hotels");
       const data = await res.json();
       // ✅ Filter hotels created by the logged-in user
       const userHotels = user
@@ -57,7 +57,7 @@ const ManageHotelPackages = () => {
     if (confirm.isConfirmed) {
       try {
         const res = await fetch(
-          `https://ass-server-1.onrender.com/hotels/${id}`,
+          `https://ass-server-sy-travles.onrender.com/hotels/${id}`,
           {
             method: "DELETE",
           }

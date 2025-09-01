@@ -21,7 +21,7 @@ const HotelsCards = () => {
   useEffect(() => {
     const fetchHotels = async () => {
       try {
-        const res = await fetch("https://ass-server-1.onrender.com/hotels");
+        const res = await fetch("https://ass-server-sy-travles.onrender.com/hotels");
         if (!res.ok) throw new Error("Failed to fetch hotels");
         const data = await res.json();
         setHotels(data);
@@ -211,7 +211,7 @@ const AddHotelModal = ({ onClose, user }) => {
     setLoading(true);
 
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/hotels", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/hotels", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

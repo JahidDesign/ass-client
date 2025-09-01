@@ -84,7 +84,7 @@ const EditTourModal = ({ isOpen, onClose, tour, onUpdated }) => {
     }
 
     try {
-      const res = await fetch(`https://ass-server-1.onrender.com/tours/${tour._id}`, {
+      const res = await fetch(`https://ass-server-sy-travles.onrender.com/tours/${tour._id}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({

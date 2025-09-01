@@ -49,7 +49,7 @@ const TeamForm = () => {
 
     setLoading(true);
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/teams", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/teams", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

@@ -33,10 +33,10 @@ const Navbar = () => {
 
   // Fetch data for search
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/customers").then(res => res.json()).then(setCustomers).catch(console.error);
-    fetch("https://ass-server-1.onrender.com/hotels").then(res => res.json()).then(setHotels).catch(console.error);
-    fetch("https://ass-server-1.onrender.com/tours").then(res => res.json()).then(setTours).catch(console.error);
-    fetch("https://ass-server-1.onrender.com/flights").then(res => res.json()).then(setFlights).catch(console.error);
+    fetch("https://ass-server-sy-travles.onrender.com/customers").then(res => res.json()).then(setCustomers).catch(console.error);
+    fetch("https://ass-server-sy-travles.onrender.com/hotels").then(res => res.json()).then(setHotels).catch(console.error);
+    fetch("https://ass-server-sy-travles.onrender.com/tours").then(res => res.json()).then(setTours).catch(console.error);
+    fetch("https://ass-server-sy-travles.onrender.com/flights").then(res => res.json()).then(setFlights).catch(console.error);
   }, []);
 
   // Scroll detection
@@ -559,6 +559,12 @@ const Navbar = () => {
                 </Link>
               </div>
             )}
+             <div
+  className={`p-4 border-t ${
+    theme === "dark" ? "border-gray-700" : "border-gray-200 h-6"
+  }`}
+>
+</div>
           </div>
         </>
       )}

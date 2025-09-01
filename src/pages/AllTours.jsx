@@ -26,7 +26,7 @@ const AllTours = () => {
 
   // Fetch tours
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/tours")
+    fetch("https://ass-server-sy-travles.onrender.com/tours")
       .then((res) => res.json())
       .then((data) => {
         setTours(data);

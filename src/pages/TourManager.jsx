@@ -30,7 +30,7 @@ const TourManager = () => {
 
   const fetchTours = async () => {
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/tours");
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/tours");
       const data = await res.json();
       setTours(data);
     } catch (err) {
@@ -53,7 +53,7 @@ const TourManager = () => {
 
     try {
       const res = await fetch(
-        `https://ass-server-1.onrender.com/tours${editingId ? `/${editingId}` : ""}`,
+        `https://ass-server-sy-travles.onrender.com/tours${editingId ? `/${editingId}` : ""}`,
         {
           method: editingId ? "PUT" : "POST",
           headers: { "Content-Type": "application/json" },
@@ -101,7 +101,7 @@ const TourManager = () => {
 
     if (confirmed.isConfirmed) {
       try {
-        const res = await fetch(`https://ass-server-1.onrender.com/tours/${id}`, {
+        const res = await fetch(`https://ass-server-sy-travles.onrender.com/tours/${id}`, {
           method: "DELETE",
         });
         const data = await res.json();

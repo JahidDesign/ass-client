@@ -1,11 +1,8 @@
-// src/firebase.js
-
 import { initializeApp } from "firebase/app";
-import { getAuth } from "firebase/auth";
-import { getFirestore } from "firebase/firestore"; // Optional: Firestore
-import { getStorage } from "firebase/storage";     // Optional: Storage
+import { getAuth, GoogleAuthProvider } from "firebase/auth";
+import { getFirestore } from "firebase/firestore"; 
+import { getStorage } from "firebase/storage";     
 
-// ✅ Firebase configuration object (keep this secure)
 const firebaseConfig = {
   apiKey: "AIzaSyAv6Iume1kt4_GlFYxMajhqB9zlumrC-RI",
   authDomain: "bookingresort-b8942.firebaseapp.com",
@@ -16,13 +13,13 @@ const firebaseConfig = {
   measurementId: "G-NZHH4MSERB",
 };
 
-// ✅ Initialize Firebase
 const app = initializeApp(firebaseConfig);
 
-// ✅ Initialize Firebase services
 const auth = getAuth(app);
-const db = getFirestore(app);     // Optional: Firestore for storing data
-const storage = getStorage(app);  // Optional: Storage for uploading files/images
+const db = getFirestore(app);     
+const storage = getStorage(app);  
 
-// ✅ Export the needed services
-export { auth, db, storage };
+// ✅ Create and export the Google provider
+const provider = new GoogleAuthProvider();
+
+export { auth, db, storage, provider };

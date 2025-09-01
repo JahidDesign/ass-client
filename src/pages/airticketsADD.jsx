@@ -65,7 +65,7 @@ const FlightSeatBooking = () => {
     const dataToSend = { ...formData, ticketNumber: ticket };
 
     try {
-      const response = await fetch("https://ass-server-1.onrender.com/flights", {
+      const response = await fetch("https://ass-server-sy-travles.onrender.com/flights", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(dataToSend),

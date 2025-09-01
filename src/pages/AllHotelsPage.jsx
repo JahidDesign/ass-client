@@ -44,7 +44,7 @@ export default function AllHotelsPage() {
 
   // Fetch hotels
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/hotels")
+    fetch("https://ass-server-sy-travles.onrender.com/hotels")
       .then((res) => res.json())
       .then((data) => {
         setHotels(data);

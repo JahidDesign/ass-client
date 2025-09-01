@@ -46,7 +46,7 @@ export default function MyHotelBookings({ bookings = [], refreshBookings }) {
 
     try {
       setLoadingId(id);
-      const res = await fetch(`https://ass-server-1.onrender.com/hotelbook/${id}`, {
+      const res = await fetch(`https://ass-server-sy-travles.onrender.com/hotelbook/${id}`, {
         method: "DELETE",
       });
       if (!res.ok) throw new Error("Failed to cancel booking");

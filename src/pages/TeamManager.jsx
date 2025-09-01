@@ -27,7 +27,7 @@ const TeamManager = () => {
   const [formData, setFormData] = useState(defaultForm);
 
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/teams")
+    fetch("https://ass-server-sy-travles.onrender.com/teams")
       .then((res) => res.json())
       .then((data) => setMembers(data))
       .catch((err) => console.error("Failed to fetch members:", err));
@@ -48,7 +48,7 @@ const TeamManager = () => {
 
     if (confirm.isConfirmed) {
       try {
-        await fetch(`https://ass-server-1.onrender.com/teams/${id}`, { method: "DELETE" });
+        await fetch(`https://ass-server-sy-travles.onrender.com/teams/${id}`, { method: "DELETE" });
         setMembers((prev) => prev.filter((m) => m._id !== id));
         Swal.fire("Deleted!", "Team member has been removed.", "success");
       } catch (error) {
@@ -73,7 +73,7 @@ const TeamManager = () => {
   const handleUpdate = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch(`https://ass-server-1.onrender.com/teams/${editing}`, {
+      const res = await fetch(`https://ass-server-sy-travles.onrender.com/teams/${editing}`, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

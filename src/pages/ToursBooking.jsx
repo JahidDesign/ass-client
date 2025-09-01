@@ -42,7 +42,7 @@ export default function ToursBookings() {
     }
 
     setLoading(true);
-    fetch(`https://ass-server-1.onrender.com/bookings?email=${user.email}`)
+    fetch(`https://ass-server-sy-travles.onrender.com/bookings?email=${user.email}`)
       .then((res) => res.json())
       .then((data) => {
         const userBookings = data.filter((b) => b.userEmail === user.email);
@@ -72,7 +72,7 @@ export default function ToursBookings() {
     if (!result.isConfirmed) return;
 
     try {
-      const res = await fetch(`https://ass-server-1.onrender.com/bookings/${id}`, { method: "DELETE" });
+      const res = await fetch(`https://ass-server-sy-travles.onrender.com/bookings/${id}`, { method: "DELETE" });
       if (!res.ok) throw new Error("Failed to cancel booking");
       Swal.fire({ icon: "success", title: "Booking Cancelled" });
       fetchBookings(); // refresh bookings

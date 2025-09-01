@@ -1,220 +1,195 @@
-// src/pages/Login.jsx
-import React, { useState, useContext } from "react";
-import {
-  signInWithEmailAndPassword,
-  GoogleAuthProvider,
-  signInWithPopup,
-} from "firebase/auth";
-import { auth } from "../firebase";
-import { useNavigate, Link } from "react-router-dom";
-import { toast, ToastContainer } from "react-toastify";
-import "react-toastify/dist/ReactToastify.css";
-import { FiEye, FiEyeOff } from "react-icons/fi";
-import { FcGoogle } from "react-icons/fc";
-import { ThemeContext } from "../context/ThemeContext"; 
+import React, { useState, useEffect, useContext } from "react";
+import { useNavigate, NavLink } from "react-router-dom";
+import Swal from "sweetalert2";
+import { auth, provider } from "../firebase";
+import { signInWithPopup } from "firebase/auth";
+import { Helmet } from "react-helmet";
+import { AuthContext } from "../context/AuthContext";
+import { ThemeContext } from "../context/ThemeContext";
+import { Mail, Lock, Shield, Chrome, ArrowRight, Eye, EyeOff, Sun, Moon } from "lucide-react";
+
+const API_URL = import.meta.env.VITE_BACKEND_URL || "https://ass-server-sy-travles.onrender.com";
 
 const Login = () => {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
+  const [formData, setFormData] = useState({ email: "", password: "" });
+  const [loading, setLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
-  const navigate = useNavigate();
-  const { theme } = useContext(ThemeContext); 
+  const [isLoading, setIsLoading] = useState(true);
 
-  // -----------------------------
-  // Login to backend (email/password)
-  // -----------------------------
-  const loginWithEmailBackend = async (email, password) => {
-    const res = await fetch("https://ass-server-1.onrender.com/customers/login", {
+  const navigate = useNavigate();
+  const { login } = useContext(AuthContext);
+  const { theme, toggleTheme } = useContext(ThemeContext);
+
+  // Page loading animation
+  useEffect(() => {
+    const timer = setTimeout(() => setIsLoading(false), 1500);
+    return () => clearTimeout(timer);
+  }, []);
+
+  const handleChange = e => setFormData(prev => ({ ...prev, [e.target.name]: e.target.value }));
+
+  // Login via API
+  const loginUser = async (email, password) => {
+    const res = await fetch(`${API_URL}/customers/login`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ email, password }),
     });
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Email login failed");
-    return data;
+    if (!res.ok) {
+      const err = await res.json();
+      throw new Error(err.error || "Login failed");
+    }
+    return res.json(); // expects { user, token }
   };
 
-  // -----------------------------
-  // Login to backend (Firebase)
-  // -----------------------------
-  const loginWithFirebaseBackend = async (user) => {
-    const token = await user.getIdToken();
-
-    const res = await fetch(
-      "https://ass-server-1.onrender.com/customers/firebase-login",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          uid: user.uid,
-          email: user.email,
-          name: user.displayName,
-          picture: user.photoURL,
-        }),
-      }
-    );
-
-    const data = await res.json();
-    if (!res.ok) throw new Error(data.error || "Firebase login failed");
-    return data;
-  };
-
-  // -----------------------------
-  // Handle Email/Password Login
-  // -----------------------------
-  const handleEmailLogin = async (e) => {
+  const handleLogin = async e => {
     e.preventDefault();
+    const { email, password } = formData;
+    if (!email || !password) return Swal.fire("Missing fields", "Email and password required.", "warning");
 
-    if (!email.trim()) return toast.error("Email is required");
-    if (!password) return toast.error("Password is required");
-
+    setLoading(true);
     try {
-      const userCredential = await signInWithEmailAndPassword(auth, email, password);
-      const user = userCredential.user;
-
-      await loginWithEmailBackend(email, password);
-
-      toast.success("Logged in successfully!");
-      navigate("/");
+      const loginData = await loginUser(email, password);
+      login(loginData.user, loginData.token); // Set user + token
+      Swal.fire("Welcome!", "Logged in successfully.", "success").then(() => navigate("/"));
     } catch (err) {
-      if (err.code === "auth/user-not-found" || err.code === "auth/wrong-password") {
-        toast.error("Invalid email or password");
-      } else {
-        toast.error(err.message);
-      }
+      console.error(err);
+      Swal.fire("Login Failed", err.message || "Try again.", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
-  // -----------------------------
-  // Handle Google Login
-  // -----------------------------
+  // Google Login
   const handleGoogleLogin = async () => {
-    const provider = new GoogleAuthProvider();
+    setLoading(true);
     try {
       const result = await signInWithPopup(auth, provider);
       const user = result.user;
 
-      await loginWithFirebaseBackend(user);
+      if (!user.email) return Swal.fire("Google account has no email", "Please use another account.", "error");
 
-      toast.success("Logged in with Google!");
-      navigate("/");
+      const res = await fetch(`${API_URL}/customers/google-login`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          uid: user.uid,
+          email: user.email,
+          name: user.displayName,
+          photo: user.photoURL,
+        }),
+      });
+
+      if (!res.ok) {
+        const err = await res.json();
+        throw new Error(err.error || "Google login failed");
+      }
+
+      const loginData = await res.json();
+      login(loginData.user, loginData.token); // Set user + token
+      Swal.fire("Welcome!", "Signed in with Google!", "success").then(() => navigate("/"));
     } catch (err) {
-      toast.error(err.message);
+      console.error(err);
+      Swal.fire("Google Sign-in Failed", err.message || "Try again.", "error");
+    } finally {
+      setLoading(false);
     }
   };
 
-  return (
-    <div
-      className={`min-h-screen flex items-center justify-center p-4 transition-colors duration-300 ${
-        theme === "dark"
-          ? "bg-gray-900 text-white"
-          : "bg-gradient-to-r from-purple-200 via-pink-100 to-yellow-50 text-gray-900"
-      }`}
-    >
-      <div
-        className={`shadow-2xl rounded-3xl w-full max-w-lg p-10 relative transition-colors duration-300 ${
-          theme === "dark" ? "bg-gray-800" : "bg-white"
-        }`}
-      >
-        <h2
-          className={`text-3xl font-bold text-center mb-8 ${
-            theme === "dark" ? "text-yellow-400" : "text-gray-800"
-          }`}
-        >
-          Login
-        </h2>
-
-        <form onSubmit={handleEmailLogin} className="space-y-5">
-          <input
-            type="email"
-            placeholder="Email"
-            value={email}
-            onChange={(e) => setEmail(e.target.value)}
-            className={`peer w-full px-4 py-3 border rounded-xl outline-none transition ${
-              theme === "dark"
-                ? "bg-gray-700 border-gray-600 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
-                : "bg-white border-gray-300 text-black focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-            }`}
-            required
-          />
-
-          <div className="relative">
-            <input
-              type={showPassword ? "text" : "password"}
-              placeholder="Password"
-              value={password}
-              onChange={(e) => setPassword(e.target.value)}
-              className={`peer w-full px-4 py-3 pr-12 border rounded-xl outline-none transition ${
-                theme === "dark"
-                  ? "bg-gray-700 border-gray-600 text-white focus:border-yellow-400 focus:ring-1 focus:ring-yellow-400"
-                  : "bg-white border-gray-300 text-black focus:border-purple-500 focus:ring-1 focus:ring-purple-500"
-              }`}
-              required
-            />
-            <span
-              onClick={() => setShowPassword(!showPassword)}
-              className="absolute top-3 right-4 cursor-pointer transition"
-            >
-              {showPassword ? (
-                <FiEyeOff
-                  size={20}
-                  className={theme === "dark" ? "text-gray-300" : "text-gray-600"}
-                />
-              ) : (
-                <FiEye
-                  size={20}
-                  className={theme === "dark" ? "text-gray-300" : "text-gray-600"}
-                />
-              )}
-            </span>
+  // Loading screen
+  const LoadingScreen = () => (
+    <div className={`fixed inset-0 z-50 flex items-center justify-center ${theme === "dark" ? "bg-black" : "bg-white"}`}>
+      <div className="flex flex-col items-center space-y-8">
+        <div className="relative">
+          <div className="w-20 h-20 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl flex items-center justify-center animate-pulse shadow-2xl">
+            <Shield className="w-10 h-10 text-white" />
           </div>
+          <div className="absolute -inset-2 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl opacity-20 animate-ping"></div>
+        </div>
+        <div className={`text-center ${theme === "dark" ? "text-white" : "text-gray-800"}`}>
+          <h2 className="text-2xl font-bold mb-2">Welcome to Sylhet Travles</h2>
+          <p className="text-gray-400 dark:text-gray-300">Securing your future, one step at a time</p>
+        </div>
+        <div className="flex space-x-2">
+          {[...Array(3)].map((_, i) => (
+            <div key={i} className="w-3 h-3 bg-blue-500 rounded-full animate-bounce" style={{ animationDelay: `${i * 0.2}s` }}></div>
+          ))}
+        </div>
+      </div>
+    </div>
+  );
 
-          <button
-            type="submit"
-            className={`w-full py-3 rounded-xl font-semibold shadow-lg transition ${
-              theme === "dark"
-                ? "bg-yellow-500 hover:bg-yellow-600 text-black"
-                : "bg-gradient-to-r from-purple-500 to-pink-500 text-white hover:shadow-purple-400"
-            }`}
-          >
-            Login
-          </button>
+  if (isLoading) return <LoadingScreen />;
 
-          <button
-            onClick={handleGoogleLogin}
-            type="button"
-            className={`w-full flex items-center justify-center gap-2 py-3 rounded-xl font-semibold shadow transition ${
-              theme === "dark"
-                ? "bg-gray-700 border border-gray-600 text-white hover:bg-gray-600"
-                : "bg-white border border-gray-300 text-black hover:shadow-gray-300"
-            }`}
-          >
-            <FcGoogle size={24} /> Login with Google
-          </button>
-        </form>
+  return (
+    <div className={`min-h-screen flex items-center justify-center p-4 relative bg-cover bg-center ${theme === "dark" ? "bg-gray-900" : "bg-white"}`} style={{ backgroundImage: "url('/background-login.jpg')" }}>
+      <Helmet>
+        <title>Login | Sylhet Travles</title>
+      </Helmet>
 
-        <p
-          className={`text-center mt-6 ${
-            theme === "dark" ? "text-gray-400" : "text-gray-500"
-          }`}
-        >
-          Don't have an account?{" "}
-          <Link
-            to="/register"
-            className={`font-medium hover:underline ${
-              theme === "dark" ? "text-yellow-400" : "text-purple-600"
-            }`}
-          >
-            Register
-          </Link>
-        </p>
+      <div className="absolute top-4 right-4">
+        <button onClick={toggleTheme} className={`p-2 rounded-full shadow-md ${theme === "dark" ? "bg-gray-700 text-yellow-400" : "bg-gray-200 text-gray-800"}`}>
+          {theme === "dark" ? <Sun className="w-5 h-5" /> : <Moon className="w-5 h-5" />}
+        </button>
       </div>
 
-      <ToastContainer position="top-center" autoClose={3000} />
+      <div className="relative w-full max-w-md">
+        <div className={`p-8 space-y-6 rounded-3xl shadow-2xl border ${theme === "dark" ? "bg-gray-800 border-gray-700 text-white" : "bg-white border-gray-200 text-gray-800"}`}>
+          <div className="text-center space-y-2">
+            <div className="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-r from-blue-500 to-purple-500 rounded-2xl mb-4">
+              <Shield className="w-8 h-8 text-white" />
+            </div>
+            <h2 className="text-3xl font-bold">Login</h2>
+            <p className={theme === "dark" ? "text-gray-300" : "text-gray-600"}>Sign in to your account</p>
+          </div>
+
+          {/* Login Form */}
+          <form onSubmit={handleLogin} className="space-y-5">
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center space-x-2">
+                <Mail className="w-4 h-4" /> <span>Email</span>
+              </label>
+              <input type="email" name="email" placeholder="Email" value={formData.email} onChange={handleChange} disabled={loading} className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 pl-10 disabled:opacity-50 ${theme === "dark" ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400" : "bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-500"}`} />
+            </div>
+
+            <div className="space-y-2">
+              <label className="text-sm font-medium flex items-center space-x-2">
+                <Lock className="w-4 h-4" /> <span>Password</span>
+              </label>
+              <div className="relative">
+                <input type={showPassword ? "text" : "password"} name="password" placeholder="Password" value={formData.password} onChange={handleChange} disabled={loading} className={`w-full px-4 py-3 rounded-xl focus:ring-2 focus:ring-blue-500 focus:border-transparent transition-all duration-300 pl-10 pr-10 disabled:opacity-50 ${theme === "dark" ? "bg-gray-700 border-gray-600 text-white placeholder-gray-400" : "bg-gray-50 border-gray-200 text-gray-800 placeholder-gray-500"}`} />
+                <button type="button" onClick={() => setShowPassword(prev => !prev)} className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 hover:text-gray-600 transition-colors" disabled={loading}>
+                  {showPassword ? <EyeOff className="w-5 h-5" /> : <Eye className="w-5 h-5" />}
+                </button>
+              </div>
+            </div>
+
+            <button type="submit" disabled={loading} className={`w-full py-3 rounded-xl font-semibold transform hover:scale-105 transition-all duration-300 flex items-center justify-center space-x-2 disabled:opacity-50 shadow-lg ${theme === "dark" ? "bg-blue-600 text-white hover:bg-blue-700" : "bg-gradient-to-r from-blue-500 to-purple-500 text-white hover:from-blue-600 hover:to-purple-600"}`}>
+              {loading ? <><div className="w-5 h-5 border-2 border-white border-t-transparent rounded-full animate-spin"></div><span>Logging in...</span></> : <><span>Login</span><ArrowRight className="w-4 h-4" /></>}
+            </button>
+          </form>
+
+          {/* Google Login */}
+          <div className="relative my-4">
+            <div className="absolute inset-0 flex items-center"><div className={`w-full border-t ${theme === "dark" ? "border-gray-600" : "border-gray-200"}`}></div></div>
+            <div className="relative flex justify-center text-sm"><span className={theme === "dark" ? "bg-gray-800 text-gray-300 px-4" : "bg-white text-gray-500 px-4"}>— or —</span></div>
+          </div>
+
+          <button onClick={handleGoogleLogin} disabled={loading} className={`w-full py-3 rounded-xl font-semibold flex items-center justify-center space-x-3 transform hover:scale-105 transition-all duration-300 shadow-sm ${theme === "dark" ? "bg-gray-700 border border-gray-600 text-white hover:bg-gray-600" : "bg-white border-2 border-gray-200 text-gray-700 hover:bg-gray-50 hover:border-gray-300"}`}>
+            <Chrome className="w-5 h-5 text-red-500" />
+            <span>Sign in with Google</span>
+          </button>
+
+          <p className={theme === "dark" ? "text-gray-300 text-center pt-4" : "text-gray-600 text-center pt-4"}>
+            No account? <NavLink to="/register" className="text-blue-600 hover:text-blue-700 font-semibold transition-colors underline">Register</NavLink>
+          </p>
+        </div>
+
+        <div className={`mt-6 flex items-center justify-center space-x-2 text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-500"}`}>
+          <Shield className="w-4 h-4" />
+          <span>Secured with 256-bit SSL encryption</span>
+        </div>
+      </div>
     </div>
   );
 };

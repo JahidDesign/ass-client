@@ -68,7 +68,7 @@ const EditHotelModal = ({ isOpen, onClose, hotel, onUpdated }) => {
 
     try {
       const res = await fetch(
-        `https://ass-server-1.onrender.com/hotels/${hotel._id}`,
+        `https://ass-server-sy-travles.onrender.com/hotels/${hotel._id}`,
         {
           method: "PUT",
           headers: { "Content-Type": "application/json" },

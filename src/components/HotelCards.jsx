@@ -26,7 +26,7 @@ const MyHotelCards = () => {
 
   // Fetch hotels
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/hotels")
+    fetch("https://ass-server-sy-travles.onrender.com/hotels")
       .then((res) => res.json())
       .then((data) => {
         const userHotels = user ? data.filter((h) => h.userEmail === user.email) : data;
@@ -61,7 +61,7 @@ const MyHotelCards = () => {
     };
 
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/hotels", {
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/hotels", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(newHotel),

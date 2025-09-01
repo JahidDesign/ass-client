@@ -17,10 +17,10 @@ export default function AllDataViewer() {
     const fetchAll = async () => {
       try {
         const [cRes, hRes, tRes, fRes] = await Promise.all([
-          fetch("https://ass-server-1.onrender.com/customers"),
-          fetch("https://ass-server-1.onrender.com/hotels"),
-          fetch("https://ass-server-1.onrender.com/tours"),
-          fetch("https://ass-server-1.onrender.com/flights"),
+          fetch("https://ass-server-sy-travles.onrender.com/customers"),
+          fetch("https://ass-server-sy-travles.onrender.com/hotels"),
+          fetch("https://ass-server-sy-travles.onrender.com/tours"),
+          fetch("https://ass-server-sy-travles.onrender.com/flights"),
         ]);
 
         const [cData, hData, tData, fData] = await Promise.all([

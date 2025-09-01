@@ -18,7 +18,7 @@ const MyFlightBookings = () => {
   }, []);
 
   const fetchBookings = () => {
-    fetch("https://ass-server-1.onrender.com/flights")
+    fetch("https://ass-server-sy-travles.onrender.com/flights")
       .then((res) => res.json())
       .then((data) => setBookings(data))
       .catch((err) => console.error("Fetch error:", err));
@@ -40,7 +40,7 @@ const MyFlightBookings = () => {
     }).then(async (result) => {
       if (result.isConfirmed) {
         try {
-          const res = await fetch(`https://ass-server-1.onrender.com/flights/${id}`, {
+          const res = await fetch(`https://ass-server-sy-travles.onrender.com/flights/${id}`, {
             method: "DELETE",
           });
           const data = await res.json();

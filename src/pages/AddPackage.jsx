@@ -72,7 +72,7 @@ const UpdatePackage = () => {
     setLoading(true);
 
     try {
-      const response = await fetch("https://ass-server-1.onrender.com/hotels", {
+      const response = await fetch("https://ass-server-sy-travles.onrender.com/hotels", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(formData),

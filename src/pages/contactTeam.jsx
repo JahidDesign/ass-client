@@ -9,7 +9,7 @@ const OurTeam = () => {
   const { theme } = useContext(ThemeContext); 
 
   useEffect(() => {
-    fetch("https://ass-server-1.onrender.com/teams")
+    fetch("https://ass-server-sy-travles.onrender.com/teams")
       .then((res) => res.json())
       .then((data) => {
         setMembers(data);

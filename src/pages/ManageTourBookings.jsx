@@ -22,7 +22,7 @@ const ManageTourBookings = () => {
   const fetchTours = async () => {
     setLoading(true);
     try {
-      const res = await fetch("https://ass-server-1.onrender.com/tours");
+      const res = await fetch("https://ass-server-sy-travles.onrender.com/tours");
       const data = await res.json();
       const userTours = user ? data.filter((t) => t.userEmail === user.email) : [];
       setTours(userTours);
@@ -45,7 +45,7 @@ const ManageTourBookings = () => {
 
     if (confirm.isConfirmed) {
       try {
-        const res = await fetch(`https://ass-server-1.onrender.com/tours/${id}`, {
+        const res = await fetch(`https://ass-server-sy-travles.onrender.com/tours/${id}`, {
           method: "DELETE",
         });
         const result = await res.json();
