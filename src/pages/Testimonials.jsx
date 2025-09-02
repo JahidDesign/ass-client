@@ -2,7 +2,7 @@
 import React, { useContext } from "react";
 import { FaQuoteLeft, FaStar } from "react-icons/fa";
 import Slider from "react-slick";
-import { motion } from "framer-motion"; 
+import { motion } from "framer-motion";
 import { ThemeContext } from "../context/ThemeContext";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
@@ -45,61 +45,72 @@ const Testimonials = () => {
       { breakpoint: 768, settings: { slidesToShow: 1 } },
     ],
     customPaging: () => (
-      <div className={`w-3 h-3 rounded-full transition-all duration-300 ${
-        theme === "dark" 
-          ? "bg-gray-600 hover:bg-green-400" 
-          : "bg-gray-300 hover:bg-green-500"
-      }`} />
+      <div
+        className={`h-1 w-6 rounded-full transition-all duration-300 ${
+          theme === "dark"
+            ? "bg-gray-600 group-hover:bg-green-400"
+            : "bg-gray-300 group-hover:bg-green-500"
+        }`}
+      />
     ),
   };
 
   return (
-    <section
-      className={`relative py-20 overflow-hidden ${
-        theme === "dark" 
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900" 
+    <motion.section
+      initial={{ opacity: 0, y: 50 }}
+      whileInView={{ opacity: 1, y: 0 }}
+      transition={{ duration: 0.8 }}
+      viewport={{ once: true }}
+      className={`relative py-16 sm:py-20 lg:py-24 overflow-hidden ${
+        theme === "dark"
+          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
           : "bg-gradient-to-br from-gray-50 via-white to-gray-100"
       }`}
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGc+CjxwYXRoIGQ9Im0zNiAxNGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0tMTYgMGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0wLTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2IDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptMTYgMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTE2IDMwYTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2LTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTAtMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTMwIDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnoiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8L2c+Cjwvc3ZnPg==')] bg-repeat" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGc+CjxwYXRoIGQ9Im0zNiAxNGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0tMTYgMGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0wLTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2IDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptMTYgMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTE2IDMwYTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2LTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTAtMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnoiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8L2c+Cjwvc3ZnPg==')] bg-repeat" />
       </div>
 
-      <div className="container relative mx-auto px-4 text-center">
+      <div className="container relative mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center">
+        {/* Header */}
         <motion.div
-          className="mb-16"
+          className="mb-12 md:mb-16"
           initial={{ opacity: 0, y: -30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
           viewport={{ once: true }}
         >
-          <div className={`inline-flex items-center px-4 py-2 rounded-full text-sm font-medium mb-4 ${
-            theme === "dark" 
-              ? "bg-green-400/10 text-green-400 border border-green-400/20" 
-              : "bg-green-500/10 text-green-600 border border-green-500/20"
-          }`}>
+          <div
+            className={`inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 ${
+              theme === "dark"
+                ? "bg-green-400/10 text-green-400 border border-green-400/20"
+                : "bg-green-500/10 text-green-600 border border-green-500/20"
+            }`}
+          >
             ✨ Testimonials
           </div>
-          
+
           <h2
-            className={`text-4xl md:text-5xl lg:text-6xl font-black mb-6 ${
+            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 ${
               theme === "dark" ? "text-white" : "text-gray-900"
             }`}
           >
             What Our{" "}
-            <span className={`bg-gradient-to-r ${
-              theme === "dark" 
-                ? "from-green-400 to-emerald-400" 
-                : "from-green-600 to-emerald-600"
-            } bg-clip-text text-transparent`}>
+            <span
+              className={`bg-gradient-to-r ${
+                theme === "dark"
+                  ? "from-green-400 to-emerald-400"
+                  : "from-green-600 to-emerald-600"
+              } bg-clip-text text-transparent`}
+            >
               Happy Clients
             </span>{" "}
             Say
           </h2>
 
           <motion.p
-            className={`text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${
+            className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${
               theme === "dark" ? "text-gray-300" : "text-gray-600"
             }`}
             initial={{ opacity: 0, y: 20 }}
@@ -107,98 +118,101 @@ const Testimonials = () => {
             transition={{ duration: 0.8, delay: 0.2 }}
             viewport={{ once: true }}
           >
-            Real stories from travelers who experienced the magic of Sylhet with our personalized services, comfortable accommodations, and unforgettable tour packages.
+            Real stories from travelers who experienced the magic of Sylhet with
+            our personalized services, comfortable accommodations, and
+            unforgettable tour packages.
           </motion.p>
         </motion.div>
 
+        {/* Slider */}
         <div className="relative">
           <Slider {...settings}>
             {testimonials.map((testimonial, index) => (
-              <div key={index} className="px-4">
+              <div key={index} className="px-2 sm:px-4">
                 <motion.div
+                  whileHover={{ y: -8, rotate: -1 }}
+                  transition={{ type: "spring", stiffness: 120 }}
                   initial={{ opacity: 0, y: 50, scale: 0.9 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  transition={{ 
-                    duration: 0.8, 
-                    delay: index * 0.1,
-                    type: "spring",
-                    damping: 20,
-                    stiffness: 100
-                  }}
                   viewport={{ once: true }}
-                  className={`group relative rounded-3xl p-8 h-full transition-all duration-500 hover:-translate-y-2 cursor-pointer ${
+                  className={`group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 h-full transition-all duration-500 cursor-pointer ${
                     theme === "dark"
                       ? "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-green-400/30 hover:shadow-2xl hover:shadow-green-400/10"
                       : "bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-green-500/30 shadow-lg hover:shadow-2xl hover:shadow-green-500/10"
                   }`}
                 >
-                  {/* Gradient overlay */}
-                  <div className={`absolute inset-0 rounded-3xl opacity-0 group-hover:opacity-100 transition-opacity duration-500 ${
-                    theme === "dark"
-                      ? "bg-gradient-to-br from-green-400/5 to-emerald-400/5"
-                      : "bg-gradient-to-br from-green-500/5 to-emerald-500/5"
-                  }`} />
-                  
                   <div className="relative z-10">
-                    {/* Quote icon with modern styling */}
-                    <div className={`inline-flex items-center justify-center w-16 h-16 rounded-2xl mb-6 transition-transform duration-300 group-hover:scale-110 ${
-                      theme === "dark"
-                        ? "bg-gradient-to-br from-green-400/20 to-emerald-400/20 text-green-400"
-                        : "bg-gradient-to-br from-green-500/20 to-emerald-500/20 text-green-600"
-                    }`}>
-                      <FaQuoteLeft className="text-2xl" />
+                    {/* Quote icon */}
+                    <div
+                      className={`inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 transition-transform duration-300 group-hover:scale-110 ${
+                        theme === "dark"
+                          ? "bg-gradient-to-br from-green-400/20 to-emerald-400/20 text-green-400"
+                          : "bg-gradient-to-br from-green-500/20 to-emerald-500/20 text-green-600"
+                      }`}
+                    >
+                      <FaQuoteLeft className="text-lg sm:text-2xl" />
                     </div>
 
                     {/* Review text */}
-                    <p className={`text-base md:text-lg leading-relaxed mb-8 ${
-                      theme === "dark" ? "text-gray-100" : "text-gray-700"
-                    }`}>
+                    <p
+                      className={`text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 ${
+                        theme === "dark" ? "text-gray-100" : "text-gray-700"
+                      }`}
+                    >
                       "{testimonial.text}"
                     </p>
 
-                    {/* Rating stars */}
-                    <div className="flex justify-center mb-6 space-x-1">
+                    {/* Stars */}
+                    <div className="flex justify-center mb-4 sm:mb-6 space-x-1">
                       {[...Array(5)].map((_, i) => (
                         <motion.div
                           key={i}
                           initial={{ opacity: 0, scale: 0 }}
                           whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{ 
-                            duration: 0.3, 
-                            delay: 0.5 + (i * 0.1) 
+                          transition={{
+                            duration: 0.3,
+                            delay: 0.5 + i * 0.1,
                           }}
                           viewport={{ once: true }}
                         >
-                          <FaStar className="text-yellow-400 text-lg drop-shadow-sm" />
+                          <FaStar className="text-yellow-400 text-sm sm:text-lg drop-shadow-sm" />
                         </motion.div>
                       ))}
                     </div>
 
                     {/* User info */}
                     <div className="flex items-center justify-center">
-                      <div className="relative">
+                      <div className="relative mr-3 sm:mr-4">
                         <img
                           src={testimonial.image}
                           alt={testimonial.name}
-                          className="w-16 h-16 rounded-2xl object-cover border-2 border-white dark:border-gray-600 shadow-lg mr-4 transition-transform duration-300 group-hover:scale-105"
+                          className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl object-cover border-2 border-white dark:border-gray-600 shadow-lg transition-transform duration-300 group-hover:scale-105"
                         />
-                        <div className={`absolute -top-1 -right-1 w-6 h-6 rounded-full flex items-center justify-center text-xs ${
-                          theme === "dark"
-                            ? "bg-green-400 text-gray-900"
-                            : "bg-green-500 text-white"
-                        }`}>
+                        <div
+                          className={`absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs ${
+                            theme === "dark"
+                              ? "bg-green-400 text-gray-900"
+                              : "bg-green-500 text-white"
+                          }`}
+                        >
                           ✓
                         </div>
                       </div>
                       <div className="text-left">
-                        <h4 className={`font-bold text-lg mb-1 ${
-                          theme === "dark" ? "text-white" : "text-gray-900"
-                        }`}>
+                        <h4
+                          className={`font-bold text-sm sm:text-lg mb-0.5 sm:mb-1 ${
+                            theme === "dark" ? "text-white" : "text-gray-900"
+                          }`}
+                        >
                           {testimonial.name}
                         </h4>
-                        <p className={`text-sm ${
-                          theme === "dark" ? "text-gray-400" : "text-gray-500"
-                        }`}>
+                        <p
+                          className={`text-xs sm:text-sm ${
+                            theme === "dark"
+                              ? "text-gray-400"
+                              : "text-gray-500"
+                          }`}
+                        >
                           {testimonial.role}
                         </p>
                       </div>
@@ -208,31 +222,59 @@ const Testimonials = () => {
               </div>
             ))}
           </Slider>
+          <div className="pt-8" />
         </div>
 
-        {/* Bottom CTA */}
+        {/* Trust logos */}
+        <div className="mt-16 flex flex-wrap justify-center items-center gap-6 opacity-70">
+          <img src="/logos/airbnb.svg" className="h-8" alt="Airbnb" />
+          <img src="/logos/booking.svg" className="h-8" alt="Booking.com" />
+          <img src="/logos/tripadvisor.svg" className="h-8" alt="TripAdvisor" />
+          <img src="/logos/expedia.svg" className="h-8" alt="Expedia" />
+        </div>
+
+        {/* CTA */}
         <motion.div
-          className="mt-16"
+          className="mt-12 sm:mt-16"
           initial={{ opacity: 0, y: 30 }}
           whileInView={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6, delay: 0.3 }}
           viewport={{ once: true }}
         >
-          <p className={`text-base md:text-lg mb-6 ${
-            theme === "dark" ? "text-gray-400" : "text-gray-600"
-          }`}>
+          <p
+            className={`text-sm sm:text-base md:text-lg mb-4 sm:mb-6 ${
+              theme === "dark" ? "text-gray-400" : "text-gray-600"
+            }`}
+          >
             Ready to create your own amazing experience?
           </p>
-          <button className={`px-8 py-4 rounded-2xl font-semibold text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 ${
-            theme === "dark"
-              ? "bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 hover:shadow-lg hover:shadow-green-400/25 focus:ring-green-400/30"
-              : "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg hover:shadow-green-500/25 focus:ring-green-500/30"
-          }`}>
+          <button
+            className={`px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 ${
+              theme === "dark"
+                ? "bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 hover:shadow-lg hover:shadow-green-400/25 focus:ring-green-400/30"
+                : "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg hover:shadow-green-500/25 focus:ring-green-500/30"
+            }`}
+          >
             Book Your Journey
           </button>
         </motion.div>
       </div>
-    </section>
+
+      {/* Bottom divider */}
+      <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-[0]">
+        <svg
+          className="relative block w-full h-12 sm:h-20 lg:h-28 text-gray-100 dark:text-gray-900"
+          xmlns="http://www.w3.org/2000/svg"
+          preserveAspectRatio="none"
+          viewBox="0 0 1200 120"
+        >
+          <path
+            d="M985.66 92.83c-62.59-8.37-125.41-16.72-188.08-14.57-60.6 2.05-120.87 14.25-181.57 21.29-60.3 7-120.66 8.36-180.94 1.48-63.73-7.43-127.13-23.16-190.52-28.92C160.55 66.42 79.92 68.77 0 74.45V120h1200V95.8c-71.87 5.12-143.89-2.84-214.34-2.97z"
+            fill="currentColor"
+          />
+        </svg>
+      </div>
+    </motion.section>
   );
 };
 

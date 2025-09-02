@@ -12,22 +12,30 @@ const TravelHeroBanner = () => {
   return (
     <div className={`${theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"}`}>
       {/* Hero Background */}
-      <section
-        className="relative h-[65vh] bg-cover bg-center flex items-center justify-center"
-        style={{
-          backgroundImage:
-            "url('https://i.ibb.co/KjPpS8pH/madison-olling-6wmx-DOa-AO4-unsplash.jpg')",
-        }}
-      >
-        <div className="absolute inset-0  bg-opacity-50"></div>
-        <div className="relative z-10 text-center px-4">
-          <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Sylhet<span className="text-yellow-400">Tourist</span>Spot
-          </h1>
-          <p className="text-lg">Restaurants, Resorts & Hotels in Sylhet</p>
-        </div>
-      </section>
+       <section
+      className="relative h-[65vh] bg-cover bg-center flex items-center justify-center"
+      style={{
+        backgroundImage:
+          "url('https://i.ibb.co.com/Y4tmq5k4/IMG-20190728-123806.jpg')",
+      }}
+    >
+      {/* Overlay with theme-aware color */}
+      <div
+        className={`absolute inset-0 ${
+          theme === "dark"
+            ? "bg-black/60" // darker overlay for dark mode
+            : "bg-white/40" // light overlay for light mode
+        }`}
+      ></div>
 
+      {/* Content */}
+      <div className="relative z-10 text-center px-4">
+        <h1 className="text-4xl md:text-5xl font-bold mb-4">
+          Sylhet<span className="text-yellow-400">Tourist</span>Spot
+        </h1>
+        <p className="text-lg">Restaurants, Resorts & Hotels in Sylhet</p>
+      </div>
+    </section>
       {/* Search Card */}
       <div className="relative z-20 max-w-6xl mx-auto px-6 sm:px-8 -mt-28">
         <div className={`${theme === "dark" ? "bg-gray-800 shadow-xl" : "bg-white shadow-xl"} rounded-3xl p-6 sm:p-10`}>
