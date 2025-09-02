@@ -22,9 +22,9 @@ const TravelHeroBanner = () => {
         <div className="absolute inset-0  bg-opacity-50"></div>
         <div className="relative z-10 text-center px-4">
           <h1 className="text-4xl md:text-5xl font-bold mb-4">
-            Where to <span className="text-yellow-400">Fly?</span>
+            Sylhet<span className="text-yellow-400">Tourist</span>Spot
           </h1>
-          <p className="text-lg">Find Cheap Flights & Tickets in Bangladesh</p>
+          <p className="text-lg">Restaurants, Resorts & Hotels in Sylhet</p>
         </div>
       </section>
 
