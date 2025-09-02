@@ -3,6 +3,7 @@ import { useNavigate } from "react-router-dom";
 import Swal from "sweetalert2";
 import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
+import HeroSection from "./myBookBanner";
 import MyHotelBookings from "./HotelBookings";
 import ToursBookings from "./ToursBooking";
 
@@ -10,23 +11,19 @@ const MyAllBookings = () => {
   const { theme } = useContext(ThemeContext);
   const { user } = useContext(AuthContext);
   const navigate = useNavigate();
+  const isDark = theme === "dark";
 
-  // User not logged in view
   if (!user) {
     return (
       <div
         className={`min-h-screen flex flex-col items-center justify-center p-6 ${
-          theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
+          isDark ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
         }`}
       >
         <h1 className="text-3xl font-extrabold mb-4 text-red-500">
           You are not logged in
         </h1>
-        <p
-          className={`mb-6 text-lg ${
-            theme === "dark" ? "text-gray-300" : "text-gray-600"
-          }`}
-        >
+        <p className={`mb-6 text-lg ${isDark ? "text-gray-300" : "text-gray-600"}`}>
           Please log in to view your bookings.
         </p>
         <button
@@ -45,32 +42,37 @@ const MyAllBookings = () => {
     );
   }
 
-  // Logged-in user view
+  // Modern centered h2 style
+  const modernH2Style =
+    "text-4xl mt-5 md:text-5xl font-extrabold mb-6 text-center bg-clip-text text-transparent bg-gradient-to-r from-yellow-400 to-yellow-600 drop-shadow-lg relative";
+
+  const h2WrapperStyle =
+    "flex justify-center mt-5 items-center mb-12 after:block after:w-24 after:h-1 after:bg-yellow-400 after:mt-2 after:rounded-full";
+
   return (
     <div
       className={`${
-        theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
+        isDark ? "bg-gray-900 text-gray-100" : "bg-gray-50 text-gray-900"
       } min-h-screen py-10 px-6`}
     >
-      <h1 className="text-4xl sm:text-5xl font-extrabold text-center bg-clip-text text-transparent bg-gradient-to-r from-blue-500 via-indigo-500 to-purple-500 mb-12 mt-10">
-        My Bookings
-      </h1>
+      {/* Hero Banner */}
+      <HeroSection />
 
-      {/* Hotel Bookings */}
-      <section className="mb-12">
-        <div className="text-center">
-           <h2 className="text-3xl text-center font-bold mb-6 text-yellow-400 border-b-2 border-yellow-400 w-fit pb-1">
-          Hotel Bookings
-        </h2> 
+      {/* Hotel Bookings Section */}
+      <section className="mb-16">
+        <div className={h2WrapperStyle}>
+          <h2 className={modernH2Style}>Hotel Bookings</h2>
         </div>
         <MyHotelBookings user={user} />
       </section>
 
-      {/* Tour Bookings */}
-      <section>
-        <h2 className="text-3xl text-center font-bold mb-6 text-green-400 border-b-2 border-green-400 w-fit pb-1">
-          Tour Bookings
-        </h2>
+      {/* Tour Bookings Section */}
+      <section className="mb-16">
+        <div className={h2WrapperStyle}>
+          <h2 className={modernH2Style.replace("from-yellow-400 to-yellow-600", "from-green-400 to-green-600")}>
+            Tour Bookings
+          </h2>
+        </div>
         <ToursBookings user={user} />
       </section>
     </div>

@@ -150,7 +150,7 @@ export default function HotelDetails() {
         showCancelButton: true,
         cancelButtonText: "Close",
       }).then((r) => {
-        if (r.isConfirmed) navigate("/my-bookings");
+        if (r.isConfirmed) navigate("/myallbookings");
       });
     } catch (e) {
       console.error("Booking error:", e);

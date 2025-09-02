@@ -152,7 +152,7 @@ export default function TourDetails() {
         text: "Your tour has been successfully booked.",
         confirmButtonText: "Go to My Bookings",
       });
-      navigate("/my-toursbookings");
+      navigate("/myallbookings");
     } catch (err) {
       console.error(err);
       MySwal.fire({
