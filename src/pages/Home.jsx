@@ -6,7 +6,7 @@ import { ThemeContext } from "../context/ThemeContext";
 import TravelHeroBanner from "./homeBanner";
 import Carousel from "./FlightSearchCard";
 import PopularAirlines from "./PopularAirlines";
-import AnimatedAirlineGallery from "./AnimatedAirlineGallery";
+import ModernAirlineGallery from "./AnimatedAirlineGallery";
 import AboutMe from "./AboutMe";
 import HotelsCards from "./hotelsCards";
 import Testimonials from "./Testimonials";
@@ -91,7 +91,7 @@ const Home = () => {
       </section>
 
       <section className="my-10">
-        <AnimatedAirlineGallery />
+        <ModernAirlineGallery />
       </section>
       
        <section className="my-10">

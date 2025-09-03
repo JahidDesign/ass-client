@@ -1,8 +1,9 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { Helmet } from "react-helmet";
 import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import HeroSection from "./airBanner";
 import Swal from "sweetalert2";
+import { ThemeContext } from "../context/ThemeContext";
 
 const defaultForm = {
   passengerName: "",
@@ -20,7 +21,7 @@ const defaultForm = {
   regularPrice: "",
   offerPrice: "",
   discount: "",
-  customerPhoto: "", // Now expects direct image URL
+  customerPhoto: "",
 };
 
 const generateTicketNumber = (name = "") => {
@@ -35,9 +36,16 @@ const generateTicketNumber = (name = "") => {
 };
 
 const FlightSeatBooking = () => {
+  const { theme } = useContext(ThemeContext);
   const [formData, setFormData] = useState(defaultForm);
   const [loading, setLoading] = useState(false);
   const [ticketNumber, setTicketNumber] = useState("");
+
+  const bgClass = theme === "dark" ? "bg-black text-white" : "bg-white text-black";
+  const inputBgClass = theme === "dark" ? "bg-gray-800 text-white border-gray-600" : "bg-white text-black border-gray-300";
+  const buttonClass = theme === "dark"
+    ? "bg-blue-600 hover:bg-blue-700 text-white"
+    : "bg-blue-600 hover:bg-blue-700 text-white";
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -96,7 +104,7 @@ const FlightSeatBooking = () => {
   };
 
   return (
-    <div className="bg-white text-black min-h-screen">
+    <div className={`${bgClass} min-h-screen`}>
       <Helmet>
         <title>Flight Seat Booking - Travel-Tours-Agency</title>
       </Helmet>
@@ -106,7 +114,7 @@ const FlightSeatBooking = () => {
       <section className="px-4 py-10">
         <form
           onSubmit={handleSubmit}
-          className="max-w-4xl mx-auto bg-white p-8 rounded-xl border border-gray-200 shadow space-y-10"
+          className={`max-w-4xl mx-auto p-8 rounded-xl border shadow space-y-10 ${theme === "dark" ? "border-gray-700" : "border-gray-200"}`}
         >
           <h2 className="text-3xl md:text-4xl font-bold text-center text-blue-700">
             ✈️ Book Your Flight Seat
@@ -125,7 +133,7 @@ const FlightSeatBooking = () => {
               { id: "airlineName", label: "Airline", type: "text", placeholder: "Qatar Airways..." },
             ].map(({ id, label, type, icon, placeholder }) => (
               <div key={id}>
-                <label htmlFor={id} className="block text-sm font-medium mb-1 gap-1 items-center">
+                <label htmlFor={id} className="block text-sm font-medium mb-1 flex items-center gap-1">
                   {icon} {label}
                 </label>
                 <input
@@ -135,7 +143,7 @@ const FlightSeatBooking = () => {
                   value={formData[id]}
                   onChange={handleChange}
                   required
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md focus:ring-2 focus:ring-blue-400"
+                  className={`w-full px-4 py-2 rounded-md focus:ring-2 focus:ring-blue-400 ${inputBgClass}`}
                 />
               </div>
             ))}
@@ -154,7 +162,7 @@ const FlightSeatBooking = () => {
                   id={id}
                   value={formData[id]}
                   onChange={handleChange}
-                  className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                  className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
                 >
                   {options.map((opt) => <option key={opt}>{opt}</option>)}
                 </select>
@@ -170,7 +178,7 @@ const FlightSeatBooking = () => {
                 id="priceType"
                 value={formData.priceType}
                 onChange={handleChange}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
               >
                 <option value="Regular">Regular</option>
                 <option value="Offer">Offer</option>
@@ -185,7 +193,7 @@ const FlightSeatBooking = () => {
                 value={formData.regularPrice}
                 onChange={handleChange}
                 required
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
               />
             </div>
 
@@ -197,7 +205,7 @@ const FlightSeatBooking = () => {
                 value={formData.offerPrice}
                 onChange={handleChange}
                 disabled={formData.priceType === "Regular"}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
               />
             </div>
 
@@ -209,12 +217,12 @@ const FlightSeatBooking = () => {
                 value={formData.discount}
                 onChange={handleChange}
                 disabled={formData.priceType === "Regular"}
-                className="w-full px-4 py-2 border border-gray-300 rounded-md"
+                className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
               />
             </div>
           </div>
 
-          {/* Photo URL Field */}
+          {/* Photo URL */}
           <div>
             <label htmlFor="customerPhoto" className="block text-sm font-medium mb-1">Customer Photo URL</label>
             <input
@@ -223,7 +231,7 @@ const FlightSeatBooking = () => {
               placeholder="https://example.com/photo.jpg"
               value={formData.customerPhoto}
               onChange={handleChange}
-              className="w-full px-4 py-2 border border-gray-300 rounded-md"
+              className={`w-full px-4 py-2 rounded-md ${inputBgClass}`}
             />
             {formData.customerPhoto && (
               <img
@@ -239,9 +247,7 @@ const FlightSeatBooking = () => {
             <button
               type="submit"
               disabled={loading}
-              className={`px-8 py-3 rounded-md text-lg font-medium shadow ${
-                loading ? "bg-gray-400" : "bg-blue-600 hover:bg-blue-700 text-white"
-              } transition`}
+              className={`px-8 py-3 rounded-md text-lg font-medium shadow ${buttonClass} transition`}
             >
               {loading ? "Booking..." : "Confirm Booking"}
             </button>

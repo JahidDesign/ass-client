@@ -1,11 +1,6 @@
-// src/components/Testimonials.jsx
-import React, { useContext } from "react";
-import { FaQuoteLeft, FaStar } from "react-icons/fa";
-import Slider from "react-slick";
-import { motion } from "framer-motion";
+import React, { useState, useEffect, useContext } from "react";
+import { Quote, Star, ChevronLeft, ChevronRight } from "lucide-react";
 import { ThemeContext } from "../context/ThemeContext";
-import "slick-carousel/slick/slick.css";
-import "slick-carousel/slick/slick-theme.css";
 
 const testimonials = [
   {
@@ -22,210 +17,113 @@ const testimonials = [
   },
   {
     name: "JAMAL MIA",
-    role: "Solo Traveler",
-    text: "Fahim Holiday Homes & Tourism impressed us from start to finish. Warm welcome, smooth tours, and great service. A top choice for anyone visiting Sylhet!",
+    role: "Family Traveler",
+    text: "Outstanding service and beautiful accommodations. Our family had an amazing time exploring Sylhet with their expert guidance. Highly recommended!",
     image: "https://i.pravatar.cc/100?img=3",
+  },
+  {
+    name: "MARIA ISLAM",
+    role: "Adventure Seeker",
+    text: "Perfect blend of comfort and adventure. The team knows Sylhet inside out and created an unforgettable experience for our group.",
+    image: "https://i.pravatar.cc/100?img=4",
   },
 ];
 
-const Testimonials = () => {
-  const { theme } = useContext(ThemeContext);
-
-  const settings = {
-    dots: true,
-    infinite: true,
-    autoplay: true,
-    speed: 700,
-    autoplaySpeed: 4000,
-    slidesToShow: 3,
-    slidesToScroll: 1,
-    arrows: false,
-    responsive: [
-      { breakpoint: 1280, settings: { slidesToShow: 2 } },
-      { breakpoint: 768, settings: { slidesToShow: 1 } },
-    ],
-    customPaging: () => (
-      <div
-        className={`h-1 w-6 rounded-full transition-all duration-300 ${
-          theme === "dark"
-            ? "bg-gray-600 group-hover:bg-green-400"
-            : "bg-gray-300 group-hover:bg-green-500"
-        }`}
-      />
-    ),
-  };
-
-  return (
-    <motion.section
-      initial={{ opacity: 0, y: 50 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      transition={{ duration: 0.8 }}
-      viewport={{ once: true }}
-      className={`relative py-16 sm:py-20 lg:py-24 overflow-hidden ${
+const TestimonialCard = ({ testimonial, theme }) => (
+  <div
+    className={`group relative rounded-xl sm:rounded-2xl p-4 sm:p-6 lg:p-8 transition-all duration-500 ${
+      theme === "dark"
+        ? "bg-gray-800/60 backdrop-blur-sm border border-gray-700/50 hover:border-green-400/40 hover:shadow-xl hover:shadow-green-400/10"
+        : "bg-white shadow-md border border-gray-200 hover:border-green-500/40 hover:shadow-xl hover:shadow-green-500/10"
+    } hover:scale-105 hover:-translate-y-2`}
+  >
+    <div
+      className={`inline-flex items-center justify-center w-10 h-10 sm:w-12 sm:h-12 rounded-lg mb-4 transition-colors duration-300 ${
         theme === "dark"
-          ? "bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900"
-          : "bg-gradient-to-br from-gray-50 via-white to-gray-100"
+          ? "bg-green-400/10 text-green-400 group-hover:bg-green-400/20"
+          : "bg-green-500/10 text-green-600 group-hover:bg-green-500/20"
       }`}
     >
-      {/* Background Pattern */}
-      <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Zz48cGF0aCBkPSJtMzYgMTRhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTE2IDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptMC0xNmE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0xNiAwYTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2IDE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bS0xNiAzMGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0xNi0xNmE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0wLTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6IiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L2c+PC9zdmc+')] bg-repeat" />
+      <Quote className="text-base sm:text-lg" />
+    </div>
+
+    <p className={`text-sm sm:text-base mb-4 sm:mb-5 ${theme === "dark" ? "text-gray-100" : "text-gray-700"}`}>
+      "{testimonial.text}"
+    </p>
+
+    <div className="flex mb-3 space-x-1">
+      {[...Array(5)].map((_, i) => (
+        <Star key={i} className="text-yellow-400 text-sm sm:text-base fill-current" />
+      ))}
+    </div>
+
+    <div className="flex items-center">
+      <img
+        src={testimonial.image}
+        alt={testimonial.name}
+        className="w-10 h-10 sm:w-12 sm:h-12 rounded-full object-cover border-2 border-white dark:border-gray-600 shadow-sm"
+      />
+      <div className="ml-3 text-left flex-1 min-w-0">
+        <h4 className={`font-bold text-sm sm:text-base truncate ${theme === "dark" ? "text-white" : "text-gray-900"}`}>
+          {testimonial.name}
+        </h4>
+        <p className={`text-xs sm:text-sm truncate ${theme === "dark" ? "text-gray-400" : "text-gray-500"}`}>
+          {testimonial.role}
+        </p>
       </div>
+    </div>
+  </div>
+);
 
-      <div className="container relative mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center">
-        {/* Header */}
-        <motion.div
-          className="mb-12 md:mb-16"
-          initial={{ opacity: 0, y: -30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6 }}
-          viewport={{ once: true }}
+const Testimonials = () => {
+  const { theme } = useContext(ThemeContext);
+  const [currentIndex, setCurrentIndex] = useState(0);
+
+  // Auto-play for mobile
+  useEffect(() => {
+    const interval = setInterval(() => {
+      setCurrentIndex((prev) => (prev + 1) % testimonials.length);
+    }, 4000);
+    return () => clearInterval(interval);
+  }, []);
+
+  return (
+    <section className={`relative py-8 md:py-16 overflow-hidden ${theme === "dark" ? "bg-gray-900" : "bg-gray-50"}`}>
+      <div className="container mx-auto px-4 text-center">
+        <h2
+          className={`text-3xl sm:text-4xl md:text-5xl font-black mb-8 ${
+            theme === "dark" ? "text-white" : "text-gray-900"
+          }`}
         >
+          What Our{" "}
+          <span className="bg-gradient-to-r from-green-500 to-emerald-500 bg-clip-text text-transparent">
+            Happy Clients
+          </span>{" "}
+          Say
+        </h2>
+
+        {/* Desktop & Tablet Grid */}
+        <div className="hidden md:grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+          {testimonials.map((t, i) => (
+            <TestimonialCard key={i} testimonial={t} theme={theme} />
+          ))}
+        </div>
+
+        {/* Mobile Slider */}
+        <div className="md:hidden relative overflow-hidden rounded-xl">
           <div
-            className={`inline-flex items-center px-3 sm:px-4 py-1.5 sm:py-2 rounded-full text-xs sm:text-sm font-medium mb-4 ${
-              theme === "dark"
-                ? "bg-green-400/10 text-green-400 border border-green-400/20"
-                : "bg-green-500/10 text-green-600 border border-green-500/20"
-            }`}
+            className="flex transition-transform duration-500 ease-in-out"
+            style={{ transform: `translateX(-${currentIndex * 100}%)` }}
           >
-            ✨ Testimonials
-          </div>
-
-          <h2
-            className={`text-3xl sm:text-4xl md:text-5xl lg:text-6xl font-black mb-4 sm:mb-6 ${
-              theme === "dark" ? "text-white" : "text-gray-900"
-            }`}
-          >
-            What Our{" "}
-            <span
-              className={`bg-gradient-to-r ${
-                theme === "dark"
-                  ? "from-green-400 to-emerald-400"
-                  : "from-green-600 to-emerald-600"
-              } bg-clip-text text-transparent`}
-            >
-              Happy Clients
-            </span>{" "}
-            Say
-          </h2>
-
-          <motion.p
-            className={`text-base sm:text-lg md:text-xl max-w-3xl mx-auto leading-relaxed ${
-              theme === "dark" ? "text-gray-300" : "text-gray-600"
-            }`}
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.8, delay: 0.2 }}
-            viewport={{ once: true }}
-          >
-            Real stories from travelers who experienced the magic of Sylhet with
-            our personalized services, comfortable accommodations, and
-            unforgettable tour packages.
-          </motion.p>
-        </motion.div>
-
-        {/* Slider */}
-        <div className="relative">
-          <Slider {...settings}>
-            {testimonials.map((testimonial, index) => (
-              <div key={index} className="px-2 sm:px-4">
-                <motion.div
-                  whileHover={{ y: -8, rotate: -1 }}
-                  transition={{ type: "spring", stiffness: 120 }}
-                  initial={{ opacity: 0, y: 50, scale: 0.9 }}
-                  whileInView={{ opacity: 1, y: 0, scale: 1 }}
-                  viewport={{ once: true }}
-                  className={`group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md mx-auto transition-all duration-500 cursor-pointer ${
-                    theme === "dark"
-                      ? "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-green-400/30 hover:shadow-2xl hover:shadow-green-400/10"
-                      : "bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-green-500/30 shadow-lg hover:shadow-2xl hover:shadow-green-500/10"
-                  }`}
-                >
-                  <div className="relative z-10">
-                    {/* Quote icon */}
-                    <div
-                      className={`inline-flex items-center justify-center w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl mb-4 sm:mb-6 transition-transform duration-300 group-hover:scale-110 ${
-                        theme === "dark"
-                          ? "bg-gradient-to-br from-green-400/20 to-emerald-400/20 text-green-400"
-                          : "bg-gradient-to-br from-green-500/20 to-emerald-500/20 text-green-600"
-                      }`}
-                    >
-                      <FaQuoteLeft className="text-lg sm:text-2xl" />
-                    </div>
-
-                    {/* Review text */}
-                    <p
-                      className={`text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 text-center max-w-xs mx-auto ${
-                        theme === "dark" ? "text-gray-100" : "text-gray-700"
-                      }`}
-                    >
-                      "{testimonial.text}"
-                    </p>
-
-                    {/* Stars */}
-                    <div className="flex justify-center mb-4 sm:mb-6 space-x-1">
-                      {[...Array(5)].map((_, i) => (
-                        <motion.div
-                          key={i}
-                          initial={{ opacity: 0, scale: 0 }}
-                          whileInView={{ opacity: 1, scale: 1 }}
-                          transition={{
-                            duration: 0.3,
-                            delay: 0.5 + i * 0.1,
-                          }}
-                          viewport={{ once: true }}
-                        >
-                          <FaStar className="text-yellow-400 text-sm sm:text-lg drop-shadow-sm" />
-                        </motion.div>
-                      ))}
-                    </div>
-
-                    {/* User info */}
-                    <div className="flex items-center justify-center">
-                      <div className="relative mr-3 sm:mr-4">
-                        <img
-                          src={testimonial.image}
-                          alt={testimonial.name}
-                          className="w-12 h-12 sm:w-16 sm:h-16 rounded-xl sm:rounded-2xl object-cover border-2 border-white dark:border-gray-600 shadow-lg transition-transform duration-300 group-hover:scale-105"
-                        />
-                        <div
-                          className={`absolute -top-1 -right-1 w-5 h-5 sm:w-6 sm:h-6 rounded-full flex items-center justify-center text-[10px] sm:text-xs ${
-                            theme === "dark"
-                              ? "bg-green-400 text-gray-900"
-                              : "bg-green-500 text-white"
-                          }`}
-                        >
-                          ✓
-                        </div>
-                      </div>
-                      <div className="text-left">
-                        <h4
-                          className={`font-bold text-sm sm:text-lg mb-0.5 sm:mb-1 ${
-                            theme === "dark" ? "text-white" : "text-gray-900"
-                          }`}
-                        >
-                          {testimonial.name}
-                        </h4>
-                        <p
-                          className={`text-xs sm:text-sm ${
-                            theme === "dark"
-                              ? "text-gray-400"
-                              : "text-gray-500"
-                          }`}
-                        >
-                          {testimonial.role}
-                        </p>
-                      </div>
-                    </div>
-                  </div>
-                </motion.div>
+            {testimonials.map((t, i) => (
+              <div key={i} className="w-full flex-shrink-0 px-2">
+                <TestimonialCard testimonial={t} theme={theme} />
               </div>
             ))}
-          </Slider>
-          <div className="pt-10" /> {/* space for dots */}
+          </div>
         </div>
       </div>
-    </motion.section>
+    </section>
   );
 };
 
