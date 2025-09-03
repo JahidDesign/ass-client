@@ -69,7 +69,7 @@ const Testimonials = () => {
     >
       {/* Background Pattern */}
       <div className="absolute inset-0 opacity-5">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPGc+CjxwYXRoIGQ9Im0zNiAxNGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0tMTYgMGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0wLTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2IDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptMTYgMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTE2IDMwYTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2LTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTAtMTZhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnoiIGZpbGw9ImN1cnJlbnRDb2xvciIvPgo8L2c+Cjwvc3ZnPg==')] bg-repeat" />
+        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iNjAiIGhlaWdodD0iNjAiIHZpZXdCb3g9IjAgMCA2MCA2MCIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj48Zz48cGF0aCBkPSJtMzYgMTRhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptLTE2IDBhNSA1IDAgMCAxIDUgNXYyYTUgNSAwIDAgMSAtNSA1aC0yYTUgNSAwIDAgMSAtNS01di0yYTUgNSAwIDAgMSA1LTVoMnptMC0xNmE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0xNiAwYTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bTE2IDE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6bS0xNiAzMGE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0xNi0xNmE1IDUgMCAwIDEgNSA1djJhNSA1IDAgMCAxIC01IDVoLTJhNSA1IDAgMCAxIC01LTV2LTJhNSA1IDAgMCAxIDUtNWgyem0wLTE2YTUgNSAwIDAgMSA1IDV2MmE1IDUgMCAwIDEgLTUgNWgtMmE1IDUgMCAwIDEgLTUtNXYtMmE1IDUgMCAwIDEgNS01aDJ6IiBmaWxsPSJjdXJyZW50Q29sb3IiLz48L2c+PC9zdmc+')] bg-repeat" />
       </div>
 
       <div className="container relative mx-auto px-4 sm:px-6 md:px-8 lg:px-12 text-center">
@@ -135,7 +135,7 @@ const Testimonials = () => {
                   initial={{ opacity: 0, y: 50, scale: 0.9 }}
                   whileInView={{ opacity: 1, y: 0, scale: 1 }}
                   viewport={{ once: true }}
-                  className={`group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 h-full transition-all duration-500 cursor-pointer ${
+                  className={`group relative rounded-2xl sm:rounded-3xl p-6 sm:p-8 w-full max-w-md mx-auto transition-all duration-500 cursor-pointer ${
                     theme === "dark"
                       ? "bg-gray-800/50 backdrop-blur-sm border border-gray-700/50 hover:border-green-400/30 hover:shadow-2xl hover:shadow-green-400/10"
                       : "bg-white/80 backdrop-blur-sm border border-gray-200 hover:border-green-500/30 shadow-lg hover:shadow-2xl hover:shadow-green-500/10"
@@ -155,7 +155,7 @@ const Testimonials = () => {
 
                     {/* Review text */}
                     <p
-                      className={`text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 ${
+                      className={`text-sm sm:text-base md:text-lg leading-relaxed mb-6 sm:mb-8 text-center max-w-xs mx-auto ${
                         theme === "dark" ? "text-gray-100" : "text-gray-700"
                       }`}
                     >
@@ -222,57 +222,8 @@ const Testimonials = () => {
               </div>
             ))}
           </Slider>
-          <div className="pt-8" />
+          <div className="pt-10" /> {/* space for dots */}
         </div>
-
-        {/* Trust logos */}
-        <div className="mt-16 flex flex-wrap justify-center items-center gap-6 opacity-70">
-          <img src="/logos/airbnb.svg" className="h-8" alt="Airbnb" />
-          <img src="/logos/booking.svg" className="h-8" alt="Booking.com" />
-          <img src="/logos/tripadvisor.svg" className="h-8" alt="TripAdvisor" />
-          <img src="/logos/expedia.svg" className="h-8" alt="Expedia" />
-        </div>
-
-        {/* CTA */}
-        <motion.div
-          className="mt-12 sm:mt-16"
-          initial={{ opacity: 0, y: 30 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.6, delay: 0.3 }}
-          viewport={{ once: true }}
-        >
-          <p
-            className={`text-sm sm:text-base md:text-lg mb-4 sm:mb-6 ${
-              theme === "dark" ? "text-gray-400" : "text-gray-600"
-            }`}
-          >
-            Ready to create your own amazing experience?
-          </p>
-          <button
-            className={`px-6 sm:px-8 py-3 sm:py-4 rounded-xl sm:rounded-2xl font-semibold text-base sm:text-lg transition-all duration-300 transform hover:scale-105 focus:outline-none focus:ring-4 ${
-              theme === "dark"
-                ? "bg-gradient-to-r from-green-400 to-emerald-400 text-gray-900 hover:shadow-lg hover:shadow-green-400/25 focus:ring-green-400/30"
-                : "bg-gradient-to-r from-green-500 to-emerald-500 text-white hover:shadow-lg hover:shadow-green-500/25 focus:ring-green-500/30"
-            }`}
-          >
-            Book Your Journey
-          </button>
-        </motion.div>
-      </div>
-
-      {/* Bottom divider */}
-      <div className="absolute bottom-0 left-0 right-0 overflow-hidden leading-[0]">
-        <svg
-          className="relative block w-full h-12 sm:h-20 lg:h-28 text-gray-100 dark:text-gray-900"
-          xmlns="http://www.w3.org/2000/svg"
-          preserveAspectRatio="none"
-          viewBox="0 0 1200 120"
-        >
-          <path
-            d="M985.66 92.83c-62.59-8.37-125.41-16.72-188.08-14.57-60.6 2.05-120.87 14.25-181.57 21.29-60.3 7-120.66 8.36-180.94 1.48-63.73-7.43-127.13-23.16-190.52-28.92C160.55 66.42 79.92 68.77 0 74.45V120h1200V95.8c-71.87 5.12-143.89-2.84-214.34-2.97z"
-            fill="currentColor"
-          />
-        </svg>
       </div>
     </motion.section>
   );

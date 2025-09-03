@@ -23,6 +23,8 @@ import CustomersPage from "../pages/subpages/CustomersPage";
 import HotelsPage from "../pages/subpages/HotelsPage";
 import ToursPage from "../pages/subpages/ToursPage";
 import FlightsPage from "../pages/subpages/FlightsPage";
+import TourDetails from "../pages/TourDetails";
+import HotelDetails from "../pages/HotelDetails";
 import NotFound from "../pages/NotFound";
 
 // Route protection
@@ -53,8 +55,8 @@ export default function AppRoutes() {
 
         {/* Dynamic ID-based Pages */}
         <Route path="/customers/:id" element={<MotionWrapper><CustomersPage /></MotionWrapper>} />
-        <Route path="/hotels/:id" element={<MotionWrapper><HotelsPage /></MotionWrapper>} />
-        <Route path="/tours/:id" element={<MotionWrapper><ToursPage /></MotionWrapper>} />
+        <Route path="/hotels/:id" element={ <MotionWrapper> <HotelDetails> <HotelsPage /></HotelDetails> </MotionWrapper>}/>
+        <Route path="/tours/:id" element={ <MotionWrapper> <TourDetails> <ToursPage /></TourDetails> </MotionWrapper>}/>
         <Route path="/flights/:id" element={<MotionWrapper><FlightsPage /></MotionWrapper>} />
 
         {/* Protected Routes */}
