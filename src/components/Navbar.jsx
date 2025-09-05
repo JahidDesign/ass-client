@@ -20,19 +20,6 @@ import SearchBar from "./secret/SearchBar";
 import NavLink from "./secret/NavLink";
 import { motion, AnimatePresence } from "framer-motion";
 
-// Animated NavLink Component
-// const NavLink = ({ to, children, onClick }) => (
-//   <Link to={to} onClick={onClick} className="relative inline-block group font-medium">
-//     <span className="relative z-10">{children}</span>
-//     <motion.span
-//       className="absolute left-0 bottom-0 h-0.5 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full"
-//       initial={{ width: 0 }}
-//       whileHover={{ width: "100%" }}
-//       transition={{ type: "spring", stiffness: 300, damping: 20 }}
-//     />
-//   </Link>
-// );
-
 const Navbar = () => {
   const { user } = useContext(AuthContext);
   const { theme, toggleTheme } = useContext(ThemeContext);
@@ -41,7 +28,8 @@ const Navbar = () => {
 
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [dropdownOpen, setDropdownOpen] = useState(false);
-  const [packageDropdownOpen, setPackageDropdownOpen] = useState(false);
+  const [packageDropdownDesktop, setPackageDropdownDesktop] = useState(false);
+  const [packageDropdownMobile, setPackageDropdownMobile] = useState(false);
 
   const [customers, setCustomers] = useState([]);
   const [hotels, setHotels] = useState([]);
@@ -57,20 +45,23 @@ const Navbar = () => {
     { label: "Add Flight", path: "/add-air-packages" },
   ];
 
-  // Fetch data
+  // Fetch data for SearchBar
   useEffect(() => {
     fetch("https://ass-server-sy-travles.onrender.com/customers")
       .then((res) => res.json())
       .then(setCustomers)
       .catch(console.error);
+
     fetch("https://ass-server-sy-travles.onrender.com/hotels")
       .then((res) => res.json())
       .then(setHotels)
       .catch(console.error);
+
     fetch("https://ass-server-sy-travles.onrender.com/tours")
       .then((res) => res.json())
       .then(setTours)
       .catch(console.error);
+
     fetch("https://ass-server-sy-travles.onrender.com/flights")
       .then((res) => res.json())
       .then(setFlights)
@@ -81,16 +72,19 @@ const Navbar = () => {
   useEffect(() => {
     setDropdownOpen(false);
     setDrawerOpen(false);
-    setPackageDropdownOpen(false);
+    setPackageDropdownDesktop(false);
+    setPackageDropdownMobile(false);
   }, [location]);
 
   // Close dropdowns when clicking outside
   useEffect(() => {
     const handleClickOutside = (e) => {
-      if (packageRef.current && !packageRef.current.contains(e.target))
-        setPackageDropdownOpen(false);
-      if (avatarRef.current && !avatarRef.current.contains(e.target))
+      if (packageRef.current && !packageRef.current.contains(e.target)) {
+        setPackageDropdownDesktop(false);
+      }
+      if (avatarRef.current && !avatarRef.current.contains(e.target)) {
         setDropdownOpen(false);
+      }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => document.removeEventListener("mousedown", handleClickOutside);
@@ -124,7 +118,9 @@ const Navbar = () => {
   return (
     <header
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-300 ${
-        theme === "dark" ? "bg-gray-900 border-b border-gray-700" : "bg-white border-b border-gray-200"
+        theme === "dark"
+          ? "bg-gray-900 border-b border-gray-700"
+          : "bg-white border-b border-gray-200"
       }`}
     >
       <div className="flex justify-between items-center px-4 py-3 max-w-7xl mx-auto">
@@ -132,34 +128,36 @@ const Navbar = () => {
         <Link to="/" className="flex items-center">
           <img
             src="https://i.ibb.co/1yLywn8/Blue-and-White-Modern-Travel-Agency-Logo-300-x-92-px.png"
-            alt="Travel Agency"
+            alt="Travel Agency Logo"
             className="h-10 w-auto object-contain"
           />
         </Link>
 
-        {/* Desktop Nav */}
+        {/* Desktop Navigation */}
         <nav className="hidden lg:flex items-center gap-6 font-medium text-gray-700 dark:text-gray-200">
           <NavLink to="/">Home</NavLink>
           <button onClick={() => handleProtectedClick("/all-packages")}>
-            <NavLink to="#">All Packages</NavLink>
+            <span className="relative">All Packages</span>
           </button>
 
-          {/* Add Package Dropdown */}
+          {/* Desktop Add Package Dropdown */}
           <div className="relative" ref={packageRef}>
             <button
               onClick={() => {
                 if (!user) return handleProtectedClick("/login");
-                setPackageDropdownOpen(!packageDropdownOpen);
+                setPackageDropdownDesktop(!packageDropdownDesktop);
               }}
               className="flex items-center gap-1"
             >
               Add Package <FaChevronDown size={12} />
             </button>
             <AnimatePresence>
-              {packageDropdownOpen && user && (
+              {packageDropdownDesktop && user && (
                 <motion.div
                   className={`absolute top-full mt-2 w-48 rounded-lg shadow-lg border ${
-                    theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+                    theme === "dark"
+                      ? "bg-gray-800 border-gray-700"
+                      : "bg-white border-gray-200"
                   }`}
                   initial={{ opacity: 0, y: -10 }}
                   animate={{ opacity: 1, y: 0 }}
@@ -185,14 +183,19 @@ const Navbar = () => {
           <NavLink to="/manage-my-packages">Manage Packages</NavLink>
           <NavLink to="/about">About</NavLink>
           <button onClick={() => handleProtectedClick("/myallbookings")}>
-            <NavLink to="#">My Bookings</NavLink>
+            <span className="relative">My Bookings</span>
           </button>
           <NavLink to="/contact">Contact</NavLink>
         </nav>
 
-        {/* Desktop Right */}
+        {/* Desktop Right Section */}
         <div className="hidden lg:flex items-center gap-4">
-          <SearchBar customers={customers} hotels={hotels} tours={tours} flights={flights} />
+          <SearchBar
+            customers={customers}
+            hotels={hotels}
+            tours={tours}
+            flights={flights}
+          />
           <button
             onClick={toggleTheme}
             className="p-2 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -206,14 +209,16 @@ const Navbar = () => {
               <img
                 onClick={() => setDropdownOpen(!dropdownOpen)}
                 src={user.photoURL || "/default-avatar.png"}
-                alt="Profile"
+                alt="Profile Avatar"
                 className="w-10 h-10 rounded-full cursor-pointer object-cover border-2 border-blue-500"
               />
               <AnimatePresence>
                 {dropdownOpen && (
                   <motion.div
                     className={`absolute right-0 mt-2 w-52 rounded-lg shadow-lg border z-50 ${
-                      theme === "dark" ? "bg-gray-800 border-gray-700 text-white" : "bg-white border-gray-200 text-gray-800"
+                      theme === "dark"
+                        ? "bg-gray-800 border-gray-700 text-white"
+                        : "bg-white border-gray-200 text-gray-800"
                     }`}
                     initial={{ opacity: 0, y: -10 }}
                     animate={{ opacity: 1, y: 0 }}
@@ -221,7 +226,9 @@ const Navbar = () => {
                     transition={{ type: "spring", stiffness: 300, damping: 25 }}
                   >
                     <div className="p-3 border-b border-gray-200 dark:border-gray-700">
-                      <p className="font-medium text-sm">{user.displayName || "User"}</p>
+                      <p className="font-medium text-sm">
+                        {user.displayName || "User"}
+                      </p>
                       <p className="text-xs text-gray-500">{user.email}</p>
                     </div>
                     <button
@@ -257,7 +264,10 @@ const Navbar = () => {
         </div>
 
         {/* Mobile Toggle */}
-        <button className="lg:hidden p-2" onClick={() => setDrawerOpen(!drawerOpen)}>
+        <button
+          className="lg:hidden p-2"
+          onClick={() => setDrawerOpen(!drawerOpen)}
+        >
           {drawerOpen ? <FaTimes size={20} /> : <FaBars size={20} />}
         </button>
       </div>
@@ -275,7 +285,9 @@ const Navbar = () => {
             />
             <motion.div
               className={`fixed top-0 right-0 h-full w-80 max-w-full shadow-xl z-50 lg:hidden ${
-                theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-gray-900"
+                theme === "dark"
+                  ? "bg-gray-900 text-white"
+                  : "bg-white text-gray-900"
               }`}
               initial={{ x: "100%" }}
               animate={{ x: 0 }}
@@ -299,48 +311,76 @@ const Navbar = () => {
 
               {/* Search */}
               <div className="p-4 border-b">
-                <SearchBar customers={customers} hotels={hotels} tours={tours} flights={flights} />
+                <SearchBar
+                  customers={customers}
+                  hotels={hotels}
+                  tours={tours}
+                  flights={flights}
+                />
               </div>
 
               {/* Mobile Links */}
               <nav className="flex flex-col p-4 gap-2">
                 {[
                   { label: "Home", to: "/" },
-                  { label: "All Packages", to: "#", onClick: () => handleProtectedClick("/all-packages") },
+                  {
+                    label: "All Packages",
+                    to: null,
+                    onClick: () => handleProtectedClick("/all-packages"),
+                  },
                   { label: "Manage Packages", to: "/manage-my-packages" },
                   { label: "About", to: "/about" },
-                  { label: "My Bookings", to: "#", onClick: () => handleProtectedClick("/myallbookings") },
+                  {
+                    label: "My Bookings",
+                    to: null,
+                    onClick: () => handleProtectedClick("/myallbookings"),
+                  },
                   { label: "Contact", to: "/contact" },
                 ].map((item, idx) => (
-                  <motion.div key={idx} whileHover={{ x: 5 }} whileTap={{ scale: 0.97 }}>
-                    <NavLink
-                      to={item.to}
-                      onClick={() => {
-                        setDrawerOpen(false);
-                        if (item.onClick) item.onClick();
-                      }}
-                    >
-                      {item.label}
-                    </NavLink>
+                  <motion.div
+                    key={idx}
+                    whileHover={{ x: 5 }}
+                    whileTap={{ scale: 0.97 }}
+                  >
+                    {item.to ? (
+                      <NavLink
+                        to={item.to}
+                        onClick={() => setDrawerOpen(false)}
+                      >
+                        {item.label}
+                      </NavLink>
+                    ) : (
+                      <button
+                        onClick={() => {
+                          if (item.onClick) item.onClick();
+                          setDrawerOpen(false);
+                        }}
+                        className="text-left w-full"
+                      >
+                        {item.label}
+                      </button>
+                    )}
                   </motion.div>
                 ))}
 
-                {/* Mobile Add Package */}
+                {/* Mobile Add Package Dropdown */}
                 <div className="relative mt-2">
                   <button
                     onClick={() => {
                       if (!user) return handleProtectedClick("/login");
-                      setPackageDropdownOpen(!packageDropdownOpen);
+                      setPackageDropdownMobile(!packageDropdownMobile);
                     }}
                     className="flex items-center gap-1 w-full"
                   >
                     Add Package <FaChevronDown size={12} />
                   </button>
                   <AnimatePresence>
-                    {packageDropdownOpen && user && (
+                    {packageDropdownMobile && user && (
                       <motion.div
                         className={`flex flex-col mt-2 rounded-lg shadow-lg border ${
-                          theme === "dark" ? "bg-gray-800 border-gray-700" : "bg-white border-gray-200"
+                          theme === "dark"
+                            ? "bg-gray-800 border-gray-700"
+                            : "bg-white border-gray-200"
                         }`}
                         initial={{ opacity: 0, y: -10 }}
                         animate={{ opacity: 1, y: 0 }}
@@ -374,7 +414,9 @@ const Navbar = () => {
                 {/* Mobile User Section */}
                 {user ? (
                   <div className="mt-4 border-t pt-4 flex flex-col gap-2">
-                    <p className="font-medium text-sm">{user.displayName || "User"}</p>
+                    <p className="font-medium text-sm">
+                      {user.displayName || "User"}
+                    </p>
                     <p className="text-xs text-gray-500">{user.email}</p>
                     <button
                       onClick={() => handleProtectedClick("/profile")}
