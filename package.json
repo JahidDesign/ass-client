@@ -34,6 +34,7 @@
     "react-slick": "^0.31.0",
     "react-spinners": "^0.17.0",
     "react-toastify": "^11.0.5",
+    "react-tooltip": "^5.29.1",
     "router": "^2.2.0",
     "slick-carousel": "^1.8.1",
     "sweetalert2": "^11.22.0",

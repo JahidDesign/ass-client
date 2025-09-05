@@ -9,7 +9,7 @@ import MyHotelCards from "../components/HotelCards";
 import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 import Swal from "sweetalert2";
-
+import AnimatedSection from "../components/secret/AnimatedSection"; 
 const ManageMyPackages = () => {
   const { theme } = useContext(ThemeContext); // light or dark
   const { user } = useContext(AuthContext);
@@ -23,7 +23,11 @@ const ManageMyPackages = () => {
   };
 
   return (
-    <div className={`${theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"} min-h-screen`}>
+    <div
+      className={`${
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"
+      } min-h-screen`}
+    >
       <Helmet>
         <title>Manage My Packages - Travel-Tours-Agency</title>
         <meta
@@ -38,10 +42,41 @@ const ManageMyPackages = () => {
 
       {/* Hero Section */}
       <HeroSection />
-
+       <AnimatedSection>
+       <div className="max-w-6xl mx-auto px-4 py-12 text-center">
+        <h2
+          className={`text-3xl font-bold mb-4 ${
+            theme === "dark" ? "text-white" : "text-gray-800"
+          }`}
+        >
+          Manage Your Tour Packages Seamlessly
+        </h2>
+        <p
+          className={`max-w-2xl mx-auto mb-6 ${
+            theme === "dark" ? "text-gray-300" : "text-gray-600"
+          }`}
+        >
+          Whether you're editing itineraries or reviewing bookings, our powerful
+          dashboard helps you stay organized and efficient.
+        </p>
+        <a
+          href="/manage"
+          className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300"
+        >
+          Go to Tour Manager
+        </a>
+      </div>
       {/* My Tours */}
-      <section className="max-w-7xl mx-auto px-4 py-10">
-        {user ? <MyTours /> : (
+     
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">My Tours</h2>
+          <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
+            View and manage your booked tours with ease.
+          </p>
+        </div>
+        {user ? (
+          <MyTours />
+        ) : (
           <div className="text-center py-10 text-gray-500">
             <p>Please log in to view or manage your tours.</p>
             <button
@@ -52,11 +87,16 @@ const ManageMyPackages = () => {
             </button>
           </div>
         )}
-      </section>
-
-      {/* My Hotels */}
-      <section className="max-w-7xl mx-auto px-4 py-10">
-        {user ? <MyHotelCards /> : (
+   
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">My Hotels</h2>
+          <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
+            Manage your hotel bookings and reservations.
+          </p>
+        </div>
+        {user ? (
+          <MyHotelCards />
+        ) : (
           <div className="text-center py-10 text-gray-500">
             <p>Please log in to view or manage your hotels.</p>
             <button
@@ -67,10 +107,15 @@ const ManageMyPackages = () => {
             </button>
           </div>
         )}
-      </section>
-
-      {/* Manage Bookings + Hotels */}
-      <section className="max-w-7xl mx-auto px-4 py-10 space-y-10">
+    
+        <div className="text-center mb-8">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">
+            Manage Bookings & Packages
+          </h2>
+          <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
+            Update, cancel, or review your hotel and tour bookings.
+          </p>
+        </div>
         {user ? (
           <>
             <ManageTourBookings />
@@ -87,7 +132,7 @@ const ManageMyPackages = () => {
             </button>
           </div>
         )}
-      </section>
+      </AnimatedSection>
     </div>
   );
 };

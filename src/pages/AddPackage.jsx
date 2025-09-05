@@ -5,7 +5,7 @@ import Swal from "sweetalert2";
 import HeroSection from "./addpackageBanner";
 import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
-
+import  AnimatedSection from "../components/secret/AnimatedSection";
 const defaultForm = {
   hotelName: "",
   hotelPrice: "",
@@ -110,8 +110,8 @@ const UpdatePackage = () => {
       </Helmet>
 
       <HeroSection />
-
-      <section className="max-w-6xl mx-auto p-6 flex flex-col md:flex-row gap-10">
+     <AnimatedSection>
+      <section className="max-w-6xl mb-5 mx-auto p-6 flex flex-col md:flex-row gap-10">
         {/* Sidebar */}
         <aside
           className={`md:w-1/3 p-6 rounded-xl shadow space-y-4 ${cardBg}`}
@@ -267,6 +267,7 @@ const UpdatePackage = () => {
           </div>
         </form>
       </section>
+      </AnimatedSection>
     </div>
   );
 };

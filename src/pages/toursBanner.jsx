@@ -8,7 +8,7 @@ const HeroSection = () => {
 
   const textClass = isDark ? "text-gray-200" : "text-black";
   const overlayClass = isDark ? "bg-black/70" : "bg-black/60";
-  const featureTextClass = isDark ? "text-gray-300" : "text-gray-600";
+  
 
   return (
     <div className={isDark ? "bg-gray-900" : "bg-white"}>
@@ -33,30 +33,6 @@ const HeroSection = () => {
           </p>
         </div>
       </section>
-
-      {/* Features Section */}
-      <div className="max-w-6xl mx-auto px-4 py-12 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
-        <div className="flex flex-col items-center">
-          <FaMapMarkedAlt className="text-3xl text-blue-600 mb-2" />
-          <h3 className="font-semibold text-lg">Custom Itineraries</h3>
-          <p className={`text-sm ${featureTextClass}`}>Designed to match your preferences and budget.</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaCalendarCheck className="text-3xl text-green-600 mb-2" />
-          <h3 className="font-semibold text-lg">Flexible Scheduling</h3>
-          <p className={`text-sm ${featureTextClass}`}>Choose travel dates that work best for you.</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaHeadset className="text-3xl text-purple-600 mb-2" />
-          <h3 className="font-semibold text-lg">24/7 Support</h3>
-          <p className={`text-sm ${featureTextClass}`}>We’re always here to assist you during your journey.</p>
-        </div>
-        <div className="flex flex-col items-center">
-          <FaUsers className="text-3xl text-red-600 mb-2" />
-          <h3 className="font-semibold text-lg">Group or Solo</h3>
-          <p className={`text-sm ${featureTextClass}`}>Perfect options whether you're alone or with others.</p>
-        </div>
-      </div>
     </div>
   );
 };

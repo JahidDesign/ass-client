@@ -2,7 +2,7 @@ import React, { useContext } from "react";
 import { Helmet } from "react-helmet";
 import { ThemeContext } from "../context/ThemeContext";
 
-// Sections
+// Components
 import TravelHeroBanner from "./homeBanner";
 import Carousel from "./FlightSearchCard";
 import PopularAirlines from "./PopularAirlines";
@@ -11,7 +11,8 @@ import AboutMe from "./AboutMe";
 import HotelsCards from "./hotelsCards";
 import Testimonials from "./Testimonials";
 import ToursList from "./ToursList";
-import WelcomePopup from "../components/WelcomePopup"; // Import the new popup
+import WelcomePopup from "../components/WelcomePopup";
+import AnimatedSection from "../components/secret/AnimatedSection";
 
 const Home = () => {
   const { theme } = useContext(ThemeContext);
@@ -19,12 +20,9 @@ const Home = () => {
   return (
     <div
       className={`${
-        theme === "dark"
-          ? "bg-gray-900 text-white"
-          : "bg-gray-50 text-gray-900"
+        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-gray-900"
       } min-h-screen transition-colors duration-500`}
     >
-      {/* SEO & Metadata */}
       <Helmet>
         <title>Home | Travel Tours Agency</title>
         <meta
@@ -42,61 +40,66 @@ const Home = () => {
       {/* Modern Welcome Popup */}
       <WelcomePopup />
 
-      {/* Main Sections */}
+      {/* Hero Banner */}
       <TravelHeroBanner />
+      <AnimatedSection>
+        {/* Search Card */}
+      
+      {/* Popular Tours */}
+      
 
-        <section
-      className={`my-10 px-5 md:px-10 py-8 rounded-xl shadow-lg transition-colors duration-300 ${
-        theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100"
-      }`}
-    >
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold mb-2">
-          Popular Tours in Sylhet – Most Loved by Our Travelers
-        </h2>
-        <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
-          Explore Top-Rated Sylhet Tour Packages Featuring Ratargul, Jaflong, Lalakhal, Srimangal & More – Perfect for Nature Lovers, Families & Couples
-        </p>
-      </div>
+        <div className="text-center mb-2">
+          <h2 className="text-3xl md:text-4xl font-bold mb-2">
+            Popular Tours in Sylhet – Most Loved by Our Travelers
+          </h2>
+          <p className="text-md md:text-lg text-gray-700 dark:text-gray-300">
+            Explore Top-Rated Sylhet Tour Packages Featuring Ratargul, Jaflong,
+            Lalakhal, Srimangal & More – Perfect for Nature Lovers, Families &
+            Couples
+          </p>
+        </div>
+        <ToursList />
+      
 
-      <ToursList />
-    </section>
-
-      <section className="my-10">
+      {/* Flight Search Carousel */}
+     
         <Carousel />
-      </section>
+      
 
-       <section
-      className={`my-10 px-5 md:px-10 py-8 rounded-xl shadow-lg transition-colors duration-300 ${
-        theme === "light" ? "bg-white text-gray-900" : "bg-gray-900 text-gray-100"
-      }`}
-    >
-      <div className="text-center mb-8">
-        <h2 className="text-3xl md:text-4xl font-bold mb-2">
-          Comfortable & Affordable Hotel Rooms in Sylhet
-        </h2>
-        <p className="text-md md:text-lg text-gray-500 dark:text-gray-300">
-          Book Clean, Secure & Budget-Friendly Rooms with Easy Access to Sylhet’s Top Tourist Spots – Perfect for Families, Solo Travelers & Groups
-        </p>
-      </div>
+      {/* Hotels Section */}
+ 
+        <div className="text-center mt-10">
+          <h2 className="text-3xl mt-2 md:text-4xl font-bold mb-2">
+            Comfortable & Affordable Hotel Rooms in Sylhet
+          </h2>
+          <p className="text-md md:text-lg text-gray-700 dark:text-gray-300">
+            Book Clean, Secure & Budget-Friendly Rooms with Easy Access to
+            Sylhet’s Top Tourist Spots – Perfect for Families, Solo Travelers &
+            Groups
+          </p>
+        </div>
+        <HotelsCards />
+    
 
-      <HotelsCards />
-    </section>
-      <section className="my-10">
+      {/* About Section */}
+     
         <AboutMe />
-      </section>
+      </AnimatedSection>
 
-      <section className="my-10">
+      {/* Airlines Section */}
+      <section className="">
         <PopularAirlines />
       </section>
 
-      <section className="my-10">
+      {/* Modern Airline Gallery */}
+      <AnimatedSection>
         <ModernAirlineGallery />
-      </section>
       
-       <section className="my-10">
+
+      {/* Testimonials */}
+     
         <Testimonials />
-      </section>
+      </AnimatedSection>
     </div>
   );
 };

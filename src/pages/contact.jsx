@@ -4,7 +4,7 @@ import HeroSection from "./contactBanner";
 import OurTeam from "./contactTeam";
 import Swal from "sweetalert2";
 import { ThemeContext } from "../context/ThemeContext";
-
+import AnimatedSection from "../components/secret/AnimatedSection";
 const ContactSection = () => {
   const formRef = useRef();
   const [sending, setSending] = useState(false);
@@ -36,8 +36,9 @@ const ContactSection = () => {
   };
 
   return (
-    <div className={theme === "dark" ? "bg-gray-900 text-white" : "bg-white text-black"}>
+    <div className={theme === "dark" ? " text-white" : " text-black"}>
       <HeroSection />
+    <AnimatedSection>
       <OurTeam />
 
       <section className="mb-32">
@@ -92,6 +93,7 @@ const ContactSection = () => {
           </div>
         </div>
       </section>
+  </AnimatedSection>
     </div>
   );
 };

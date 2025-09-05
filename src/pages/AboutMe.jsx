@@ -37,24 +37,11 @@ const AboutMe = () => {
     <section
       className={`w-full relative ${
         theme === "dark"
-          ? "bg-gray-900 text-white"
-          : "bg-gradient-to-br from-gray-50 via-white to-gray-100 text-gray-900"
+          ? " text-white"
+          : " text-gray-900"
       }`}
     >
-      {/* Theme Toggle */}
-      <div className="absolute top-6 right-6 z-20">
-        <button
-          onClick={toggleTheme}
-          className="p-3 rounded-full bg-white/80 dark:bg-gray-800 shadow-lg transition"
-        >
-          {theme === "dark" ? (
-            <Sun className="w-5 h-5 text-yellow-400" />
-          ) : (
-            <Moon className="w-5 h-5 text-gray-700" />
-          )}
-        </button>
-      </div>
-
+     
       {/* Grid Layout */}
       <div className="max-w-7xl mx-auto grid md:grid-cols-2">
         {/* Full Image (Left) */}

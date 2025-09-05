@@ -9,6 +9,7 @@ import {
   AiOutlineLeft,
   AiOutlineRight,
 } from "react-icons/ai";
+import { FaMapMarkedAlt, FaCalendarCheck, FaHeadset, FaUsers } from "react-icons/fa";
 import { ThemeContext } from "../context/ThemeContext";
 import { AuthContext } from "../context/AuthContext";
 
@@ -76,7 +77,7 @@ const ToursList = () => {
       animate={{ opacity: 1, y: 0 }}
       transition={{ duration: 0.4 }}
       className={`rounded-2xl shadow-md hover:shadow-xl border overflow-hidden flex flex-col ${
-        theme === "dark" ? "bg-gray-800 text-gray-200" : "bg-white text-gray-800"
+        theme === "dark" ? " text-gray-200" : " text-gray-800"
       }`}
     >
       <div className="relative">
@@ -90,6 +91,9 @@ const ToursList = () => {
         </span>
       </div>
       <div className="p-4 flex flex-col flex-grow">
+        <h3 className="text-lg md:text-xl font-bold mb-1 capitalize">
+          {tour.title}
+        </h3>
         <h3 className="text-lg md:text-xl font-bold mb-1 capitalize">
           {tour.selectedPackage} Package
         </h3>
@@ -340,14 +344,11 @@ const ToursList = () => {
     );
 
   return (
-    <div
-      className={`max-w-7xl mx-auto px-4 py-12 ${
-        theme === "dark" ? "bg-gray-900" : "bg-gray-50"
-      }`}
-    >
+    <div className={`max-w-7xl mx-auto px-4 py-12`}>
+      {/* Header */}
       <div className="flex justify-between items-center mb-6">
-        <h2 className="text-4xl md:text-5xl font-extrabold text-yellow-700 dark:text-yellow-400">
-          Explore Our Tour Packages
+        <h2 className="text-2xl md:text-5xl font-extrabold text-yellow-700 dark:text-yellow-400">
+          Our Tour Packages
         </h2>
         <button
           onClick={handleAddTour}
@@ -357,12 +358,63 @@ const ToursList = () => {
         </button>
       </div>
 
+      {/* Feature Section */}
+      <div className="max-w-6xl mx-auto px-4 py-12">
+        <h2
+          className={`text-3xl font-bold text-center mb-2 ${
+            theme === "dark" ? "text-yellow-400" : "text-yellow-700"
+          }`}
+        >
+          Why Choose Our Tours?
+        </h2>
+        <p
+          className={`text-center mb-8 ${
+            theme === "dark" ? "text-gray-300" : "text-gray-600"
+          }`}
+        >
+          Explore our curated tour packages with flexible dates, personalized services, and 24/7 support.
+        </p>
+
+        <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-8 text-center">
+          <div className="flex flex-col items-center">
+            <FaMapMarkedAlt className="text-3xl text-blue-600 mb-2" />
+            <h3 className="font-semibold text-lg">Custom Itineraries</h3>
+            <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              Tailored to match your preferences.
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <FaCalendarCheck className="text-3xl text-green-600 mb-2" />
+            <h3 className="font-semibold text-lg">Flexible Scheduling</h3>
+            <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              Pick dates that suit your plans.
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <FaHeadset className="text-3xl text-purple-600 mb-2" />
+            <h3 className="font-semibold text-lg">24/7 Support</h3>
+            <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              Assistance whenever you need it.
+            </p>
+          </div>
+          <div className="flex flex-col items-center">
+            <FaUsers className="text-3xl text-red-600 mb-2" />
+            <h3 className="font-semibold text-lg">Group or Solo</h3>
+            <p className={`text-sm ${theme === "dark" ? "text-gray-300" : "text-gray-600"}`}>
+              Perfect for any group size.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      {/* Tours Grid */}
       <motion.div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {currentTours.map((tour) => (
           <TourCard key={tour._id} tour={tour} />
         ))}
       </motion.div>
 
+      {/* Pagination */}
       {totalPages > 1 && (
         <div className="flex justify-center items-center gap-2 mt-12 flex-wrap">
           <button
@@ -397,6 +449,7 @@ const ToursList = () => {
         </div>
       )}
 
+      {/* Add Tour Modal */}
       {showModal && <TourFormModal onClose={() => setShowModal(false)} />}
     </div>
   );

@@ -36,29 +36,7 @@ const HeroSection = () => {
       </section>
 
       {/* Call-to-Action Section */}
-      <div className="max-w-6xl mx-auto px-4 py-12 text-center">
-        <h2
-          className={`text-3xl font-bold mb-4 ${
-            theme === "dark" ? "text-white" : "text-gray-800"
-          }`}
-        >
-          Manage Your Tour Packages Seamlessly
-        </h2>
-        <p
-          className={`max-w-2xl mx-auto mb-6 ${
-            theme === "dark" ? "text-gray-300" : "text-gray-600"
-          }`}
-        >
-          Whether you're editing itineraries or reviewing bookings, our powerful
-          dashboard helps you stay organized and efficient.
-        </p>
-        <a
-          href="/manage"
-          className="inline-block bg-yellow-500 hover:bg-yellow-600 text-white font-semibold px-6 py-3 rounded-full transition duration-300"
-        >
-          Go to Tour Manager
-        </a>
-      </div>
+      
     </div>
   );
 };

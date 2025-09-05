@@ -5,8 +5,9 @@ import AllTours from "./AllTours";
 import AllHotelsPage from "./AllHotelsPage";
 import MyFlightBookings from "./MyFlightBookings";
 import { ThemeContext } from "../context/ThemeContext";
+import AnimatedSection from "../components/secret/AnimatedSection"; // Import AnimatedSection
 
-// Higher-order component to inject ThemeContext into class component
+// HOC to inject ThemeContext
 function withTheme(Component) {
   return function WrappedComponent(props) {
     const themeContext = useContext(ThemeContext);
@@ -31,19 +32,17 @@ class AllPackages extends Component {
 
         {/* Hero Section */}
         <HeroSection />
-
-        {/* Tours */}
-        <AllTours />
-
-        {/* Hotels */}
-        <AllHotelsPage />
-
-        {/* Flight Bookings */}
-        <MyFlightBookings />
+        {/* Tours Section */}
+        <AnimatedSection>
+          <AllTours />
+        {/* Hotels Section */}
+          <AllHotelsPage />
+        {/* Flight Bookings Section */}
+          <MyFlightBookings />
+        </AnimatedSection>
       </div>
     );
   }
 }
 
-// Export class component wrapped with ThemeContext
 export default withTheme(AllPackages);

@@ -95,7 +95,7 @@ const AllTours = () => {
     return <div className="text-center py-10 text-gray-500">Loading all tours...</div>;
 
   return (
-    <div className={theme === "dark" ? "bg-gray-900 text-gray-100" : "bg-white text-gray-900"}>
+    <div className={theme === "dark" ? " text-gray-100" : " text-gray-900"}>
       <div className="max-w-6xl mx-auto px-4 py-12">
         <h2 className="text-3xl font-bold text-yellow-700 mb-6 text-center">
           All Tour Packages
@@ -152,7 +152,8 @@ const AllTours = () => {
                   className="w-full h-48 object-cover rounded-md mb-4"
                 />
                 <div className="flex-grow">
-                  <h3 className="text-xl font-semibold mb-1 capitalize">{tour.selectedPackage} Package</h3>
+                  <h3 className="text-xl font-semibold mb-1 capitalize">{tour.title}</h3>
+                  <p className="text-xl font-semibold">{tour.selectedPackage} Package</p>
                   <p className="text-sm mb-2">Pickup: {tour.pickupLocation}</p>
                   <p className="text-sm mb-2">Travel: {tour.travelDate} → {tour.returnDate}</p>
                   <p className="text-yellow-600 font-bold text-lg mb-2">${tour.totalPrice}</p>

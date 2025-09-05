@@ -5,7 +5,7 @@ import { ThemeContext } from "../context/ThemeContext"; // adjust path if needed
 const AboutSection = () => {
   const { theme } = useContext(ThemeContext);
 
-  const bgClass = theme === "dark" ? "bg-gray-900" : "bg-[#f5f5f5]";
+  const bgClass = theme === "dark" ? "" : "";
   const textClass = theme === "dark" ? "text-gray-100" : "text-black";
   const cardBgClass = theme === "dark" ? "bg-gray-800" : "bg-white";
   const cardTextClass = theme === "dark" ? "text-gray-200" : "text-gray-700";

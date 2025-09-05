@@ -4,7 +4,7 @@ import { FaPlaneArrival, FaPlaneDeparture } from "react-icons/fa";
 import HeroSection from "./airBanner";
 import Swal from "sweetalert2";
 import { ThemeContext } from "../context/ThemeContext";
-
+import AnimatedSection from "../components/secret/AnimatedSection"
 const defaultForm = {
   passengerName: "",
   passportNumber: "",
@@ -110,7 +110,7 @@ const FlightSeatBooking = () => {
       </Helmet>
 
       <HeroSection />
-
+     <AnimatedSection>
       <section className="px-4 py-10">
         <form
           onSubmit={handleSubmit}
@@ -260,6 +260,7 @@ const FlightSeatBooking = () => {
           </div>
         </form>
       </section>
+      </AnimatedSection>
     </div>
   );
 };

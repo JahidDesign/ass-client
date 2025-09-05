@@ -57,7 +57,7 @@ const HotelsCards = () => {
   return (
     <div
       className={`${
-        theme === "dark" ? "bg-gray-900 text-gray-200" : "bg-gray-50 text-gray-900"
+        theme === "dark" ? " text-gray-200" : " text-gray-900"
       } min-h-screen py-10 px-4`}
     >
       <Helmet>

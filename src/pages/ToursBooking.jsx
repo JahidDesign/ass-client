@@ -147,9 +147,9 @@ export default function ToursBookings() {
   };
 
   return (
-    <div className={`min-h-screen transition-colors duration-500 ${theme === "dark" ? "bg-black" : "bg-white"}`}>
+    <div className={`min-h-screen transition-colors duration-500 ${theme === "dark" ? "text-white" : "text-black"}`}>
       {/* Header */}
-      <div className={`border-b ${theme === "dark" ? "border-gray-800 bg-gray-900" : "border-gray-200 bg-gray-50"}`}>
+      <div className={`border-b ${theme === "dark" ? "border-gray-800 " : "border-gray-200 "}`}>
         <div className="max-w-7xl mx-auto px-4 py-8">
           <h1 className={`text-4xl font-bold ${theme === "dark" ? "text-white" : "text-black"}`}>
             My Bookings

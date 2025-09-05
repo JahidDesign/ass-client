@@ -72,7 +72,7 @@ export default function AllHotelsPage() {
   const totalPages = Math.ceil(filteredHotels.length / hotelsPerPage);
 
   return (
-    <div className={`${theme === "dark" ? "bg-gray-800 text-white" : "bg-white text-black"} min-h-screen`}>
+    <div className={`${theme === "dark" ? " text-white" : " text-black"} min-h-screen`}>
       <div className="max-w-7xl mx-auto px-4 py-8">
 
         {/* Header */}

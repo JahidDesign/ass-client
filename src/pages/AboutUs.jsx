@@ -4,7 +4,7 @@ import AboutSection from "./AboutSection";
 import HeroSection from "./AboutBanner";
 import TravelAbout from "./abboutSubBannare";
 import { ThemeContext } from "../context/ThemeContext"; // Adjust path
-
+import AnimatedSection from "../components/secret/AnimatedSection";
 const AboutUs = () => {
   const { theme } = useContext(ThemeContext);
   const bgClass = theme === "dark" ? "bg-gray-900" : "bg-white";
@@ -23,12 +23,12 @@ const AboutUs = () => {
 
       {/* Hero Banner */}
       <HeroSection />
-
+      <AnimatedSection>
       {/* About Section */}
       <AboutSection />
-
       {/* Additional Travel About / Sub Banner */}
       <TravelAbout />
+      </AnimatedSection>
     </div>
   );
 };

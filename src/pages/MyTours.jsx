@@ -20,6 +20,7 @@ const MyTours = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
 
   const [formData, setFormData] = useState({
+    title: "",
     selectedPackage: "",
     pickupLocation: "",
     travelDate: "",
@@ -76,6 +77,7 @@ const MyTours = () => {
         const savedTour = await res.json();
         setTours((prev) => [...prev, savedTour]);
         setFormData({
+          title: "",
           selectedPackage: "",
           pickupLocation: "",
           travelDate: "",
@@ -105,7 +107,7 @@ const MyTours = () => {
   return (
     <div
       className={`max-w-6xl mx-auto px-6 py-10 ${
-        theme === "dark" ? "bg-gray-900 text-white" : "bg-gray-50 text-black"
+        theme === "dark" ? " text-white" : " text-black"
       }`}
     >
       {/* Headline & Book Tour Button */}
@@ -144,6 +146,15 @@ const MyTours = () => {
                 name="selectedPackage"
                 placeholder="Package Name"
                 value={formData.selectedPackage}
+                onChange={handleChange}
+                className="input input-bordered w-full p-2 rounded"
+                required
+              />
+              <input
+                type="text"
+                name="Title"
+                placeholder="Package Name"
+                value={formData.title}
                 onChange={handleChange}
                 className="input input-bordered w-full p-2 rounded"
                 required
@@ -253,6 +264,9 @@ const MyTours = () => {
                 className="w-full h-40 object-cover"
               />
               <div className="p-4 space-y-3">
+                <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 capitalize">
+                  {tour.title} Package
+                </h2>
                 <h2 className="text-xl font-bold text-blue-600 dark:text-blue-400 capitalize">
                   {tour.selectedPackage} Package
                 </h2>

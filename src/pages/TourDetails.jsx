@@ -156,7 +156,8 @@ export default function TourDetails() {
 
     const bookingData = {
       tourId: tour._id || id,
-      title: tour.title || tour.selectedPackage || "Tour Package",
+      title: tour.title || "Tour Title",
+      tour :tour.selectedPackage || "Tour Package",
       photoUrl: tour.photoUrl || tour.photo || "",
       price: tour.price || tour.totalPrice || 0,
       location: tour.location || tour.pickupLocation || "Unknown",
@@ -279,7 +280,10 @@ export default function TourDetails() {
               <div className="p-6 space-y-6">
                 <div>
                   <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
-                    {tour.title || tour.selectedPackage}
+                    {tour.title || "Tour Title"}
+                  </h1>
+                  <h1 className="text-3xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2">
+                    {tour.selectedPackage || "Tour Package"}
                   </h1>
                   <p className="text-lg text-gray-600 dark:text-gray-400 flex items-center gap-2">
                     <svg className="w-5 h-5 text-red-500" fill="currentColor" viewBox="0 0 20 20">

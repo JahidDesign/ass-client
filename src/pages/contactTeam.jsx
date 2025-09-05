@@ -25,8 +25,8 @@ const OurTeam = () => {
     <section
       className={`py-16 min-h-screen transition-colors duration-300 ${
         theme === "dark"
-          ? "bg-gray-900 text-white"
-          : "bg-gradient-to-r from-blue-50 to-blue-100 text-gray-900"
+          ? " text-white"
+          : " text-gray-900"
       }`}
     >
       <div className="max-w-7xl mx-auto px-6">
